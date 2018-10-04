@@ -28,7 +28,9 @@ MultiDasher is developed, tested and designed to be run on Ubuntu 18.04.
 
 ## Contributing
 
-We are still working on contribution guidelines and a code of conduct.
+We are still working on contribution guidelines.
+
+Everyone interacting in MultiDasher's codebase, issue tracker, wiki, and mailing list is expected to follow the code of conduct (see CODE_OF_CONDUCT.md).
 
 ## License
 

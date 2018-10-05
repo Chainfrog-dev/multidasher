@@ -1,0 +1,12 @@
+name: blockpal
+type: module
+description: 'Multichain integration for Drupal'
+core: 8.x
+package: Custom
+configure: blockchain.form
+mtime: 1538138886
+dependencies:
+  - node
+  - user
+version: null
+php: 5.5.9

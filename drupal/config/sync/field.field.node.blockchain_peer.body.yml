@@ -1,0 +1,22 @@
+uuid: 58117e1c-5263-4b75-8128-d3ac2168b408
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.blockchain_peer
+  module:
+    - text
+id: node.blockchain_peer.body
+field_name: body
+entity_type: node
+bundle: blockchain_peer
+label: Body
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+field_type: text_with_summary

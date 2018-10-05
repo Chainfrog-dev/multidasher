@@ -1,0 +1,19 @@
+uuid: 17c1eafd-97e9-41d8-aaf5-a373b35beca2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_walletversion
+    - node.type.blockchain
+id: node.blockchain.field_walletversion
+field_name: field_walletversion
+entity_type: node
+bundle: blockchain
+label: walletversion
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

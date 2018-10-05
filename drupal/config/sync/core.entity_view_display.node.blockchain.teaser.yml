@@ -1,0 +1,30 @@
+uuid: 1b9e04cb-2539-4d0c-b181-0e2fd1e1f502
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.blockchain.body
+    - node.type.blockchain
+  module:
+    - text
+    - user
+_core:
+  default_config_hash: mOTDfzEJGW3m4IPQ-7hsY0SxL2tbx1ozqo_kFJBllXI
+id: node.blockchain.teaser
+targetEntityType: node
+bundle: blockchain
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    region: content
+hidden: {  }

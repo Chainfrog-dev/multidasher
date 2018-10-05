@@ -1,0 +1,22 @@
+uuid: 699a9d93-bcb6-47b8-ac12-93af52f730e2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.blockchain_asset
+  module:
+    - text
+id: node.blockchain_asset.body
+field_name: body
+entity_type: node
+bundle: blockchain_asset
+label: Body
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+field_type: text_with_summary

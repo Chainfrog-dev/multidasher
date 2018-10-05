@@ -1,0 +1,20 @@
+uuid: cba4b216-2174-42af-b2bb-737f398cf68e
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_connections
+field_name: field_connections
+entity_type: node
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

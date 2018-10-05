@@ -1,0 +1,21 @@
+uuid: 7193c44c-6716-47f2-b15e-060a17983d6d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_blockchain_name
+    - node.type.blockchain
+  module:
+    - blockpal
+id: node.blockchain.field_blockchain_name
+field_name: field_blockchain_name
+entity_type: node
+bundle: blockchain
+label: 'Blockchain name'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: blockchain_name

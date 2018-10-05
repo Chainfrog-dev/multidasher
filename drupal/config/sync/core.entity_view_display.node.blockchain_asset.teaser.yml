@@ -1,0 +1,30 @@
+uuid: fed4c32b-2e58-45d9-a5cb-00b67f1143ad
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.blockchain_asset.body
+    - node.type.blockchain_asset
+  module:
+    - text
+    - user
+id: node.blockchain_asset.teaser
+targetEntityType: node
+bundle: blockchain_asset
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden: {  }

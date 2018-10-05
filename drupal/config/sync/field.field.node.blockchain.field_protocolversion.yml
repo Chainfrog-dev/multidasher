@@ -1,0 +1,19 @@
+uuid: f813125a-3d71-45b1-b420-e39231a4af37
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_protocolversion
+    - node.type.blockchain
+id: node.blockchain.field_protocolversion
+field_name: field_protocolversion
+entity_type: node
+bundle: blockchain
+label: protocolversion
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,50 @@
+blockchain.form:
+  path: '/admin/config/development/blockchain'
+  defaults:
+    _form: '\Drupal\blockpal\Form\BlockchainForm'
+    _title: 'Lorem ipsum settings'
+  requirements:
+    _role: 'administrator'
+blockchain.update-parameters:
+  path: '/multidash/{node}/update-parameters'
+  defaults:
+    _controller: '\Drupal\blockpal\Controller\BlockchainController::updateParameters'
+    _title: 'update-parameters'
+  requirements:
+    _role: 'administrator'
+blockchain.start-blockchain:
+  path: '/multidash/{node}/start-blockchain'
+  defaults:
+    _controller: '\Drupal\blockpal\Controller\BlockchainController::startMultichainDaemon'
+    _title: 'start-blockchain'
+  requirements:
+    _role: 'administrator'
+blockchain.launch-blockchain:
+  path: '/multidash/launch-blockchain'
+  defaults:
+    _controller: '\Drupal\blockpal\Controller\BlockchainController::launchMultichain'
+    _title: 'Launch-blockchain'
+  requirements:
+    _role: 'administrator'
+blockchain.stop-blockchain:
+  path: '/multidash/{node}/stop-blockchain'
+  defaults:
+    _controller: '\Drupal\blockpal\Controller\BlockchainController::stopMultichainDaemon'
+    _title: 'Launch-blockchain'
+  requirements:
+    _role: 'administrator'
+blockchain.update-addresses:
+  path: '/multidash/{node}/update-addresses'
+  defaults:
+    _controller: '\Drupal\blockpal\Controller\BlockchainController::updateAddresses'
+    _title: 'List Addresses'
+  requirements:
+    _role: 'administrator'
+blockchain.update-peers:
+  path: '/multidash/{node}/update-peers'
+  defaults:
+    _controller: '\Drupal\blockpal\Controller\BlockchainController::getPeerInfo'
+    _title: 'Get Peers'
+  requirements:
+    _role: 'administrator'
+

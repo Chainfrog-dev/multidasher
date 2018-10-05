@@ -1,0 +1,28 @@
+uuid: 1cd1f4f3-e236-4eb4-bfff-784c805bb9ad
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_blockchain_wallet_referenc
+    - node.type.blockchain_wallet
+    - node.type.wallet_address
+id: node.wallet_address.field_blockchain_wallet_referenc
+field_name: field_blockchain_wallet_referenc
+entity_type: node
+bundle: wallet_address
+label: blockchain_wallet_reference
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      blockchain_wallet: blockchain_wallet
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

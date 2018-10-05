@@ -1,0 +1,19 @@
+uuid: 1eda5811-bb45-4fe3-8ba0-919f98a3579a
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_stream_blockchain_ref
+field_name: field_stream_blockchain_ref
+entity_type: node
+type: entity_reference
+settings:
+  target_type: node
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

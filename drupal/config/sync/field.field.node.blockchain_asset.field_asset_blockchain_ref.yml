@@ -1,0 +1,28 @@
+uuid: a57174e1-0a19-4935-afd7-22dda7a5f047
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_asset_blockchain_ref
+    - node.type.blockchain
+    - node.type.blockchain_asset
+id: node.blockchain_asset.field_asset_blockchain_ref
+field_name: field_asset_blockchain_ref
+entity_type: node
+bundle: blockchain_asset
+label: 'Asset blockchain ref'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      blockchain: blockchain
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,19 @@
+uuid: e0ecda55-0c6e-45a0-b141-31449a50e83b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_nodeaddress
+    - node.type.blockchain
+id: node.blockchain.field_nodeaddress
+field_name: field_nodeaddress
+entity_type: node
+bundle: blockchain
+label: nodeaddress
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

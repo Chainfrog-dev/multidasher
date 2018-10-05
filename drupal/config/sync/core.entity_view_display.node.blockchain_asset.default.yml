@@ -1,0 +1,37 @@
+uuid: 4ce80c46-676e-4bba-8903-14dfcf193533
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.blockchain_asset.body
+    - field.field.node.blockchain_asset.field_asset_blockchain_ref
+    - node.type.blockchain_asset
+  module:
+    - text
+    - user
+id: node.blockchain_asset.default
+targetEntityType: node
+bundle: blockchain_asset
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_asset_blockchain_ref:
+    weight: 102
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden: {  }

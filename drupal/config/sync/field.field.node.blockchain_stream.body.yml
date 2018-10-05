@@ -1,0 +1,22 @@
+uuid: 5617e4fc-27d7-4459-81a0-19d767ffa2d9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.blockchain_stream
+  module:
+    - text
+id: node.blockchain_stream.body
+field_name: body
+entity_type: node
+bundle: blockchain_stream
+label: Body
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+field_type: text_with_summary

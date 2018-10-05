@@ -1,0 +1,23 @@
+uuid: 47550511-b078-4322-a991-189884a5a033
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_relayfee
+    - node.type.blockchain
+id: node.blockchain.field_relayfee
+field_name: field_relayfee
+entity_type: node
+bundle: blockchain
+label: relayfee
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

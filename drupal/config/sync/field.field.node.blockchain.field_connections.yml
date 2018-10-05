@@ -1,0 +1,23 @@
+uuid: 007bbaf6-9297-46df-a965-e81dacf5a35a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_connections
+    - node.type.blockchain
+id: node.blockchain.field_connections
+field_name: field_connections
+entity_type: node
+bundle: blockchain
+label: connections
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

@@ -1,0 +1,19 @@
+uuid: 7c67b491-5428-4e9e-96ea-0be415a25049
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_proxy
+    - node.type.blockchain
+id: node.blockchain.field_proxy
+field_name: field_proxy
+entity_type: node
+bundle: blockchain
+label: proxy
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

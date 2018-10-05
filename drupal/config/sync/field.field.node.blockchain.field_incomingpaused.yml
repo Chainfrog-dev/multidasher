@@ -1,0 +1,19 @@
+uuid: 663d9ef7-dfa7-4409-bbc3-da83be64121f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_incomingpaused
+    - node.type.blockchain
+id: node.blockchain.field_incomingpaused
+field_name: field_incomingpaused
+entity_type: node
+bundle: blockchain
+label: incomingpaused
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,22 @@
+uuid: 18ba6187-4fdf-4a89-9640-0d79e35e4444
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.wallet_address.field_blockchain_wallet_referenc
+    - node.type.wallet_address
+  module:
+    - user
+id: node.wallet_address.teaser
+targetEntityType: node
+bundle: wallet_address
+mode: teaser
+content:
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_blockchain_wallet_referenc: true

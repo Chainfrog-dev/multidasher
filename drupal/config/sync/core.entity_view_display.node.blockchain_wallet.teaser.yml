@@ -1,0 +1,30 @@
+uuid: 5b9ca594-b575-4fef-929a-6bb11657aa71
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.blockchain_wallet.body
+    - node.type.blockchain_wallet
+  module:
+    - text
+    - user
+id: node.blockchain_wallet.teaser
+targetEntityType: node
+bundle: blockchain_wallet
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden: {  }

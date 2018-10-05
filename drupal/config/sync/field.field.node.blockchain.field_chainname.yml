@@ -1,0 +1,19 @@
+uuid: 0f0674ce-6e72-4249-8e07-b7a833ce4ba6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_chainname
+    - node.type.blockchain
+id: node.blockchain.field_chainname
+field_name: field_chainname
+entity_type: node
+bundle: blockchain
+label: chainname
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

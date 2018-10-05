@@ -1,0 +1,19 @@
+uuid: c7e79869-eb9a-4108-9c8f-9eb4ef218757
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_keypoololdest
+    - node.type.blockchain
+id: node.blockchain.field_keypoololdest
+field_name: field_keypoololdest
+entity_type: node
+bundle: blockchain
+label: keypoololdest
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

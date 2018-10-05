@@ -1,0 +1,19 @@
+uuid: f196e1b9-b1fa-4b0e-a7b1-53cb3c49c71d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_offchainpaused
+    - node.type.blockchain
+id: node.blockchain.field_offchainpaused
+field_name: field_offchainpaused
+entity_type: node
+bundle: blockchain
+label: offchainpaused
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

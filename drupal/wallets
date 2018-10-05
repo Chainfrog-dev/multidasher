@@ -1,0 +1,226 @@
+// WALLET:
+
+listaddresses[
+    {
+        "address" : "177a32Rif1KVsjCMyQjHmNTWPaUhT8Hwo7US7u",
+        "ismine" : true
+    }
+]
+
+getaddressbalances {address} [
+    {
+        "name" : "somecash",
+        "assetref" : "270-266-41651",
+        "qty" : 5000
+    }
+]
+
+listwallettransactions [
+    {
+        "balance" : {
+            "amount" : 0,
+            "assets" : [
+            ]
+        },
+        "myaddresses" : [
+            "177a32Rif1KVsjCMyQjHmNTWPaUhT8Hwo7US7u"
+        ],
+        "addresses" : [
+            "1YCwzVAKXWQHivLUygx9QRgCx1yjmnQzhBcuJG"
+        ],
+        "permissions" : [
+            {
+                "for" : null,
+                "connect" : true,
+                "send" : true,
+                "receive" : true,
+                "create" : false,
+                "issue" : false,
+                "mine" : false,
+                "admin" : false,
+                "activate" : false,
+                "custom" : [
+                ],
+                "startblock" : 0,
+                "endblock" : 4294967295,
+                "timestamp" : 1537528916,
+                "addresses" : [
+                    "177a32Rif1KVsjCMyQjHmNTWPaUhT8Hwo7US7u"
+                ]
+            }
+        ],
+        "items" : [
+        ],
+        "data" : [
+        ],
+        "confirmations" : 90,
+        "blockhash" : "002513a40d2c46ad866ac4f5997583ca6d4d11f4ca8266bc412516ce404bb66d",
+        "blockindex" : 1,
+        "blocktime" : 1537528938,
+        "txid" : "db290b139f314fc170653cc042670fc1574eed67bb412206c48e4208ada291ef",
+        "valid" : true,
+        "time" : 1537528936,
+        "timereceived" : 1537528936
+    },
+    {
+        "balance" : {
+            "amount" : 0,
+            "assets" : [
+            ]
+        },
+        "myaddresses" : [
+            "177a32Rif1KVsjCMyQjHmNTWPaUhT8Hwo7US7u"
+        ],
+        "addresses" : [
+        ],
+        "permissions" : [
+        ],
+        "items" : [
+            {
+                "type" : "stream",
+                "name" : "building-blockchain-demo",
+                "streamref" : "221-267-57672",
+                "publishers" : [
+                    "177a32Rif1KVsjCMyQjHmNTWPaUhT8Hwo7US7u"
+                ],
+                "keys" : [
+                    "key"
+                ],
+                "offchain" : false,
+                "available" : true,
+                "data" : "48656c6c6f20576f726c64210a"
+            }
+        ],
+        "data" : [
+        ],
+        "confirmations" : 62,
+        "blockhash" : "0043ba247644bdbae44e3a13d6be9d3cf0fa56f68974351a0539376d45159823",
+        "blockindex" : 1,
+        "blocktime" : 1537529430,
+        "txid" : "a3babaac45e4b12f416583d9becf9a2cdbb06e175d6b7374d504ca5b48644e1c",
+        "valid" : true,
+        "time" : 1537529429,
+        "timereceived" : 1537529429
+    },
+    {
+        "balance" : {
+            "amount" : 0,
+            "assets" : [
+            ]
+        },
+        "myaddresses" : [
+            "177a32Rif1KVsjCMyQjHmNTWPaUhT8Hwo7US7u"
+        ],
+        "addresses" : [
+        ],
+        "permissions" : [
+        ],
+        "items" : [
+            {
+                "type" : "stream",
+                "name" : "building-blockchain-demo",
+                "streamref" : "221-267-57672",
+                "publishers" : [
+                    "177a32Rif1KVsjCMyQjHmNTWPaUhT8Hwo7US7u"
+                ],
+                "keys" : [
+                    "json"
+                ],
+                "offchain" : false,
+                "available" : true,
+                "data" : {
+                    "json" : {
+                        "Json Array" : [
+                            5135,
+                            134122
+                        ],
+                        "Am I json" : "no"
+                    }
+                }
+            }
+        ],
+        "data" : [
+        ],
+        "confirmations" : 44,
+        "blockhash" : "003da3361d19fb271af43bfa90f8a015770b45cbd8bdb2dbdab3d71b1eaf1fb6",
+        "blockindex" : 1,
+        "blocktime" : 1537529829,
+        "txid" : "c22eebc1bd5cf705e46414112af73244d5cb1862b609bde6f957fb724fa3ab71",
+        "valid" : true,
+        "time" : 1537529823,
+        "timereceived" : 1537529823
+    },
+    {
+        "balance" : {
+            "amount" : 0,
+            "assets" : [
+                {
+                    "name" : "somecash",
+                    "assetref" : "270-266-41651",
+                    "qty" : 5000
+                }
+            ]
+        },
+        "myaddresses" : [
+            "177a32Rif1KVsjCMyQjHmNTWPaUhT8Hwo7US7u"
+        ],
+        "addresses" : [
+            "1YCwzVAKXWQHivLUygx9QRgCx1yjmnQzhBcuJG"
+        ],
+        "permissions" : [
+        ],
+        "items" : [
+        ],
+        "data" : [
+        ],
+        "confirmations" : 11,
+        "blockhash" : "00b37cbf71b33921a481c89f3b068f4c06fdff69296142fee56f00609e9eadf8",
+        "blockindex" : 1,
+        "blocktime" : 1538501887,
+        "txid" : "231d1e39529772bfc0fc1e483e20967ec46b46342ec7d205807c36f45e6b923d",
+        "valid" : true,
+        "time" : 1538501878,
+        "timereceived" : 1538501878
+    }
+]
+
+
+
+listassets[
+    {
+        "name" : "somecash",
+        "issuetxid" : "b3a2cfe00a788b5de6dc4183545f6eccc13bd85d2a673e805b6a607e19363f19",
+        "assetref" : "270-266-41651",
+        "multiple" : 1,
+        "units" : 1,
+        "open" : false,
+        "restrict" : {
+            "send" : false,
+            "receive" : false
+        },
+        "details" : {
+        },
+        "issueqty" : 100000,
+        "issueraw" : 100000,
+        "subscribed" : false
+    }
+]
+
+getwalletinfo{
+    "walletversion" : 60000,
+    "balance" : 0,
+    "walletdbversion" : 2,
+    "txcount" : 11,
+    "utxocount" : 2,
+    "keypoololdest" : 1537528901,
+    "keypoolsize" : 2
+}
+
+gettotalbalances [
+    {
+        "name" : "somecash",
+        "assetref" : "270-266-41651",
+        "qty" : 5000
+    }
+]
+

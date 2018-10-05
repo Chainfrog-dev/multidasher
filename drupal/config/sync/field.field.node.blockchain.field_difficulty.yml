@@ -1,0 +1,19 @@
+uuid: 8565421a-5347-4e48-953e-b8d457fad098
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_difficulty
+    - node.type.blockchain
+id: node.blockchain.field_difficulty
+field_name: field_difficulty
+entity_type: node
+bundle: blockchain
+label: difficulty
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,23 @@
+uuid: 5c39a10e-ad44-446f-9d48-99b095dadfde
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_paytxfee
+    - node.type.blockchain
+id: node.blockchain.field_paytxfee
+field_name: field_paytxfee
+entity_type: node
+bundle: blockchain
+label: paytxfee
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

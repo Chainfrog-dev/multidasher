@@ -1,0 +1,24 @@
+uuid: 9cc7d18b-d147-40c8-b110-34401f9d0e25
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.blockchain
+  module:
+    - text
+_core:
+  default_config_hash: FuF8qBVrubNESJMqmxWi4JFzh0GghF08YUnZ9ZES8SY
+id: node.blockchain.body
+field_name: body
+entity_type: node
+bundle: blockchain
+label: Body
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+field_type: text_with_summary

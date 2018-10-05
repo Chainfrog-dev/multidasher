@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+    config:
+        - field.field.node.blockchain.body
+        - node.type.blockchain
+    module:
+        - text
+        - user
+id: node.blockchain.default
+targetEntityType: node
+bundle: blockchain
+mode: default
+content:
+    body:
+        label: hidden
+        type: text_default
+        weight: 101
+        settings: {  }
+        third_party_settings: {  }
+    links:
+        weight: 100
+hidden: {  }

@@ -1,0 +1,28 @@
+uuid: 919c6aa7-9f35-4e3e-91a0-262b92a305fd
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_stream_blockchain_ref
+    - node.type.blockchain
+    - node.type.blockchain_stream
+id: node.blockchain_stream.field_stream_blockchain_ref
+field_name: field_stream_blockchain_ref
+entity_type: node
+bundle: blockchain_stream
+label: 'Stream blockchain reference'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      blockchain: blockchain
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

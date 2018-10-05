@@ -30,7 +30,7 @@ The following instructions should have you up and running with MultiDasher on yo
 
 ## Contributing
 
-We would love your input on this project, whether they are code contributions, opinions on features, project priorities, testing, documentation or UX and graphic design (see CONTRIBUTING.md).
+We would love your input on this project, whether it be code contributions, opinions on features, project priorities, testing, documentation or UX and graphic design (see CONTRIBUTING.md). Or indeed anything else that you think might help.
 
 Everyone interacting in MultiDasher's codebase, issue tracker, wiki, and mailing list is expected to follow the code of conduct (see CODE_OF_CONDUCT.md).
 

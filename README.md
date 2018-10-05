@@ -8,6 +8,8 @@ MultiDasher is developed, tested and designed to be run on Ubuntu 18.04.
 
 ## Getting Started
 
+The following instructions should have you up and running with MultiDasher on your Ubuntu 18.04 machine within minutes. If you want to play around with the system, we recommend either using a cloud instance of Ubuntu, or running a virtual box on your machine (See the [Vagrant Setup Instructions](https://github.com/Chainfrog-dev/multidasher/wiki/Vagrant-Setup-Instructions) in the Wiki for more details).
+
 1. Clone this repository into your working directory, for example:
 
         $ cd Git

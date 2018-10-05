@@ -1,0 +1,15 @@
+footer {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border: 0;
+    width: calc(100%);
+	background-image: linear-gradient(to right top, #1e232a, #1b1b21, #161418, #0e0b0d, #000000);
+	.nav > li > a {
+		color: white;
+		
+		&:hover, &:focus {
+    		text-decoration: underline;
+    		background-color: transparent;
+		}
+	}
+}

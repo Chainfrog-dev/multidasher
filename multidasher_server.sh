@@ -30,6 +30,7 @@ if ! which nginx > /dev/null 2>&1; then
 else
 	echo "Nginx installed -- skipping"
     apt-get -qy install nginx
+fi
 
 echo ""
 echo "-----------------------------------------------"

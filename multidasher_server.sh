@@ -32,6 +32,30 @@ else
     apt-get -qy install nginx
 
 echo ""
+echo "-----------------------------------------------"
+echo "Add site to hosts								 "
+echo "-----------------------------------------------"
+echo ""
+
+if grep -Fxq "127.0.0.1	frogchain.multidasher.com" /etc/hosts ; then
+    echo "site already exists."
+else
+	echo '127.0.0.1	frogchain.multidasher.com' >> /etc/hosts
+fi
+
+echo ""
+echo "-----------------------------------------------"
+echo "Install certbot 								 "
+echo "-----------------------------------------------"
+echo ""
+if ! grep -q "^deb .*ppa:certbot/certbot" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
+	add-apt-repository ppa:certbot/certbot
+	apt-get update
+fi
+apt-get install -qy python-certbot-nginx
+sudo certbot --nginx -d frogchain.multidasher.org -d www.frogchain.multidasher.org
+
+echo ""
 echo "-----------------------------------------------------------------"
 echo "Installing MultiChain                                            "
 echo "-----------------------------------------------------------------"
@@ -41,9 +65,9 @@ if test -x /usr/local/bin/multichaind ; then
 	echo "MultiChain already installed"
 else
 	cd /tmp
-	wget http://www.multichain.com/download/multichain-1.0.2.tar.gz
-	tar -xvzf multichain-1.0.2.tar.gz
-	cd multichain-1.0.2
+	wget https://www.multichain.com/download/multichain-2.0-alpha-5.tar.gz
+	tar -xvzf multichain-2.0-alpha-5.tar.gz
+	cd multichain-2.0-alpha-5
 	mv multichaind multichain-cli multichain-util /usr/local/bin
 	cd ~
 fi
@@ -79,17 +103,6 @@ else
 	 mysql -e "FLUSH PRIVILEGES;"
 	 mysql -udrupal -pdrupal multidasher < '/var/www/multidasher/database/db.sql'
 fi
-
-echo ""
-echo "-----------------------------------------------"
-echo "Install certbot 								 "
-echo "-----------------------------------------------"
-echo ""
-if ! grep -q "^deb .*ppa:certbot/certbot" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
-	add-apt-repository ppa:certbot/certbot
-	apt-get update
-fi
-apt-get install -qy python-certbot-nginx
 
 echo ""
 echo "-----------------------------------------------"
@@ -139,12 +152,6 @@ ufw allow in 443/tcp comment "https: for certbot"
 ufw allow 'Nginx HTTP'
 ufw enable
 ufw status
-
-if grep -Fxq "127.0.0.1	frogchain.multidasher.com" /etc/hosts ; then
-    echo "site already exists."
-else
-	echo '127.0.0.1	frogchain.multidasher.com' >> /etc/hosts
-fi
 
 ln -s /var/www/multidasher/config/multidasher.cloud.nginx /etc/sites-enabled/
 service nginx restart

@@ -1,6 +1,39 @@
 server {
-    server_name multidasher.local.com;
+  listen 80;
+  listen [::]:80;
+  server_name www.frogchain.multidasher.org;
+
+  access_log /var/log/multidasher/nginx.access.log;
+  error_log  /var/log/multidasher/nginx.error.log;
+
+  location / {
+      rewrite ^ https://frogchain.multidasher.org$request_uri? permanent;
+   }
+}
+
+server {
+  listen 80;
+  listen [::]:80;
+  server_name frogchain.multidasher.org;
+
+  access_log /var/log/multidasher/nginx.access.log;
+  error_log  /var/log/multidasher/nginx.error.log;
+
+  location / {
+    rewrite ^ https://$host$request_uri? permanent;
+  }
+}
+
+server {
+    server_name frogchain.multidasher.org;
     root /var/www/multidasher/drupal/web; ## <-- Your only path reference.
+
+    listen 443 ssl http2 default_server;
+    listen [::]:443 ssl http2 default_server;
+
+    #ssl_certificate /etc/letsencrypt/live/frogchain.multidasher.org/fullchain.pem;
+    #ssl_certificate_key /etc/letsencrypt/live/frogchain.multidasher.org/privkey.pem;
+    #ssl_trusted_certificate /etc/letsencrypt/live/frogchain.multidasher.org/fullchain.pem;
 
     location = /favicon.ico {
         log_not_found off;
@@ -71,21 +104,8 @@ server {
     # pattern with front controllers other than update.php in a future
     # release.
     location ~ '\.php$|^/update.php' {
-        fastcgi_split_path_info ^(.+?\.php)(|/.*)$;
-        # Security note: If you're running a version of PHP older than the
-        # latest 5.3, you should have "cgi.fix_pathinfo = 0;" in php.ini.
-        # See http://serverfault.com/q/627903/94922 for details.
-        include fastcgi_params;
-        # Block httpoxy attacks. See https://httpoxy.org/.
-        fastcgi_param HTTP_PROXY "";
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_param PATH_INFO $fastcgi_path_info;
-        fastcgi_param QUERY_STRING $query_string;
-        fastcgi_intercept_errors on;
-        # PHP 5 socket location.
-        #fastcgi_pass unix:/var/run/php5-fpm.sock;
-        # PHP 7 socket location.
-        fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+      include snippets/fastcgi-php.conf;
+      fastcgi_pass unix:/run/php/php7.2-fpm.sock;
     }
 
     # Fighting with Styles? This little gem is amazing.
@@ -105,4 +125,16 @@ server {
         expires max;
         log_not_found off;
     }
+
+}
+
+
+server {
+  listen 443 ssl http2;
+  listen [::]:443 ssl http2;
+  server_name www.frogchain.multidasher.org;
+
+  location / {
+    return 301 https://frogchain.multidasher.org$request_uri;
+  }
 }

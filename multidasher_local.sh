@@ -41,9 +41,9 @@ if test -x /usr/local/bin/multichaind ; then
 	echo "MultiChain already installed"
 else
 	cd /tmp
-	wget http://www.multichain.com/download/multichain-1.0.2.tar.gz
-	tar -xvzf multichain-1.0.2.tar.gz
-	cd multichain-1.0.2
+	wget https://www.multichain.com/download/multichain-2.0-alpha-5.tar.gz
+	tar -xvzf multichain-2.0-alpha-5.tar.gz
+	cd multichain-2.0-alpha-5
 	mv multichaind multichain-cli multichain-util /usr/local/bin
 	cd ~
 fi

@@ -27,6 +27,7 @@ echo ""
 if ! which nginx > /dev/null 2>&1; then
     echo "Nginx not installed -- installing"
     apt-get -qy install nginx
+    mkdir /var/log/multidasher
 else
 	echo "Nginx installed -- skipping"
     apt-get -qy install nginx
@@ -43,6 +44,18 @@ if grep -Fxq "127.0.0.1	frogchain.multidasher.com" /etc/hosts ; then
 else
 	echo '127.0.0.1	frogchain.multidasher.com' >> /etc/hosts
 fi
+echo "$config_directories['sync'] = '../config/sync';
+$settings['hash_salt'] = '3r0PBfdcAFRH9SsWAAEDWb6ZIscdRx1nmrCMUiwQX3qUtcYjYHDtIS075D1qZIVyF55MQJ9QLQ';
+$databases['default']['default'] = array (
+  'database' => 'multidasher',
+  'username' => 'drupal',
+  'password' => 'drupal',
+  'prefix' => '',
+  'host' => 'localhost',
+  'port' => '3306',
+  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+  'driver' => 'mysql',
+);" >> /var/www/multidasher/drupal/web/sites/default/settings.php
 
 echo ""
 echo "-----------------------------------------------"
@@ -52,9 +65,9 @@ echo ""
 if ! grep -q "^deb .*ppa:certbot/certbot" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
 	add-apt-repository ppa:certbot/certbot
 	apt-get update
+	apt-get install -qy python-certbot-nginx
+	sudo certbot --nginx -d frogchain.multidasher.org -d www.frogchain.multidasher.org
 fi
-apt-get install -qy python-certbot-nginx
-sudo certbot --nginx -d frogchain.multidasher.org -d www.frogchain.multidasher.org
 
 echo ""
 echo "-----------------------------------------------------------------"
@@ -119,8 +132,18 @@ else
 	sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 fi
 
-cd /var/www/multidasher
-php composer install
+echo ""
+echo "-----------------------------------------------"
+echo "Install drush     						 "
+echo "-----------------------------------------------"
+echo ""
+
+cd ~
+wget -O drush.phar https://github.com/drush-ops/drush-launcher/releases/download/0.6.0/drush.phar
+chmod +x drush.phar
+sudo mv drush.phar /usr/local/bin/drush
+cd /var/www/multidasher/drupal
+composer install
 
 echo ""
 echo "-----------------------------------------------"

@@ -93,6 +93,7 @@ if type mysql >/dev/null 2>&1 ; then
 	echo "mysql installed"
 else 
 	sudo apt-get -y install mysql-server
+fi
 
 if mysqlshow "multidasher" > /dev/null 2>&1 ; then
 	 echo "Database exists."
@@ -107,37 +108,15 @@ fi
 
 echo ""
 echo "-----------------------------------------------"
-echo "Install multichain     						 "
-echo "-----------------------------------------------"
-echo ""
-# Check whether we need to install MultiChain
-if test -x /usr/local/bin/multichaind ; then
-	echo MultiChain already installed
-else
-	echo ""
-	echo "-----------------------------------------------------------------"
-	echo "Installing MultiChain                                            "
-	echo "-----------------------------------------------------------------"
-	echo ""
-	cd /tmp
-	wget https://www.multichain.com/download/multichain-2.0-alpha-5.tar.gz
-	tar -xvzf multichain-2.0-alpha-5.tar.gz
-	cd multichain-2.0-alpha-5
-	mv multichaind multichain-cli multichain-util /usr/local/bin
-	cd ~
-fi
-
-echo ""
-echo "-----------------------------------------------"
 echo "Install compoesr     						 "
 echo "-----------------------------------------------"
 echo ""
 if composer -v > /dev/null 2>&1 ; then
+	'composer already installed'
+else 
 	cd ~
 	curl -sS https://getcomposer.org/installer -o composer-setup.php
 	sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-else 
-	'composer already installed'
 fi
 
 cd /var/www/multidasher
@@ -154,7 +133,7 @@ ufw allow 'Nginx HTTP'
 ufw enable
 ufw status
 
-ln -s /var/www/multidasher/config/multidasher.cloud.nginx /etc/sites-enabled/
+ln -s /var/www/multidasher/config/multidasher.cloud.nginx /etc/nginx/sites-enabled/
 service nginx restart
 echo 'installation complete, you can now connect to your site on "http://multidasher.local.com"'
 

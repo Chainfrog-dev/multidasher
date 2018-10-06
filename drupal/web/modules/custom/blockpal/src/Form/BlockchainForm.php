@@ -4,17 +4,20 @@ namespace Drupal\blockpal\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Link;
 use Drupal\Core\Url;
-use Drupal\Core\Render\Element;
 use Drupal\node\Entity\Node;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\blockpal\Controller\BlockchainController;
 
+/**
+ *
+ */
 class BlockchainForm extends ConfigFormBase {
-  
-  public function __construct(){
-    $this->multichain = new BlockchainController;
+
+  /**
+   *
+   */
+  public function __construct() {
+    $this->multichain = new BlockchainController();
   }
 
   /**
@@ -29,18 +32,18 @@ class BlockchainForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Default settings.
-
     // Form constructor.
     $form = parent::buildForm($form, $form_state);
     $options = ['absolute' => TRUE];
     $blockchains = $this->loadBlockchainOptions();
 
-    $form['advanced'] = array(
+    $form['advanced'] = [
       '#type' => 'details',
       '#title' => t('Blockchains'),
       '#description' => t('Find all the Blockchains installed on your local machine.'),
-      '#open' => TRUE, // Controls the HTML5 'open' attribute. Defaults to FALSE.
-    );
+    // Controls the HTML5 'open' attribute. Defaults to FALSE.
+      '#open' => TRUE,
+    ];
 
     foreach ($blockchains as $key => $value) {
       $form['advanced'][$key] = [
@@ -52,18 +55,19 @@ class BlockchainForm extends ConfigFormBase {
       ];
     }
 
-    $form['launch_blockchain'] = array(
+    $form['launch_blockchain'] = [
       '#type' => 'details',
       '#title' => t('Blockchains'),
       '#description' => t('Launch a new blockchain!'),
-      '#open' => TRUE, // Controls the HTML5 'open' attribute. Defaults to FALSE.
-    );
+    // Controls the HTML5 'open' attribute. Defaults to FALSE.
+      '#open' => TRUE,
+    ];
 
     // Page title field.
-    $form['launch_blockchain']['blockchain_name'] = array(
+    $form['launch_blockchain']['blockchain_name'] = [
       '#type' => 'textfield',
       '#description' => $this->t('Choose the name of your new blockchain.'),
-    );
+    ];
 
     // $form['launch_blockchain']['action'] = [
     //   '#title' => $this->t('Launch blockchain'),
@@ -71,8 +75,7 @@ class BlockchainForm extends ConfigFormBase {
     //   '#url' => Url::fromRoute('blockchain.launch-blockchain', ['blockchain' => $form_state->getValue('blockchain_name')], $options),
     //   '#prefix' => '<br>',
     //   '#suffix' => '<br>',
-    // ];
-
+    // ];.
     return $form;
   }
 
@@ -83,14 +86,18 @@ class BlockchainForm extends ConfigFormBase {
 
   }
 
+  /**
+   *
+   */
   public function loadNode($blockchain_id) {
     $nodes = \Drupal::entityTypeManager()
-    ->getStorage('node')
-    ->loadByProperties(['field_blockchain_id' => $blockchain_id]);
+      ->getStorage('node')
+      ->loadByProperties(['field_blockchain_id' => $blockchain_id]);
 
     if ($node = reset($nodes)) {
       return $node->id();
-    }else{
+    }
+    else {
       $node = Node::create(['type' => 'blockchain']);
       $node->set('title', t($blockchain_id));
       $node->set('field_blockchain_id', t($blockchain_id));
@@ -125,10 +132,13 @@ class BlockchainForm extends ConfigFormBase {
     ];
   }
 
+  /**
+   *
+   */
   protected function loadBlockchainOptions() {
     $directory = '/var/www/.multichain';
-    $scanned_directory = array_diff(scandir($directory), array('..', '.','.cli_history','multichain.conf'));
-    $nids = array();
+    $scanned_directory = array_diff(scandir($directory), ['..', '.', '.cli_history', 'multichain.conf']);
+    $nids = [];
     foreach ($scanned_directory as $key => $value) {
       $nids[$value] = $this->loadNode($value);
     }

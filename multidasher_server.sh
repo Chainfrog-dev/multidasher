@@ -129,38 +129,26 @@ fi
 cd /var/www/multidasher
 php composer install
 
-# not needed on local install
-# echo ""
-# echo "-----------------------------------------------"
-# echo "Configure firewall     						 "
-# echo "-----------------------------------------------"
-# echo ""
-# ufw allow OpenSSH
-# ufw allow in 443/tcp comment "https: for certbot"
-# ufw allow 'Nginx HTTP'
-# ufw enable
-# ufw status
+echo ""
+echo "-----------------------------------------------"
+echo "Configure firewall     						 "
+echo "-----------------------------------------------"
+echo ""
+ufw allow OpenSSH
+ufw allow in 443/tcp comment "https: for certbot"
+ufw allow 'Nginx HTTP'
+ufw enable
+ufw status
 
-if grep -Fxq "127.0.0.1	multidasher.local.com" /etc/hosts ; then
+if grep -Fxq "127.0.0.1	frogchain.multidasher.com" /etc/hosts ; then
     echo "site already exists."
 else
-	echo '127.0.0.1	multidasher.local.com' >> /etc/hosts
+	echo '127.0.0.1	frogchain.multidasher.com' >> /etc/hosts
 fi
 
-ln -s /var/www/multidasher/config/multichain.local.nginx /etc/sites-enabled/
+ln -s /var/www/multidasher/config/multidasher.cloud.nginx /etc/sites-enabled/
 service nginx restart
 echo 'installation complete, you can now connect to your site on "http://multidasher.local.com"'
-# echo ""
-# echo "-----------------------------------------------"
-# echo "Installing nodejs     						 "
-# echo "-----------------------------------------------"
-# echo ""
-# curl -sL https://deb.nodesource.com/setup_10.x | bash - 
-# apt-get -qy install nodejs
-
-# echo "Linking /usr/bin/nodejs to usr/bin/node" 
-# ln -s /usr/bin/nodejs /usr/bin/node
-# apt-get -qy install libtool pkg-config build-essential autoconf automake
 
 echo ""
 echo "-----------------------------------------------"

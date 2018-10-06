@@ -5,10 +5,9 @@
  * Contains blockpal.module.
  */
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Form\FormStateInterface;
-Use Drupal\Core\Routing;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\blockpal\Controller\BlockchainController;
 use Drupal\node\Entity\Node;
 
@@ -23,6 +22,7 @@ function blockpal_help($route_name, RouteMatchInterface $route_match) {
       $output .= '<h3>' . t('About') . '</h3>';
       $output .= '<p>' . t('Multichain integration for Drupal') . '</p>';
       return $output;
+
     default:
   }
 }
@@ -33,145 +33,150 @@ function blockpal_help($route_name, RouteMatchInterface $route_match) {
 function blockpal_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Adding custom validation for the welcome page type field.
   if ($form_id == 'node_blockchain_asset_form') {
-	$blockchain = \Drupal::request()->query->get('field_asset_blockchain_ref');
-  	if($blockchain){
-    	// Do some stuff.
-		$form['field_asset_blockchain_ref']['widget']['#default_value'][0] = $blockchain;
-	}
+    $blockchain = \Drupal::request()->query->get('field_asset_blockchain_ref');
+    if ($blockchain) {
+      // Do some stuff.
+      $form['field_asset_blockchain_ref']['widget']['#default_value'][0] = $blockchain;
+    }
   }
 }
 
-function blockpal_node_update(Drupal\Core\Entity\EntityInterface $entity) {
-	// drupal_set_message($entity->bundle());
-	// if($entity->bundle() == 'blockchain_asset') {
-	// 	$node = Node::load($entity->id());
-	// 	$multichain =  new BlockchainController;
-	// 	$asset_name = $node->field_asset_name->getString();
-	// 	$asset_quantity = $node->field_asset_quantity->getString();
-	// 	$asset_open = $node->field_asset_open->getString();
-	// 	$description = $node->field_asset_description->getString();
-	// 	$command = 'issue';
-	// 	$address_node = Node::load($node->field_asset_issue_address->getString());
-	// 	$address = $address_node->field_wallet_address->getString();
-	// 	$blockchain_node = Node::load($node->field_asset_blockchain_ref->getString());
-	// 	$blockchain = $blockchain_node->field_blockchain_id->getString();
-	// 	$parameters[0] = $address;
-	// 	$parameters[1] = json_encode(array(
-	//       'name' => $asset_name,
-	//       'open' => $asset_open,
-	//     ));
-	// 	$parameters[2] = +$asset_quantity;
-	// 	$response = $multichain->executeRequest($blockchain, $command, $parameters);
-	// 	drupal_set_message('Congratulations, you have issued '.$asset_quantity.' '.$asset_name.' to '.$address);
-	// }
+/**
+ *
+ */
+function blockpal_node_update(EntityInterface $entity) {
+  // drupal_set_message($entity->bundle());
+  // if($entity->bundle() == 'blockchain_asset') {
+  //     $node = Node::load($entity->id());
+  //     $multichain =  new BlockchainController;
+  //     $asset_name = $node->field_asset_name->getString();
+  //     $asset_quantity = $node->field_asset_quantity->getString();
+  //     $asset_open = $node->field_asset_open->getString();
+  //     $description = $node->field_asset_description->getString();
+  //     $command = 'issue';
+  //     $address_node = Node::load($node->field_asset_issue_address->getString());
+  //     $address = $address_node->field_wallet_address->getString();
+  //     $blockchain_node = Node::load($node->field_asset_blockchain_ref->getString());
+  //     $blockchain = $blockchain_node->field_blockchain_id->getString();
+  //     $parameters[0] = $address;
+  //     $parameters[1] = json_encode(array(
+  //       'name' => $asset_name,
+  //       'open' => $asset_open,
+  //     ));
+  //     $parameters[2] = +$asset_quantity;
+  //     $response = $multichain->executeRequest($blockchain, $command, $parameters);
+  //     drupal_set_message('Congratulations, you have issued '.$asset_quantity.' '.$asset_name.' to '.$address);
+  // }.
+  if ($entity->bundle() == 'blockchain_wallet') {
+    $node = Node::load($entity->id());
+    $multichain = new BlockchainController();
 
-	if($entity->bundle() == 'blockchain_wallet') {
-		$node = Node::load($entity->id());
-		$multichain =  new BlockchainController;
+    foreach ($node->field_wallet_blockchain_ref as $item) {
+      if ($item->entity) {
+        $blockchain = $item->entity->label();
+      }
+    }
 
-		foreach ($node->field_wallet_blockchain_ref as $item) {
-		  if ($item->entity) {
-		    $blockchain = $item->entity->label();
-		  }
-		}
+    $address = $node->field_wallet_address->getString();
 
-		$address = $node->field_wallet_address->getString();
+    $permissions_master_string = "activate,admin,connect,create,issue,mine,receive,send";
+    $permissions_master = explode(',', $permissions_master_string);
+    $permissions = $node->field_wallet_permissions->referencedEntities();
+    $permissions_list = [];
+    foreach ($permissions as $key => $value) {
+      $permissions_list[$key] = $value->getName();
+    }
 
-	    $permissions_master_string = "activate,admin,connect,create,issue,mine,receive,send";
-	    $permissions_master = explode(',', $permissions_master_string);
-	    $permissions = $node->field_wallet_permissions->referencedEntities();
-	    $permissions_list = [];
-	    foreach ($permissions as $key => $value) {
-	    	$permissions_list[$key] = $value->getName();
-	    }
+    // Grant permissions to wallet.
+    $grant = implode(',', $permissions_list);
+    $grant_command = 'grant';
+    $grant_parameters[0] = $address;
+    $grant_parameters[1] = $grant;
+    $grant_response = $multichain->executeRequest($blockchain, $grant_command, $grant_parameters);
 
-	    // Grant permissions to wallet
-	    $grant = implode(',', $permissions_list);
-	    $grant_command = 'grant';
-		$grant_parameters[0] = $address;
-		$grant_parameters[1] = $grant;
-	    $grant_response = $multichain->executeRequest($blockchain, $grant_command, $grant_parameters);
-
-	    // Revoke permissions from wallet
-	    $revoke_array = array_diff($permissions_master,$permissions_list);
-  	    $revoke = implode(',', $revoke_array);
-	    $revoke_command = 'revoke';
-		$revoke_parameters[0] = $address;
-		$revoke_parameters[1] = $revoke;
-		ksm($revoke);
-		if($revoke){
-	    	$revoke_response = $multichain->executeRequest($blockchain, $revoke_command, $revoke_parameters);
-  	   	    ksm($revoke_response);
-		}
-	}
+    // Revoke permissions from wallet.
+    $revoke_array = array_diff($permissions_master, $permissions_list);
+    $revoke = implode(',', $revoke_array);
+    $revoke_command = 'revoke';
+    $revoke_parameters[0] = $address;
+    $revoke_parameters[1] = $revoke;
+    ksm($revoke);
+    if ($revoke) {
+      $revoke_response = $multichain->executeRequest($blockchain, $revoke_command, $revoke_parameters);
+      ksm($revoke_response);
+    }
+  }
 
 }
 
-function blockpal_node_insert(Drupal\Core\Entity\EntityInterface $entity) {
+/**
+ *
+ */
+function blockpal_node_insert(EntityInterface $entity) {
 
-	if($entity->bundle() == 'blockchain_asset') {
-		$node = Node::load($entity->id());
-		$multichain =  new BlockchainController;
-		$asset_name = $node->field_asset_name->getString();
-		$asset_quantity = $node->field_asset_quantity->getString();
-		$asset_open = $node->field_asset_open->getString();
-		$description = $node->field_asset_description->getString();
-		$command = 'issue';
-		$address_node = Node::load($node->field_asset_issue_address->getString());
-		$address = $address_node->field_wallet_address->getString();
-		$blockchain_node = Node::load($node->field_asset_blockchain_ref->getString());
-		$blockchain = $blockchain_node->field_blockchain_id->getString();
-		$parameters[0] = $address;
-		$parameters[1] = json_encode(array(
-	      'name' => $asset_name,
-	      'open' => $asset_open,
-	    ));
-		$parameters[2] = +$asset_quantity;
-		$response = $multichain->executeRequest($blockchain, $command, $parameters);
-		drupal_set_message('Congratulations, you have issued '.$asset_quantity.' '.$asset_name.' to '.$address);
-	}
+  if ($entity->bundle() == 'blockchain_asset') {
+    $node = Node::load($entity->id());
+    $multichain = new BlockchainController();
+    $asset_name = $node->field_asset_name->getString();
+    $asset_quantity = $node->field_asset_quantity->getString();
+    $asset_open = $node->field_asset_open->getString();
+    $description = $node->field_asset_description->getString();
+    $command = 'issue';
+    $address_node = Node::load($node->field_asset_issue_address->getString());
+    $address = $address_node->field_wallet_address->getString();
+    $blockchain_node = Node::load($node->field_asset_blockchain_ref->getString());
+    $blockchain = $blockchain_node->field_blockchain_id->getString();
+    $parameters[0] = $address;
+    $parameters[1] = json_encode([
+      'name' => $asset_name,
+      'open' => $asset_open,
+    ]);
+    $parameters[2] = +$asset_quantity;
+    $response = $multichain->executeRequest($blockchain, $command, $parameters);
+    drupal_set_message('Congratulations, you have issued ' . $asset_quantity . ' ' . $asset_name . ' to ' . $address);
+  }
 
-	if($entity->bundle() == 'blockchain_wallet') {
-		$node = Node::load($entity->id());
+  if ($entity->bundle() == 'blockchain_wallet') {
+    $node = Node::load($entity->id());
 
-		foreach ($node->field_wallet_blockchain_ref as $item) {
-		  if ($item->entity) {
-		    $blockchain = $item->entity->label();
-		  }
-		}
+    foreach ($node->field_wallet_blockchain_ref as $item) {
+      if ($item->entity) {
+        $blockchain = $item->entity->label();
+      }
+    }
 
-		$command = 'getnewaddress';
-		$multichain =  new BlockchainController;
-		$response = $multichain->executeRequest($blockchain, $command, []);
-		$node->field_wallet_ismine->setValue(TRUE);
-	    $address = $response['result'];
-	    $node->field_wallet_address->setValue($address);
-	    $node->title->setValue($address);
+    $command = 'getnewaddress';
+    $multichain = new BlockchainController();
+    $response = $multichain->executeRequest($blockchain, $command, []);
+    $node->field_wallet_ismine->setValue(TRUE);
+    $address = $response['result'];
+    $node->field_wallet_address->setValue($address);
+    $node->title->setValue($address);
 
-	    $permissions_master_string = "activate,admin,connect,create,issue,mine,receive,send";
-	    $permissions_master = explode(',', $permissions_master_string);
-	    $permissions = $node->field_wallet_permissions->referencedEntities();
-	    $permissions_list = [];
+    $permissions_master_string = "activate,admin,connect,create,issue,mine,receive,send";
+    $permissions_master = explode(',', $permissions_master_string);
+    $permissions = $node->field_wallet_permissions->referencedEntities();
+    $permissions_list = [];
 
-	    foreach ($permissions as $key => $value) {
-	    	$permissions_list[$key] = $value->getName();
-	    }
+    foreach ($permissions as $key => $value) {
+      $permissions_list[$key] = $value->getName();
+    }
 
-	    // Grant permissions to wallet
-	    $grant = implode(',', $permissions_list);
-	    $command = 'grant';
-		$parameters[0] = $address;
-		$parameters[1] = $grant;
-	    $response = $multichain->executeRequest($blockchain, $command, $parameters);
+    // Grant permissions to wallet.
+    $grant = implode(',', $permissions_list);
+    $command = 'grant';
+    $parameters[0] = $address;
+    $parameters[1] = $grant;
+    $response = $multichain->executeRequest($blockchain, $command, $parameters);
 
-	    // Revoke permissions from wallet
-	    $revoke_array = array_diff($permissions_list,$permissions_master);
-  	    $revoke = implode(',', $revoke_array);
-	    $command = 'revoke';
-		$parameters[0] = $address;
-		$parameters[1] = $revoke;
-	    $response = $multichain->executeRequest($blockchain, $command, $parameters);
+    // Revoke permissions from wallet.
+    $revoke_array = array_diff($permissions_list, $permissions_master);
+    $revoke = implode(',', $revoke_array);
+    $command = 'revoke';
+    $parameters[0] = $address;
+    $parameters[1] = $revoke;
+    $response = $multichain->executeRequest($blockchain, $command, $parameters);
 
-	    $node->save();
-	}
+    $node->save();
+  }
 }

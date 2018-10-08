@@ -365,7 +365,7 @@ class BlockchainController extends ControllerBase {
     return $result;
   }
 
-  private function retrieveWalletAddress(String $blockchain) {
+  public function retrieveWalletAddress(String $blockchain) {
     $wallet_address = null;
     drupal_set_message('retrieveWalletAddress');
     $file = '/var/www/multidasher/' . $blockchain . '.log';

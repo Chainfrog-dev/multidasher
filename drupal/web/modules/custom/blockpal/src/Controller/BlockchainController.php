@@ -370,7 +370,7 @@ class BlockchainController extends ControllerBase {
       while (!feof($fh)) {
         $line = fgets($fh);
         if (strpos($line, 'Minimal blockchain parameter set is created, default address: ') !== FALSE) {
-          $user = preg_replace('/\s+/', '', subscr($line, -38));
+          $wallet_address = preg_replace('/\s+/', '', subscr($line, -38));
         }
       fclose($fh);
       }

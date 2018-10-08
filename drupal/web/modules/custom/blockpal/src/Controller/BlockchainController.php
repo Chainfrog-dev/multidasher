@@ -29,7 +29,6 @@ class BlockchainController extends ControllerBase {
   }
 
   public function connectMultichainIp(String $port, String $ip, String $name) {
-    
     $result = system('multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain" > /var/www/multidasher/'.$name.'.log 2>&1 &', $status);
     $wallet = $this->retrieveWalletAddress($name);
     drupal_set_message($wallet);
@@ -369,19 +368,24 @@ class BlockchainController extends ControllerBase {
 
   private function retrieveWalletAddress(String $blockchain) {
     $wallet_address = null;
+    drupal_set_message('retrieveWalletAddress');
     $file = '/var/www/multidasher/' . $blockchain . '.log';
-    if ($fh = fopen($directory, 'r')) {
+    drupal_set_message('/var/www/multidasher/' . $blockchain . '.log');
+    if ($fh = fopen($file, 'r')) {
       while (!feof($fh)) {
         $line = fgets($fh);
+        drupal_set_message($line);
         if (strpos($line, 'multichain-cli') !== FALSE) {
           $array = explode(" ", $line);
+          drupal_set_message($array[3]);
+
           $wallet_address = $array[3];
         }
-      fclose($fh);
       }
-    drupal_set_message($wallet_address);
-    return $wallet_address;
+      fclose($fh);
     }
+    drupal_set_message('retrieveWalletAddress RESULT: '.$wallet_address);
+    return $wallet_address;
   }
 
   /**

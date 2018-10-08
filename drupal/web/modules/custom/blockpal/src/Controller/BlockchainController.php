@@ -367,6 +367,7 @@ class BlockchainController extends ControllerBase {
   }
 
   private function retrieveWalletAddress(String $blockchain) {
+    $wallet_address = null;
     drupal_set_message('retrieveWalletAddress');
     $file = '/var/www/multidasher/' . $blockchain . '.log';
     drupal_set_message('/var/www/multidasher/' . $blockchain . '.log');
@@ -374,7 +375,10 @@ class BlockchainController extends ControllerBase {
       while (!feof($fh)) {
         $line = fgets($fh);
         if (strpos($line, 'multichain-cli') !== FALSE) {
+          drupal_set_message($line);
           $array = explode(" ", $line);
+          drupal_set_message($array[3]);
+
           $wallet_address = $array[3];
         }
       }

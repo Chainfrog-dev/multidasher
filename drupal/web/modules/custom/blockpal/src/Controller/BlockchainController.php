@@ -30,8 +30,8 @@ class BlockchainController extends ControllerBase {
 
   public function connectMultichainIp(String $port, String $ip, String $name) {
     drupal_set_message('multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain"');
-    $result = system('multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain"', $status);
-    // multichaind edtest@207.154.216.254:2893 -datadir="/var/www/.multichain" > /var/www/.multichain/edtest/debug.log 
+    $result = system('multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain" > /var/www/multidasher/'.$name.'.log' 2>&1 &, $status);
+    // multichaind edtest@207.154.216.254:2893 -datadir="/var/www/.multichain" > ./debug.log 2>&1 & 
     $wallet = $this->retrieveWalletAddress($name);
     return $wallet;
   }
@@ -365,9 +365,9 @@ class BlockchainController extends ControllerBase {
   }
 
   private function retrieveWalletAddress(String $blockchain) {
-    $directory = '/var/www/.multichain/' . $blockchain . '/';
-
-    if ($fh = fopen($directory . 'debug.log', 'r')) {
+    $wallet_address = null;
+    $file = '/var/www/multidasher/' . $blockchain . '.log';
+    if ($fh = fopen($directory, 'r')) {
       while (!feof($fh)) {
         $line = fgets($fh);
         if (strpos($line, 'Minimal blockchain parameter set is created, default address: ') !== FALSE) {

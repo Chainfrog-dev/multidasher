@@ -27,13 +27,22 @@ read -p 'If you have setup a domain redirected to this ip address, enter it here
 if [ -z $domain ] ; then
 	echo "don't currently support non-domain installations EXITING..."
 	exit 1
-	else 
-		echo "works"
-
 fi
 read -p 'Select a NEW user to be configured in mysql: ' uservar
+if [ -z $uservar ] ; then
+	echo "mysql user is required, exiting..."
+	exit 1
+fi
 read -sp 'Select a password to be configured for user in mysql: ' passvar
+if [ -z $passvar ] ; then
+	echo "mysql password is required, exiting..."
+	exit 1
+fi
 read -sp 'Select a password for user admin in drupal: ' drupalpassword
+if [ -z $drupalpassword ] ; then
+	echo "drupal password is required, exiting..."
+	exit 1
+fi
 
 echo ""
 echo "------------------------------------------------"

@@ -8,7 +8,7 @@ MultiDasher is developed, tested and designed to be run on Ubuntu 18.04.
 
 ## Getting Started
 
-The following instructions should have you up and running with MultiDasher on your Ubuntu 18.04 machine within minutes.
+The following instructions should have you up and running with MultiDasher on an Ubuntu 18.04 machine within minutes.
 
 If you want to play around with the system, as enabling a MultiDasher instance to connect out through personal firewalls and ensuring IP routing is conducted correctly requires some networking knowledg, we recommend either using a cloud instance of Ubuntu, or running a virtual box on your machine.
 

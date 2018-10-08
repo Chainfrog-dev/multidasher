@@ -8,81 +8,81 @@
 # DO: ssh root@YOURIP
 
 if [ -z $BASH_VERSION ] ; then
-	echo "You must run this script using bash." 1>&2
+	echo -e "You must run this script using bash." 1>&2
 	exit 1
 fi
 
 # Make sure we are running as root
 if [[ $EUID -ne 0 ]]; then
-	echo "This script must be run as root." 1>&2
+	echo -e "This script must be run as root." 1>&2
 	exit 1
 fi
 
-echo "IMPORTANT: You must make sure that your cloud instance allows incoming HTTP AND \nHTTPS (80/443) traffic. This is a default in some cloud providers, but not in \nothers (for example AWS)."
-echo "IMPORTANT: We highly recommend you assign a domain name, e.g. YOURSITE.com. You \nmust edit the DNS settings (A record) to point to the IP address of your cloud \ninstance."
-echo "IMPORTANT: Certbot will prompt you for an email. You must provide one."
-echo "IMPORTANT: When Certbot prompts you for DNS settings, choose [1], no redirect."
-echo "\n"
+echo -e "IMPORTANT: You must make sure that your cloud instance allows incoming HTTP AND \nHTTPS (80/443) traffic. This is a default in some cloud providers, but not in \nothers (for example AWS)."
+echo -e "IMPORTANT: We highly recommend you assign a domain name, e.g. YOURSITE.com. You \nmust edit the DNS settings (A record) to point to the IP address of your cloud \ninstance."
+echo -e "IMPORTANT: Certbot will prompt you for an email. You must provide one."
+echo -e "IMPORTANT: When Certbot prompts you for DNS settings, choose [1], no redirect."
+echo -e "\n"
 
 read -p 'If you have setup a domain redirected to this IP address, enter it here \n(e.g. panel.multidasher.org), or [enter] to not setup a domain and exit \n=> ' domain
 if [ -z $domain ] ; then
-	echo "Non-domain installations not supported. Exiting..."
+	echo -e "Non-domain installations not supported. Exiting..."
 	exit 1
 fi
 read -p '\nSelect a NEW user to be configured in MySQL: ' uservar
 if [ -z $uservar ] ; then
-	echo "MySQL user is required. Exiting..."
+	echo -e "MySQL user is required. Exiting..."
 	exit 1
 fi
 read -sp 'Select a password to be configured for user in MySQL: ' passvar
 if [ -z $passvar ] ; then
-	echo "MySQL password is required. Exiting..."
+	echo -e "MySQL password is required. Exiting..."
 	exit 1
 fi
 read -sp '\nSelect a password for user admin in Drupal: ' drupalpassword
 if [ -z $drupalpassword ] ; then
-	echo "Drupal password is required. Exiting..."
+	echo -e "Drupal password is required. Exiting..."
 	exit 1
 fi
 
-echo ""
-echo "------------------------------------------------"
-echo "Fixed locale                                    "
-echo "------------------------------------------------"
-echo ""
+echo -e ""
+echo -e "------------------------------------------------"
+echo -e "Fixed locale                                    "
+echo -e "------------------------------------------------"
+echo -e ""
 export LC_ALL="en_US.UTF-8"
 export LC_CTYPE="en_US.UTF-8"
 dpkg-reconfigure locales
 
-echo ""
-echo "------------------------------------------------"
-echo "Update server                                   "
-echo "------------------------------------------------"
-echo ""
+echo -e ""
+echo -e "------------------------------------------------"
+echo -e "Update server                                   "
+echo -e "------------------------------------------------"
+echo -e ""
 apt-get -y update
 apt-get -y upgrade
 
-echo ""
-echo "-----------------------------------------------"
-echo "Install NGINX 								 "
-echo "-----------------------------------------------"
-echo ""
+echo -e ""
+echo -e "-----------------------------------------------"
+echo -e "Install NGINX 								 "
+echo -e "-----------------------------------------------"
+echo -e ""
 
 if ! which nginx > /dev/null 2>&1; then
-    echo "Nginx not installed -- installing."
+    echo -e "Nginx not installed -- installing."
     apt-get -qy install nginx
     mkdir /var/log/multidasher
     chmod -R 777 /var/www
 else
-	echo "Nginx installed -- skipping."
+	echo -e "Nginx installed -- skipping."
     apt-get -qy install nginx
 fi
 
-echo ""
-echo "-----------------------------------------------"
-echo "Install php && related packages				 "
-echo "-----------------------------------------------"
-echo ""
+echo -e ""
+echo -e "-----------------------------------------------"
+echo -e "Install php && related packages				 "
+echo -e "-----------------------------------------------"
+echo -e ""
 
 if ! grep -q "^deb .*ppa:ondrej/php" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
 	add-apt-repository -y ppa:ondrej/php
@@ -93,18 +93,18 @@ cd /var/www
 git clone https://github.com/Chainfrog-dev/multidasher.git
 
 
-echo ""
-echo "-----------------------------------------------"
-echo "Add site to hosts								 "
-echo "-----------------------------------------------"
-echo ""
+echo -e ""
+echo -e "-----------------------------------------------"
+echo -e "Add site to hosts								 "
+echo -e "-----------------------------------------------"
+echo -e ""
 
-echo '127.0.0.1	'$domain >> /etc/hosts
-echo ""
-echo "-----------------------------------------------"
-echo "Install certbot 								 "
-echo "-----------------------------------------------"
-echo ""
+echo -e '127.0.0.1	'$domain >> /etc/hosts
+echo -e ""
+echo -e "-----------------------------------------------"
+echo -e "Install certbot 								 "
+echo -e "-----------------------------------------------"
+echo -e ""
 ufw allow OpenSSH
 ufw allow in 443/tcp comment "https: for certbot"
 ufw allow 'Nginx HTTP'
@@ -116,13 +116,13 @@ apt-get -y update
 apt-get install -qy python-certbot-nginx
 sudo certbot --nginx -d $domain
 
-echo ""
-echo "-----------------------------------------------"
-echo "Configure settings php						 "
-echo "-----------------------------------------------"
-echo ""
+echo -e ""
+echo -e "-----------------------------------------------"
+echo -e "Configure settings php						 "
+echo -e "-----------------------------------------------"
+echo -e ""
 if [ ! -f /var/www/multidasher/drupal/web/sites/default/settings.php ]; then
-	echo '<?php
+	echo -e '<?php
 	$databases = [];
 	$config_directories = [];
 	$settings["hash_salt"] = "3r0PBfdcAFRH9SsWAAEDWb6ZIscdRx1nmrCMUiwQX3qUtcYjYHDtIS075D1qZIVyF55MQJ9QLQ";
@@ -147,15 +147,15 @@ if [ ! -f /var/www/multidasher/drupal/web/sites/default/settings.php ]; then
 	chmod 644 /var/www/multidasher/drupal/web/sites/default/settings.php
 fi
 
-echo ""
-echo "-----------------------------------------------------------------"
-echo "Installing MultiChain                                            "
-echo "-----------------------------------------------------------------"
-echo ""
+echo -e ""
+echo -e "-----------------------------------------------------------------"
+echo -e "Installing MultiChain                                            "
+echo -e "-----------------------------------------------------------------"
+echo -e ""
 
 # Check whether we need to install MultiChain
 if test -x /usr/local/bin/multichaind ; then
-	echo "MultiChain already installed"
+	echo -e "MultiChain already installed"
 else
 	cd /tmp
 	wget https://www.multichain.com/download/multichain-2.0-alpha-5.tar.gz
@@ -168,22 +168,22 @@ else
 	cd ~
 fi
 
-echo ""
-echo "-----------------------------------------------"
-echo "Install MySQL database							 "
-echo "-----------------------------------------------"
-echo ""
+echo -e ""
+echo -e "-----------------------------------------------"
+echo -e "Install MySQL database							 "
+echo -e "-----------------------------------------------"
+echo -e ""
 
 if type mysql >/dev/null 2>&1 ; then
-	echo "MySQL installed"
+	echo -e "MySQL installed"
 else 
 	sudo apt-get -y install mysql-server
 fi
 
 if mysqlshow "multidasher" > /dev/null 2>&1 ; then
-	 echo "Database exists."
+	 echo -e "Database exists."
 else
-	 echo "Database doesn't exist. Importing..."
+	 echo -e "Database doesn't exist. Importing..."
      mysql -e "CREATE DATABASE multidasher /*\!40100 DEFAULT CHARACTER SET utf8 */;"
 	 mysql -e "CREATE USER "$uservar"@localhost IDENTIFIED BY '"$passvar"';"
 	 mysql -e "GRANT ALL PRIVILEGES ON multidasher.* TO '"$uservar"'@'localhost';"
@@ -191,11 +191,11 @@ else
 	 mysql -u $uservar -p${passvar} multidasher < '/var/www/multidasher/example-database/startup-db.sql'
 fi
 
-echo ""
-echo "-----------------------------------------------"
-echo "Install Composer     						 "
-echo "-----------------------------------------------"
-echo ""
+echo -e ""
+echo -e "-----------------------------------------------"
+echo -e "Install Composer     						 "
+echo -e "-----------------------------------------------"
+echo -e ""
 
 if composer -v > /dev/null 2>&1 ; then
 	'composer already installed'
@@ -205,11 +205,11 @@ else
 	php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 fi
 
-echo ""
-echo "-----------------------------------------------"
-echo "Install Drush     						 "
-echo "-----------------------------------------------"
-echo ""
+echo -e ""
+echo -e "-----------------------------------------------"
+echo -e "Install Drush     						 "
+echo -e "-----------------------------------------------"
+echo -e ""
 
 cd ~
 wget -O drush.phar https://github.com/drush-ops/drush-launcher/releases/download/0.6.0/drush.phar
@@ -226,9 +226,9 @@ rm /etc/nginx/sites-enabled/default
 
 service nginx restart
 
-echo ""
-echo "-----------------------------------------------"
-echo "Done       						             "
-echo "-----------------------------------------------"
-echo ""
-echo 'Installation complete. You can now connect to your site on: '$domain
+echo -e ""
+echo -e "-----------------------------------------------"
+echo -e "Done       						             "
+echo -e "-----------------------------------------------"
+echo -e ""
+echo -e 'Installation complete. You can now connect to your site on: '$domain

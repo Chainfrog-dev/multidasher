@@ -106,7 +106,7 @@ class BlockchainFormFindpeer extends ConfigFormBase {
       $this->createLoadNode($name);
       $this->updateAddresses($name);
       parent::submitForm($form, $form_state);
-      drupal_set_message('you have connected to the blockchain')
+      drupal_set_message('you have connected to the blockchain');
       $this->config('blockchain.settings')
       ->reset();
     }

@@ -386,6 +386,25 @@ class BlockchainController extends ControllerBase {
       fclose($fh);
     }
     drupal_set_message('retrieveWalletAddress RESULT: '.$wallet_address);
+    $directory = '/var/www/.multichain/' . $blockchain . '/';
+
+    if ($fh = fopen($directory . 'params.dat', 'r')) {
+      while (!feof($fh)) {
+        $line = fgets($fh);
+        if (strpos($line, 'default-rpc-port =') !== FALSE) {
+          $port = substr(str_replace('default-rpc-port = ', '', $line), 0, 4);
+          $url = 'http://localhost:' . $port;
+        }
+      }
+      fclose($fh);
+    }
+
+    $result['port'] = $port;
+    $result['url'] = $url;
+    drupal_set_message('retrieveWalletAddress RESULT: '.$port);
+    drupal_set_message('retrieveWalletAddress RESULT: '.$url);
+
+
     return $wallet_address;
   }
 

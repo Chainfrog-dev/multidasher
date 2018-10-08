@@ -107,28 +107,28 @@ echo "Configure settings php						 "
 echo "-----------------------------------------------"
 echo ""
 if [ ! -f /var/www/multidasher/drupal/web/sites/default/settings.php ]; then
-	echo "
+	echo '<?php
 	$databases = [];
 	$config_directories = [];
-	$settings['hash_salt'] = '3r0PBfdcAFRH9SsWAAEDWb6ZIscdRx1nmrCMUiwQX3qUtcYjYHDtIS075D1qZIVyF55MQJ9QLQ';
-	$settings['update_free_access'] = FALSE;
-	$settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
-	$settings['file_scan_ignore_directories'] = [
-	  'node_modules',
-	  'bower_components',
+	$settings["hash_salt"] = "3r0PBfdcAFRH9SsWAAEDWb6ZIscdRx1nmrCMUiwQX3qUtcYjYHDtIS075D1qZIVyF55MQJ9QLQ";
+	$settings["update_free_access"] = FALSE;
+	$settings["container_yamls"][] = $app_root . "/" . $site_path . "/services.yml";
+	$settings["file_scan_ignore_directories"] = [
+	  "node_modules",
+	  "bower_components",
 	];
-	$settings['entity_update_batch_size'] = 50;
-	$config_directories['sync'] = '../config/sync';
-	$databases['default']['default'] = array (
-	  'database' => 'multidasher',
-	  'username' => '"$uservar"',
-	  'password' => '"$passvar"',
-	  'prefix' => '',
-	  'host' => 'localhost',
-	  'port' => '3306',
-	  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
-	  'driver' => 'mysql',
-	);" >> /var/www/multidasher/drupal/web/sites/default/settings.php
+	$settings["entity_update_batch_size"] = 50;
+	$config_directories["sync"] = "../config/sync";
+	$databases["default"]["default"] = array (
+	  "database" => "multidasher",
+	  "username" => "'$uservar'", 
+	  "password" => "'$passvar'",
+	  "prefix" => "",
+	  "host" => "localhost",
+	  "port" => "3306",
+	  "namespace" => "Drupal\\Core\\Database\\Driver\\mysql",
+	  "driver" => "mysql",
+	);' >> /var/www/multidasher/drupal/web/sites/default/settings.php
 	chmod 644 /var/www/multidasher/drupal/web/sites/default/settings.php
 fi
 
@@ -165,7 +165,7 @@ fi
 if mysqlshow "multidasher" > /dev/null 2>&1 ; then
 	 echo "Database exists."
 else
-	 echo "Database doesn't exist."
+	 echo "Database doesn't exist... Importing..."
      mysql -e "CREATE DATABASE multidasher /*\!40100 DEFAULT CHARACTER SET utf8 */;"
 	 mysql -e "CREATE USER "$uservar"@localhost IDENTIFIED BY '"$passvar"';"
 	 mysql -e "GRANT ALL PRIVILEGES ON multidasher.* TO '"$uservar"'@'localhost';"
@@ -203,6 +203,7 @@ composer install
 
 cp /var/www/multidasher/nginx/multidasher.cloud.nginx /etc/nginx/sites-enabled/multidasher
 sed -i -e 's/CHANGEME/'$domain'/g' /etc/nginx/sites-enabled/multidasher
+rm /etc/nginx/sites-enabled/default
 
 service nginx restart
 echo 'installation complete, you can now connect to your site on '$domain

@@ -29,7 +29,7 @@ class BlockchainController extends ControllerBase {
   }
 
   public function connectMultichainIp(String $port, String $ip, String $name) {
-    $result = system('multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain" > /var/www/.multichain/'.$name.'/startup.log 2>&1 &', $status);
+    $result = system('multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain" > /var/www/.multichain/'.$name.'/startup.dat 2>&1 &', $status);
     drupal_set_message($result);
     return $result;
     // multichaind edtest@207.154.216.254:2893 -datadir="/var/www/.multichain" > ./debug.log 2>&1 & 
@@ -366,12 +366,8 @@ class BlockchainController extends ControllerBase {
   }
 
   public function retrieveWalletAddress(String $blockchain) {
-    $wallet_address = 'notset';
     drupal_set_message('retrieveWalletAddress');
-    $file = '/var/www/.multichain/' . $blockchain . '/startup.log';
-    $array = file($file);
-    ksm($array);
-
+    $file = '/var/www/.multichain/' . $blockchain . '/startup.dat';
     drupal_set_message($file);
     if ($fh = fopen($file, 'r')) {
       while (!feof($fh)) {
@@ -386,27 +382,6 @@ class BlockchainController extends ControllerBase {
       fclose($fh);
     }
     drupal_set_message('retrieveWalletAddress RESULT: '.$wallet_address);
-    
-    $directory = '/var/www/.multichain/' . $blockchain . '/';
-
-    if ($fh = fopen($directory . 'startup.log', 'r')) {
-      while (!feof($fh)) {
-        $line = fgets($fh);
-        if (strpos($line, 'multichain-cli') !== FALSE) {
-          $array = explode(" ", $line);
-          drupal_set_message($array[3]);
-          $wallet_address = $array[3];
-        }
-      }
-      fclose($fh);
-    }
-
-    $result['port'] = $port;
-    $result['url'] = $url;
-    drupal_set_message('retrieveWalletAddress RESULT: '.$wallet_address);
-    drupal_set_message('retrieveWalletAddress RESULT: '.$wallet_address);
-
-
     return $wallet_address;
   }
 

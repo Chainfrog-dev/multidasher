@@ -39,14 +39,8 @@ while true; do
     echo
     read -s -p "Password (again): " password2
     echo
-    [ "$drupalpassword" = "$password2" ] && break || echo "Passwords do not match."
+    [ "$passvar" = "$password2" ] && break || echo "Passwords do not match."
 done
-if [ -z $drupalpassword ] ; then
-	echo -e "Drupal password cannot be blank. Exiting..."
-	exit 1
-fi
-
-
 if [ -z $passvar ] ; then
 	echo -e "MySQL password is required. Exiting..."
 	exit 1

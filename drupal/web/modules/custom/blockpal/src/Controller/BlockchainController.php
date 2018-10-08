@@ -398,6 +398,21 @@ class BlockchainController extends ControllerBase {
       fclose($fh);
     }
 
+    if ($fh = fopen($directory . 'startup.dat', 'r')) {
+      drupal_set_message($directory . 'startup.dat');
+      while (!feof($fh)) {
+        $line = fgets($fh);
+        drupal_set_message('Line WTF :' . $line);
+        if (strpos($line, 'multichain-cli') !== FALSE) {
+          $array = explode(" ", $line);
+          drupal_set_message($array[3]);
+          $wallet_address = $array[3];
+        }
+      }
+      fclose($fh);
+    }
+
+
     drupal_set_message('retrieveWalletAddress RESULT: '.$wallet_address);
     return $wallet_address;
   }

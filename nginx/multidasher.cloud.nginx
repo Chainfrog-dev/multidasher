@@ -1,20 +1,20 @@
 server {
   listen 80;
   listen [::]:80;
-  server_name www.frogchain.multidasher.org;
+  server_name www.CHANGEME;
 
   access_log /var/log/multidasher/nginx.access.log;
   error_log  /var/log/multidasher/nginx.error.log;
 
   location / {
-      rewrite ^ https://frogchain.multidasher.org$request_uri? permanent;
+      rewrite ^ https://CHANGEME$request_uri? permanent;
    }
 }
 
 server {
   listen 80;
   listen [::]:80;
-  server_name frogchain.multidasher.org;
+  server_name CHANGEME;
 
   access_log /var/log/multidasher/nginx.access.log;
   error_log  /var/log/multidasher/nginx.error.log;
@@ -25,15 +25,15 @@ server {
 }
 
 server {
-    server_name frogchain.multidasher.org;
+    server_name CHANGEME;
     root /var/www/multidasher/drupal/web; ## <-- Your only path reference.
 
     listen 443 ssl http2 default_server;
     listen [::]:443 ssl http2 default_server;
 
-    #ssl_certificate /etc/letsencrypt/live/frogchain.multidasher.org/fullchain.pem;
-    #ssl_certificate_key /etc/letsencrypt/live/frogchain.multidasher.org/privkey.pem;
-    #ssl_trusted_certificate /etc/letsencrypt/live/frogchain.multidasher.org/fullchain.pem;
+    #ssl_certificate /etc/letsencrypt/live/CHANGEME/fullchain.pem;
+    #ssl_certificate_key /etc/letsencrypt/live/CHANGEME/privkey.pem;
+    #ssl_trusted_certificate /etc/letsencrypt/live/CHANGEME/fullchain.pem;
 
     location = /favicon.ico {
         log_not_found off;
@@ -132,9 +132,9 @@ server {
 server {
   listen 443 ssl http2;
   listen [::]:443 ssl http2;
-  server_name www.frogchain.multidasher.org;
+  server_name www.CHANGEME;
 
   location / {
-    return 301 https://frogchain.multidasher.org$request_uri;
+    return 301 https://CHANGEME$request_uri;
   }
 }

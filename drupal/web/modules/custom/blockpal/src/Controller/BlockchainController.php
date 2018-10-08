@@ -29,11 +29,14 @@ class BlockchainController extends ControllerBase {
   }
 
   public function connectMultichainIp(String $port, String $ip, String $name) {
-    $result = system('multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain" -daemon > /dev/null 2>&1 &', $status);
-
+    drupal_set_message('multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain"');
+    $result = system('multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain" > /var/www/multidasher/'.$name.'.log 2>&1 &', $status);
     $wallet = $this->retrieveWalletAddress($name);
     return $wallet;
+    // multichaind edtest@207.154.216.254:2893 -datadir="/var/www/.multichain" > ./debug.log 2>&1 & 
   }
+
+
 
   /**
    *
@@ -364,9 +367,9 @@ class BlockchainController extends ControllerBase {
   }
 
   private function retrieveWalletAddress(String $blockchain) {
-    $directory = '/var/www/.multichain/' . $blockchain . '/';
-
-    if ($fh = fopen($directory . 'debug.log', 'r')) {
+    $wallet_address = null;
+    $file = '/var/www/multidasher/' . $blockchain . '.log';
+    if ($fh = fopen($directory, 'r')) {
       while (!feof($fh)) {
         $line = fgets($fh);
         if (strpos($line, 'Minimal blockchain parameter set is created, default address: ') !== FALSE) {

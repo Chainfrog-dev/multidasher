@@ -29,8 +29,8 @@ class BlockchainController extends ControllerBase {
   }
 
   public function connectMultichainIp(String $port, String $ip, String $name) {
-    system('multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain" > /var/www/.multichain/'.$name.'/startup.dat 2>&1 &', $status);
-    drupal_set_message('multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain" > /var/www/.multichain/'.$name.'/startup.dat 2>&1 &');
+    system('multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain" > /var/www/multidasher/'.$name.'.dat 2>&1 &', $status);
+    drupal_set_message('multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain" > /var/www/multidasher/'.$name.'.dat 2>&1 &');
     drupal_set_message($status);
     return $status;
     // multichaind edtest@207.154.216.254:2893 -datadir="/var/www/.multichain" > ./debug.log 2>&1 & 
@@ -367,12 +367,11 @@ class BlockchainController extends ControllerBase {
   }
 
   public function retrieveWalletAddress(String $blockchain) {
-    $directory = '/var/www/.multichain/' . $blockchain . '/';
-    drupal_set_message($directory);
-    $text = shell_exec('cat '.$directory . 'startup.dat');
-    drupal_set_message('cat '.$directory . 'startup.dat');
+    $directory = '/var/www/multidasher/' . $blockchain . '.dat';
+    $text = shell_exec('cat '.$directory);
+    drupal_set_message('cat '.$directory);
     ksm($text);
-    if ($fh = fopen($directory . 'startup.dat', 'r')) {
+    if ($fh = fopen($directory, 'r')) {
       drupal_set_message('file opened');
       while (!feof($fh)) {
         $line = fgets($fh);

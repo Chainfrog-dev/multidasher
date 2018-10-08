@@ -24,6 +24,10 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 read -p 'If you have setup a domain redirected to this ip address, enter it here: [EG: multidasher.org], else [enter] to not setup a domain => 'domain
+if [ -z $domain ] ; then
+	echo "don't currently support non-domain installations EXITING..."
+	exit 1
+fi
 read -p 'Select a NEW user to be configured in mysql: 'uservar
 read -sp 'Select a password to be configured for user in mysql: 'passvar
 read -sp 'Select a password for user admin in drupal: 'drupalpassword

@@ -26,7 +26,7 @@ If you want to use MultiDasher on your own machine, we recommend a virtual box, 
         
 2. Run the prerequisites checker and installer. This will install MultiChain and other libraries required for MultiDasher if they are not already present on your system
 
-        $ ./install.sh
+        $ sudo ./multidasher_server.sh
         
 3. Do some Drupal stuff
 

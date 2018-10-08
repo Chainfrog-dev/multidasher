@@ -34,14 +34,29 @@ if [ -z $uservar ] ; then
 	echo -e "MySQL user is required. Exiting..."
 	exit 1
 fi
-read -sp 'Select a password to be configured for user in MySQL: ' passvar
+while true; do
+    read -sp 'Select a password to be configured for user in MySQL: ' passvar
+    echo
+    read -s -p "Password (again): " password2
+    echo
+    [ "$passvar" = "$password2" ] && break || echo "Passwords do not match."
+done
 if [ -z $passvar ] ; then
 	echo -e "MySQL password is required. Exiting..."
 	exit 1
 fi
-read -sp $'\x0aSelect a password for user admin in Drupal: ' drupalpassword
+
+echo
+
+while true; do
+    read -sp $'\x0aSelect a password for user admin in Drupal: ' drupalpassword
+    echo
+    read -s -p "Password (again): " password2
+    echo
+    [ "$drupalpassword" = "$password2" ] && break || echo "Passwords do not match."
+done
 if [ -z $drupalpassword ] ; then
-	echo -e "Drupal password is required. Exiting..."
+	echo -e "Drupal password cannot be blank. Exiting..."
 	exit 1
 fi
 

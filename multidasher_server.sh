@@ -2,12 +2,12 @@
 #git clone https://github.com/Chainfrog-dev/multidasher.git
 
 ## Parameters
-# Cloud 1 IP: 34.242.173.49
+# Cloud 1 IP: 34.253.118.159
 # Cloud 1 user: ubuntu
 
 ## Commands
-# scp -i /home/ed/.ssh/blockchain.pem /var/www/multidasher/multidasher_server.sh ubuntu@34.242.173.49:/home/ubuntu
-# ssh -i /home/ed/.ssh/blockchain.pem ubuntu@34.242.173.49
+# scp -i /home/ed/.ssh/blockchain.pem /var/www/multidasher/multidasher_server.sh ubuntu@34.253.118.159:/home/ubuntu
+# ssh -i /home/ed/.ssh/blockchain.pem ubuntu@34.253.118.159
 # root to key: '/home/ed/.ssh/blockchain.pem'
 # root to files: '/home/ed/building-blockchain'
 	
@@ -26,6 +26,7 @@ fi
 read -p 'If you have setup a domain redirected to this ip address, enter it here: [EG: multidasher.org], else [enter] to not setup a domain => ' domain
 read -p 'Select a NEW user to be configured in mysql: ' uservar
 read -sp 'Select a password to be configured for user in mysql: ' passvar
+read -sp 'Select a password for user admin in drupal: ' drupalpassword
 
 echo ""
 echo "------------------------------------------------"
@@ -89,6 +90,12 @@ if [ -z $domain ] ; then
 	echo "Install certbot 								 "
 	echo "-----------------------------------------------"
 	echo ""
+	ufw allow OpenSSH
+	ufw allow in 443/tcp comment "https: for certbot"
+	ufw allow 'Nginx HTTP'
+	ufw enable
+	ufw status
+
 	add-apt-repository ppa:certbot/certbot
 	apt-get update
 	apt-get install -qy python-certbot-nginx
@@ -182,9 +189,10 @@ wget -O drush.phar https://github.com/drush-ops/drush-launcher/releases/download
 chmod +x drush.phar
 mv drush.phar /usr/local/bin/drush
 cd /var/www/multidasher/drupal
+drush upwd admin $drupalpassword
 composer install
 
-cp /var/www/multidasher/config/multidasher.cloud.nginx /etc/nginx/sites-enabled/multidasher
+cp /var/www/multidasher/nginx/multidasher.cloud.nginx /etc/nginx/sites-enabled/multidasher
 sed -i -e 's/CHANGEME/'$domain'/g' /etc/nginx/sites-enabled/multidasher
 
 service nginx restart

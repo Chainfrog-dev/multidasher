@@ -111,9 +111,18 @@ echo "Configure settings php						 "
 echo "-----------------------------------------------"
 echo ""
 if [ ! -f /var/www/multidasher/drupal/web/sites/default/settings.php ]; then
-	cp /var/www/multidasher/drupal/web/sites/default/default.settings.php /var/www/multidasher/drupal/web/sites/default/settings.php
-	echo "$config_directories['sync'] = '../config/sync';
+	echo "
+	$databases = [];
+	$config_directories = [];
 	$settings['hash_salt'] = '3r0PBfdcAFRH9SsWAAEDWb6ZIscdRx1nmrCMUiwQX3qUtcYjYHDtIS075D1qZIVyF55MQJ9QLQ';
+	$settings['update_free_access'] = FALSE;
+	$settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
+	$settings['file_scan_ignore_directories'] = [
+	  'node_modules',
+	  'bower_components',
+	];
+	$settings['entity_update_batch_size'] = 50;
+	$config_directories['sync'] = '../config/sync';
 	$databases['default']['default'] = array (
 	  'database' => 'multidasher',
 	  'username' => '"$uservar"',
@@ -124,6 +133,7 @@ if [ ! -f /var/www/multidasher/drupal/web/sites/default/settings.php ]; then
 	  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
 	  'driver' => 'mysql',
 	);" >> /var/www/multidasher/drupal/web/sites/default/settings.php
+	chmod 644 /var/www/multidasher/drupal/web/sites/default/settings.php
 fi
 
 echo ""

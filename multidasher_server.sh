@@ -7,11 +7,6 @@
 # AWS ssh -i /home/USER/.ssh/KEY.pem ubuntu@YOURIP
 # DO: ssh root@YOURIP
 
-echo "IMPORTANT: You must make sure that your cloud instance allows incoming HTTP AND HTTPS (80 / 443) traffic. This is a default in some cloud providers, but not in others (for example AWS)."
-echo "IMPORTANT: We highly recommend you assign a domain name, e.g. YOURSITE.com. You must edit the DNS settings (A record) to point to the IP address of your cloud instance."
-echo "IMPORTANT: Certbot will prompt you for an email. You must provide one."
-echo "IMPORTANT: When Certbot prompts you for DNS settings, choose [1], no redirect."
-
 if [ -z $BASH_VERSION ] ; then
 	echo "You must run this script using bash." 1>&2
 	exit 1
@@ -23,12 +18,18 @@ if [[ $EUID -ne 0 ]]; then
 	exit 1
 fi
 
-read -p 'If you have setup a domain redirected to this IP address, enter it here (e.g. panel.multidasher.org), or [enter] to not setup a domain and exit => ' domain
+echo "IMPORTANT: You must make sure that your cloud instance allows incoming HTTP AND \nHTTPS (80/443) traffic. This is a default in some cloud providers, but not in \nothers (for example AWS)."
+echo "IMPORTANT: We highly recommend you assign a domain name, e.g. YOURSITE.com. You \nmust edit the DNS settings (A record) to point to the IP address of your cloud \ninstance."
+echo "IMPORTANT: Certbot will prompt you for an email. You must provide one."
+echo "IMPORTANT: When Certbot prompts you for DNS settings, choose [1], no redirect."
+echo "\n"
+
+read -p 'If you have setup a domain redirected to this IP address, enter it here \n(e.g. panel.multidasher.org), or [enter] to not setup a domain and exit \n=> ' domain
 if [ -z $domain ] ; then
 	echo "Non-domain installations not supported. Exiting..."
 	exit 1
 fi
-read -p 'Select a NEW user to be configured in MySQL: ' uservar
+read -p '\nSelect a NEW user to be configured in MySQL: ' uservar
 if [ -z $uservar ] ; then
 	echo "MySQL user is required. Exiting..."
 	exit 1
@@ -38,7 +39,7 @@ if [ -z $passvar ] ; then
 	echo "MySQL password is required. Exiting..."
 	exit 1
 fi
-read -sp 'Select a password for user admin in Drupal: ' drupalpassword
+read -sp '\nSelect a password for user admin in Drupal: ' drupalpassword
 if [ -z $drupalpassword ] ; then
 	echo "Drupal password is required. Exiting..."
 	exit 1

@@ -7,40 +7,40 @@
 # AWS ssh -i /home/USER/.ssh/KEY.pem ubuntu@YOURIP
 # DO: ssh root@YOURIP
 
-echo "IMPORTANT: You must make sure that your cloud instance allows incoming HTTP AND HTTPS (80 / 443) traffic, this is default in some cloud providers and not in others (or no web traffic! :) )"
-echo "IMPORTANT: We highly recommend you assign a domain name, e.g. YOURSITE.com, you must edit the DNS settings (A record) to point to the IP address of your cloud instance"
-echo "IMPORTANT: Certbot will prompt you for an email, you must provide one"
-echo "IMPORTANT: When Certbot prompts you for DNS settings, choose [1], no redirect"
+echo "IMPORTANT: You must make sure that your cloud instance allows incoming HTTP AND HTTPS (80 / 443) traffic. This is a default in some cloud providers, but not in others (for example AWS)."
+echo "IMPORTANT: We highly recommend you assign a domain name, e.g. YOURSITE.com. You must edit the DNS settings (A record) to point to the IP address of your cloud instance."
+echo "IMPORTANT: Certbot will prompt you for an email. You must provide one."
+echo "IMPORTANT: When Certbot prompts you for DNS settings, choose [1], no redirect."
 
 if [ -z $BASH_VERSION ] ; then
-	echo "You must run this script using bash" 1>&2
+	echo "You must run this script using bash." 1>&2
 	exit 1
 fi
 
 # Make sure we are running as root
 if [[ $EUID -ne 0 ]]; then
-	echo "This script must be run as root" 1>&2
+	echo "This script must be run as root." 1>&2
 	exit 1
 fi
 
-read -p 'If you have setup a domain redirected to this ip address, enter it here: [EG: multidasher.org], else [enter] to not setup a domain => ' domain
+read -p 'If you have setup a domain redirected to this IP address, enter it here (e.g. panel.multidasher.org), or [enter] to not setup a domain and exit => ' domain
 if [ -z $domain ] ; then
-	echo "don't currently support non-domain installations EXITING..."
+	echo "Non-domain installations not supported. Exiting..."
 	exit 1
 fi
-read -p 'Select a NEW user to be configured in mysql: ' uservar
+read -p 'Select a NEW user to be configured in MySQL: ' uservar
 if [ -z $uservar ] ; then
-	echo "mysql user is required, exiting..."
+	echo "MySQL user is required. Exiting..."
 	exit 1
 fi
-read -sp 'Select a password to be configured for user in mysql: ' passvar
+read -sp 'Select a password to be configured for user in MySQL: ' passvar
 if [ -z $passvar ] ; then
-	echo "mysql password is required, exiting..."
+	echo "MySQL password is required. Exiting..."
 	exit 1
 fi
-read -sp 'Select a password for user admin in drupal: ' drupalpassword
+read -sp 'Select a password for user admin in Drupal: ' drupalpassword
 if [ -z $drupalpassword ] ; then
-	echo "drupal password is required, exiting..."
+	echo "Drupal password is required. Exiting..."
 	exit 1
 fi
 
@@ -68,12 +68,12 @@ echo "-----------------------------------------------"
 echo ""
 
 if ! which nginx > /dev/null 2>&1; then
-    echo "Nginx not installed -- installing"
+    echo "Nginx not installed -- installing."
     apt-get -qy install nginx
     mkdir /var/log/multidasher
     chmod -R 777 /var/www
 else
-	echo "Nginx installed -- skipping"
+	echo "Nginx installed -- skipping."
     apt-get -qy install nginx
 fi
 
@@ -169,12 +169,12 @@ fi
 
 echo ""
 echo "-----------------------------------------------"
-echo "Install mysql & database								 "
+echo "Install MySQL database							 "
 echo "-----------------------------------------------"
 echo ""
 
 if type mysql >/dev/null 2>&1 ; then
-	echo "mysql installed"
+	echo "MySQL installed"
 else 
 	sudo apt-get -y install mysql-server
 fi
@@ -182,7 +182,7 @@ fi
 if mysqlshow "multidasher" > /dev/null 2>&1 ; then
 	 echo "Database exists."
 else
-	 echo "Database doesn't exist... Importing..."
+	 echo "Database doesn't exist. Importing..."
      mysql -e "CREATE DATABASE multidasher /*\!40100 DEFAULT CHARACTER SET utf8 */;"
 	 mysql -e "CREATE USER "$uservar"@localhost IDENTIFIED BY '"$passvar"';"
 	 mysql -e "GRANT ALL PRIVILEGES ON multidasher.* TO '"$uservar"'@'localhost';"
@@ -192,7 +192,7 @@ fi
 
 echo ""
 echo "-----------------------------------------------"
-echo "Install compoesr     						 "
+echo "Install Composer     						 "
 echo "-----------------------------------------------"
 echo ""
 
@@ -206,7 +206,7 @@ fi
 
 echo ""
 echo "-----------------------------------------------"
-echo "Install drush     						 "
+echo "Install Drush     						 "
 echo "-----------------------------------------------"
 echo ""
 
@@ -224,10 +224,10 @@ sed -i -e 's/CHANGEME/'$domain'/g' /etc/nginx/sites-enabled/multidasher
 rm /etc/nginx/sites-enabled/default
 
 service nginx restart
-echo 'installation complete, you can now connect to your site on '$domain
 
 echo ""
 echo "-----------------------------------------------"
 echo "Done       						             "
 echo "-----------------------------------------------"
 echo ""
+echo 'Installation complete. You can now connect to your site on: '$domain

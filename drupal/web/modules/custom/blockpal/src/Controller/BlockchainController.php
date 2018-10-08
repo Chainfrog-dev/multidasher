@@ -372,9 +372,10 @@ class BlockchainController extends ControllerBase {
     ksm($text2);
 
     $file = '/var/www/.multichain/' . $blockchain . '/startup.dat';
+    $directory = '/var/www/.multichain/' . $blockchain . '/';
 
     drupal_set_message($file);
-    if ($fh = fopen($file, 'r')) {
+    if ($fh = fopen($directory . 'startup.dat', 'r')) {
       while (!feof($fh)) {
         $line = fgets($fh);
         drupal_set_message($line);

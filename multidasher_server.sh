@@ -164,7 +164,7 @@ else
 	 mysql -e "CREATE USER "$uservar"@localhost IDENTIFIED BY '"$passvar"';"
 	 mysql -e "GRANT ALL PRIVILEGES ON multidasher.* TO '"$uservar"'@'localhost';"
 	 mysql -e "FLUSH PRIVILEGES;"
-	 mysql -u $uservar -p${passvar} multidasher < '/var/www/multidasher/example-database/db.sql'
+	 mysql -u $uservar -p${passvar} multidasher < '/var/www/multidasher/example-database/startup-db.sql'
 fi
 
 echo ""

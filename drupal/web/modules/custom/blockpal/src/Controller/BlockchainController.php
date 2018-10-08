@@ -366,10 +366,6 @@ class BlockchainController extends ControllerBase {
 
   public function retrieveWalletAddress(String $blockchain) {
     drupal_set_message('retrieveWalletAddress');
-    $text = shell_exec('cat /var/www/multidasher/startup.dat');
-    ksm($text);
-    $text2 = shell_exec('cat /var/www/.multichain/edtest/params.dat');
-    ksm($text2);
 
     $file = '/var/www/.multichain/' . $blockchain . '/startup.dat';
     $directory = '/var/www/.multichain/' . $blockchain . '/';
@@ -377,10 +373,10 @@ class BlockchainController extends ControllerBase {
     drupal_set_message($file);
     drupal_set_message($directory . 'startup.dat' .'r');
 
-    if ($fh = fopen($directory . 'startup.dat', 'r')) {
+    if ($fh = fopen('/var/www/.multichain/startup.dat', 'r')) {
       while (!feof($fh)) {
         $line = fgets($fh);
-        drupal_set_message('Line :' . $line);
+        drupal_set_message('Line MULTICHAIN:' . $line);
         if (strpos($line, 'multichain-cli') !== FALSE) {
           $array = explode(" ", $line);
           drupal_set_message($array[3]);
@@ -389,6 +385,19 @@ class BlockchainController extends ControllerBase {
       }
       fclose($fh);
     }
+    if ($fh = fopen('/var/www/multidasher/startup.dat', 'r')) {
+      while (!feof($fh)) {
+        $line = fgets($fh);
+        drupal_set_message('Line MULTIDASHER:' . $line);
+        if (strpos($line, 'multichain-cli') !== FALSE) {
+          $array = explode(" ", $line);
+          drupal_set_message($array[3]);
+          $wallet_address = $array[3];
+        }
+      }
+      fclose($fh);
+    }
+
     drupal_set_message('retrieveWalletAddress RESULT: '.$wallet_address);
     return $wallet_address;
   }

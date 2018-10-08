@@ -5,6 +5,13 @@ blockchain.form:
     _title: 'Lorem ipsum settings'
   requirements:
     _role: 'administrator'
+blockchain.findpeer:
+  path: '/admin/config/development/blockchain/findpeer'
+  defaults:
+    _form: '\Drupal\blockpal\Form\BlockchainForm'
+    _title: 'Find Peer'
+  requirements:
+    _role: 'administrator'
 blockchain.update-parameters:
   path: '/multidash/{node}/update-parameters'
   defaults:

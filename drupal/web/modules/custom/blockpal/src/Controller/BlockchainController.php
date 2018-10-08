@@ -372,8 +372,9 @@ class BlockchainController extends ControllerBase {
           $user = preg_replace('/\s+/', '', subscr($line, -38));
         }
       fclose($fh);
-    }
+      }
     return $wallet_address;
+    }
   }
 
 

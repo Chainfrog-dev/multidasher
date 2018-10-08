@@ -101,7 +101,8 @@ class BlockchainFormFindpeer extends ConfigFormBase {
       ->set('blockchain_wallet', $result)
       ->save();
       $result = $this->multichain->connectMultichainIp($port, $ip, $name);
-      drupal_set_message('RESULT: '.$result);
+      $wallet = $this->multichain->retrieveWalletAddress($name);
+      drupal_set_message('RESULT: '.$wallet);
 
     }else{
       $result = $this->multichain->launchMultichainDaemon($name);

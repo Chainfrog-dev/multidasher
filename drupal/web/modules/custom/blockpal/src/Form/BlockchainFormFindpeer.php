@@ -93,16 +93,16 @@ class BlockchainFormFindpeer extends ConfigFormBase {
     // $url = Url::fromRoute('view.dashboard.page_1');
     // $form_state->setRedirectUrl($url);
     // if($form_state->getValue('wallet_address') === null){
-      $result = $this->multichain->connectMultichainIp($port, $ip, $name);
-      $wallet = $this->multichain->retrieveWalletAddress($name);
-      $this->config('blockchain.settings')
-      ->set('blockchain_port', $form_state->getValue('blockchain_port'))
-      ->set('blockchain_ip', $form_state->getValue('blockchain_ip'))
-      ->set('blockchain_name', $form_state->getValue('blockchain_name'))
-      ->set('wallet_address', $wallet)
-      ->save();
-      drupal_set_message('RESULT: '.$wallet);
-      parent::submitForm($form, $form_state);
+    $result = $this->multichain->connectMultichainIp($port, $ip, $name);
+    $wallet = $this->multichain->retrieveWalletAddress($name);
+    // $this->config('blockchain.settings')
+    // ->set('blockchain_port', $form_state->getValue('blockchain_port'))
+    // ->set('blockchain_ip', $form_state->getValue('blockchain_ip'))
+    // ->set('blockchain_name', $form_state->getValue('blockchain_name'))
+    // ->set('wallet_address', $wallet)
+    // ->save();
+    drupal_set_message('RESULT: '.$wallet);
+    parent::submitForm($form, $form_state);
     // }else{
       // $result = $this->multichain->launchMultichainDaemon($name);
       // $this->multichain->createLoadNode($name);

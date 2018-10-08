@@ -17,14 +17,14 @@
 # options: (optional) An array of options to be passed to l() when generating
 #   a link from this menu item.
 
-blockpal.firsttab: # The first plugin ID
-  route_name: blockchain.firsttab  
-  title: 'TAB 1'
-  parent: system.admin_structure
+blockpal.tab_1:
+  route_name : blockchain.form
+  title: Create new MultiChain
   base_route: blockchain.form
-blockpal.secondtab: # The second plugin ID
-  route_name: blockchain.secondtab  
-  title: 'TAB 2'
-  base_route: blockchain.findpeer
-  parent: system.admin_structure
-  weight: 100
+  weight: 10
+
+blockpal.tab_2:
+  route_name: blockchain.findpeer
+  title: Connect to existing MultiChain
+  base_route: blockchain.form
+  weight: 20

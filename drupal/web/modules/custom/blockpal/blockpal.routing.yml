@@ -8,7 +8,7 @@ blockchain.form:
 blockchain.findpeer:
   path: '/admin/config/development/blockchain/findpeer'
   defaults:
-    _form: '\Drupal\blockpal\Form\BlockchainForm'
+    _form: '\Drupal\blockpal\Form\BlockchainFormFindpeer'
     _title: 'Find Peer'
   requirements:
     _role: 'administrator'

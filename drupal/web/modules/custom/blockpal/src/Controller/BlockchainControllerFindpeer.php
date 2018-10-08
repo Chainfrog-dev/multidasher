@@ -28,12 +28,6 @@ class BlockchainController extends ControllerBase {
     return $status;
   }
 
-  public function connectMultichainIp(String $port, String $ip, String $name) {
-    $result = system('multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain"', $status);
-    $wallet $this->retrieveWalletAddress($name);
-    return $wallet;
-  }
-
   /**
    *
    */
@@ -266,28 +260,6 @@ class BlockchainController extends ControllerBase {
   /**
    *
    */
-  public function createLoadNode($blockchain_id) {
-    $nodes = \Drupal::entityTypeManager()
-      ->getStorage('node')
-      ->loadByProperties(['field_blockchain_id' => $blockchain_id]);
-    if ($node = reset($nodes)) {
-      return $node->id();
-    }
-    else {
-      $node = Node::create(['type' => 'blockchain']);
-      $node->set('title', t($blockchain_id));
-      $node->set('field_blockchain_id', t($blockchain_id));
-      $node->set('uid', 1);
-      $node->status = 1;
-      $node->enforceIsNew();
-      $node->save();
-      return $node->id();
-    }
-  }
-
-  /**
-   *
-   */
   public function executeRequest(String $blockchain, String $command, array $parameters) {
     $userPasswordObject = $this->retrieveUserPassword($blockchain);
     $user = $userPasswordObject['user'];
@@ -361,21 +333,6 @@ class BlockchainController extends ControllerBase {
 
     return $result;
   }
-
-  private function retrieveWalletAddress(String $blockchain) {
-    $directory = '/var/www/.multichain/' . $blockchain . '/';
-
-    if ($fh = fopen($directory . 'debug.log', 'r')) {
-      while (!feof($fh)) {
-        $line = fgets($fh);
-        if (strpos($line, 'Minimal blockchain parameter set is created, default address: ') !== FALSE) {
-          $user = preg_replace('/\s+/', '', subscr($line, -38));
-        }
-      fclose($fh);
-    }
-    return $wallet_address;
-  }
-
 
   /**
    *

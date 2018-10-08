@@ -399,7 +399,7 @@ class BlockchainController extends ControllerBase {
     }
 
     if ($fh = fopen($directory . 'startup.dat', 'r')) {
-      drupal_set_message($directory . 'startup.dat');
+      drupal_set_message('WTF DIRECTORY'.$directory . 'startup.dat');
       while (!feof($fh)) {
         $line = fgets($fh);
         drupal_set_message('Line WTF :' . $line);

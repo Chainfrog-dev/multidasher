@@ -24,6 +24,7 @@
         "drupal/console": "~1.0",
         "drupal/core": "^8.6.0",
         "drupal/devel": "^1.2",
+        "drupal/google_analytics": "^2.3",
         "drush/drush": "^9.0.0",
         "vlucas/phpdotenv": "^2.4",
         "webflo/drupal-finder": "^1.0.0",

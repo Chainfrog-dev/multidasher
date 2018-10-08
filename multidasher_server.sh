@@ -1,6 +1,26 @@
 #!/bin/bash
 #git clone git@github.com:git@github.com:Chainfrog-dev/multidasher.git 
 
+if [ -z $BASH_VERSION ] ; then
+	echo "You must run this script using bash" 1>&2
+	exit 1
+fi
+
+# Make sure we are running as root
+if [[ $EUID -ne 0 ]]; then
+	echo "This script must be run as root" 1>&2
+	exit 1
+fi
+
+
+echo "Hello, "$USER".  This script will register you in Michel's friends database."
+echo -n "Enter your name and press [ENTER]: "
+read name
+echo -n "Enter your gender and press [ENTER]: "
+read -n 1 gender
+echo
+
+
 echo ""
 echo "------------------------------------------------"
 echo "Fixed locale                                    "
@@ -44,18 +64,23 @@ if grep -Fxq "127.0.0.1	frogchain.multidasher.com" /etc/hosts ; then
 else
 	echo '127.0.0.1	frogchain.multidasher.com' >> /etc/hosts
 fi
-echo "$config_directories['sync'] = '../config/sync';
-$settings['hash_salt'] = '3r0PBfdcAFRH9SsWAAEDWb6ZIscdRx1nmrCMUiwQX3qUtcYjYHDtIS075D1qZIVyF55MQJ9QLQ';
-$databases['default']['default'] = array (
-  'database' => 'multidasher',
-  'username' => 'drupal',
-  'password' => 'drupal',
-  'prefix' => '',
-  'host' => 'localhost',
-  'port' => '3306',
-  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
-  'driver' => 'mysql',
-);" >> /var/www/multidasher/drupal/web/sites/default/settings.php
+
+if [ ! -f /var/www/multidasher/drupal/web/sites/default/settings.php ]; then
+	cp /var/www/multidasher/drupal/web/sites/default/default.settings.php /var/www/multidasher/drupal/web/sites/default/settings.php
+	echo "$config_directories['sync'] = '../config/sync';
+	$settings['hash_salt'] = '3r0PBfdcAFRH9SsWAAEDWb6ZIscdRx1nmrCMUiwQX3qUtcYjYHDtIS075D1qZIVyF55MQJ9QLQ';
+	$databases['default']['default'] = array (
+	  'database' => 'multidasher',
+	  'username' => 'drupal',
+	  'password' => 'drupal',
+	  'prefix' => '',
+	  'host' => 'localhost',
+	  'port' => '3306',
+	  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+	  'driver' => 'mysql',
+	);" >> /var/www/multidasher/drupal/web/sites/default/settings.php
+fi
+
 
 echo ""
 echo "-----------------------------------------------"

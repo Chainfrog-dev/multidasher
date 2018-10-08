@@ -373,9 +373,9 @@ class BlockchainController extends ControllerBase {
     drupal_set_message($file);
     drupal_set_message($directory . 'startup.dat' .'r');
 
-    if ($fh = fopen('/var/www/.multichain/startup.dat', 'r')) {
-      while (!feof($fh)) {
-        $line = fgets($fh);
+    if ($fh1 = fopen('/var/www/.multichain/startup.dat', 'r')) {
+      while (!feof($fh1)) {
+        $line = fgets($fh1);
         drupal_set_message('Line MULTICHAIN:' . $line);
         if (strpos($line, 'multichain-cli') !== FALSE) {
           $array = explode(" ", $line);
@@ -385,9 +385,9 @@ class BlockchainController extends ControllerBase {
       }
       fclose($fh);
     }
-    if ($fh = fopen('/var/www/multidasher/startup.dat', 'r')) {
-      while (!feof($fh)) {
-        $line = fgets($fh);
+    if ($fh2 = fopen('/var/www/multidasher/startup.dat', 'r')) {
+      while (!feof($fh2)) {
+        $line = fgets($fh2);
         drupal_set_message('Line MULTIDASHER:' . $line);
         if (strpos($line, 'multichain-cli') !== FALSE) {
           $array = explode(" ", $line);
@@ -398,10 +398,10 @@ class BlockchainController extends ControllerBase {
       fclose($fh);
     }
 
-    if ($fh = fopen($directory . 'startup.dat', 'r')) {
+    if ($fh3 = fopen($directory . 'startup.dat', 'r')) {
       drupal_set_message('WTF DIRECTORY'.$directory . 'startup.dat');
-      while (!feof($fh)) {
-        $line = fgets($fh);
+      while (!feof($fh3)) {
+        $line = fgets($fh3);
         drupal_set_message('Line WTF :' . $line);
         if (strpos($line, 'multichain-cli') !== FALSE) {
           $array = explode(" ", $line);

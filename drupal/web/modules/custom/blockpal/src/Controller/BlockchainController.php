@@ -369,6 +369,9 @@ class BlockchainController extends ControllerBase {
     $wallet_address = 'notset';
     drupal_set_message('retrieveWalletAddress');
     $file = '/var/www/.multichain/' . $blockchain . '/startup.log';
+    $array = file($file);
+    ksm($array);
+
     drupal_set_message($file);
     if ($fh = fopen($file, 'r')) {
       while (!feof($fh)) {

@@ -10,7 +10,7 @@ MultiDasher is developed, tested and designed to be run on Ubuntu 18.04.
 
 The following instructions should have you up and running with MultiDasher on an Ubuntu 18.04 machine within minutes.
 
-If you want to play around with the system, as enabling a MultiDasher instance to connect out through personal firewalls and ensuring IP routing is conducted correctly requires some networking knowledg, we recommend either using a cloud instance of Ubuntu, or running a virtual box on your machine.
+If you want to play around with the system, as enabling a MultiDasher instance to connect out through personal firewalls and ensuring IP routing is conducted correctly requires some networking knowledge, we recommend either using a cloud instance of Ubuntu, or running a virtual box on your machine.
 
 Amazon Web Services provides free cloud servers for personal use. See the Wiki for [AWS Setup Instructions]( https://github.com/Chainfrog-dev/multidasher/wiki/AWS-Setup-Instructions).
 
@@ -18,7 +18,7 @@ Other cloud service providers exist, for example DigitalOcean and Microsoft Azur
 
 If you want to use MultiDasher on your own machine, we recommend a virtual box, for example using Vagrant. See the Vagrant Setup Instructions for a step by step guide. (See the [Vagrant Setup Instructions](https://github.com/Chainfrog-dev/multidasher/wiki/Vagrant-Setup-Instructions) in the Wiki for more details).
 
-1. Clone this repository into your working directory, for example:
+1. Log into your instance, and clone this repository into your working directory, for example:
 
         $ cd Git # mkdir it first if you don't have one
         $ git clone https://github.com/Chainfrog-dev/multidasher.git

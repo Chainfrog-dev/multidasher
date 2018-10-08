@@ -8,15 +8,21 @@ MultiDasher is developed, tested and designed to be run on Ubuntu 18.04.
 
 ## Getting Started
 
-The following instructions should have you up and running with MultiDasher on an Ubuntu 18.04 machine within minutes.
+If you want to have a look at how MultiDasher functions, please visit [the MultiDasher website](https://multidasher.org/) and click on Demo.
 
-If you want to play around with the system, as enabling a MultiDasher instance to connect out through personal firewalls and ensuring IP routing is conducted correctly requires some networking knowledge, we recommend either using a cloud instance of Ubuntu, or running a virtual box on your machine.
+### Installation
+
+The following instructions should have you up and running with MultiDasher on an Ubuntu 18.04 machine within minutes. How many minutes depends on your knowledge of Drupal and IP networking.
+
+Enabling a MultiDasher instance to connect out through personal firewalls and ensuring IP routing is conducted correctly requires some networking knowledge, so we recommend either using a cloud instance of Ubuntu, or running a virtual box on your machine.
 
 Amazon Web Services provides free cloud servers for personal use. See the Wiki for [AWS Setup Instructions]( https://github.com/Chainfrog-dev/multidasher/wiki/AWS-Setup-Instructions).
 
 Other cloud service providers exist, for example DigitalOcean and Microsoft Azure.
 
-If you want to use MultiDasher on your own machine, we recommend a virtual box, for example using Vagrant. See the Vagrant Setup Instructions for a step by step guide. (See the [Vagrant Setup Instructions](https://github.com/Chainfrog-dev/multidasher/wiki/Vagrant-Setup-Instructions) in the Wiki for more details).
+If you want to use MultiDasher on your own machine, we recommend a virtual box, for example using Vagrant. See the Vagrant Setup Instructions for a step by step guide. See the [Vagrant Setup Instructions](https://github.com/Chainfrog-dev/multidasher/wiki/Vagrant-Setup-Instructions).
+
+To enable secure HTTPS connectivity (strongly recommended) you will need to set up an A Host for a domain or subdomain to point at your server instance, as HTTPS requires digital certificates that are linked to domain names. See [Domain Names and Digital Certificates](https://github.com/Chainfrog-dev/multidasher/wiki/Domain-Names-and-Digital-Certificates).
 
 1. Log into your instance, and clone this repository into your working directory, for example:
 

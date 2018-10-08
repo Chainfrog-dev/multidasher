@@ -375,10 +375,12 @@ class BlockchainController extends ControllerBase {
     $directory = '/var/www/.multichain/' . $blockchain . '/';
 
     drupal_set_message($file);
+    drupal_set_message($directory . 'startup.dat' .'r');
+
     if ($fh = fopen($directory . 'startup.dat', 'r')) {
       while (!feof($fh)) {
         $line = fgets($fh);
-        drupal_set_message($line);
+        drupal_set_message('Line :' . $line);
         if (strpos($line, 'multichain-cli') !== FALSE) {
           $array = explode(" ", $line);
           drupal_set_message($array[3]);

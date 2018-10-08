@@ -1,15 +1,11 @@
 #!/bin/bash
 #git clone https://github.com/Chainfrog-dev/multidasher.git
 
-## Parameters
-# Cloud 1 IP: 34.247.74.66
-# Cloud 1 user: ubuntu
-
 ## Commands
-# scp -i /home/ed/.ssh/blockchain.pem /var/www/multidasher/multidasher_server.sh ubuntu@34.247.74.66:/home/ubuntu
-# ssh -i /home/ed/.ssh/blockchain.pem ubuntu@34.247.74.66
-# root to key: '/home/ed/.ssh/blockchain.pem'
-# root to files: '/home/ed/building-blockchain'
+# AWS: scp -i /home/USER/.ssh/KEY.pem /var/www/multidasher/multidasher_server.sh ubuntu@YOURIP:/home/ubuntu
+# DO: scp /var/www/multidasher/multidasher_server.sh root@YOURIP:/home/root
+# AWS ssh -i /home/USER/.ssh/KEY.pem ubuntu@YOURIP
+# DO: ssh root@YOURIP
 
 echo "IMPORTANT: You must make sure that your cloud instance allows incoming HTTP AND HTTPS (80 / 443) traffic, this is default in some cloud providers and not in others (or no web traffic! :) )"
 echo "IMPORTANT: We highly recommend you assign a domain name, e.g. YOURSITE.com, you must edit the DNS settings (A record) to point to the IP address of your cloud instance"

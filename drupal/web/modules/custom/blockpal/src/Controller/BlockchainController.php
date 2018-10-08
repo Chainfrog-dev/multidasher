@@ -379,7 +379,7 @@ class BlockchainController extends ControllerBase {
       }
       fclose($fh);
     }
-    echo $wallet_address;
+    drupal_set_message($wallet_address);
     return $wallet_address;
   }
 

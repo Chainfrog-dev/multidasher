@@ -2,15 +2,17 @@
 #git clone https://github.com/Chainfrog-dev/multidasher.git
 
 ## Parameters
-# Cloud 1 IP: 34.253.118.159
+# Cloud 1 IP: 34.247.74.66
 # Cloud 1 user: ubuntu
 
 ## Commands
-# scp -i /home/ed/.ssh/blockchain.pem /var/www/multidasher/multidasher_server.sh ubuntu@34.253.118.159:/home/ubuntu
-# ssh -i /home/ed/.ssh/blockchain.pem ubuntu@34.253.118.159
+# scp -i /home/ed/.ssh/blockchain.pem /var/www/multidasher/multidasher_server.sh ubuntu@34.247.74.66:/home/ubuntu
+# ssh -i /home/ed/.ssh/blockchain.pem ubuntu@34.247.74.66
 # root to key: '/home/ed/.ssh/blockchain.pem'
 # root to files: '/home/ed/building-blockchain'
-	
+
+echo "IMPORTANT: You must make sure that your cloud instance allows incoming HTTP AND HTTPS (80 / 443) traffic, this is default in some cloud providers and not in others (or no web traffic! :) )"
+echo "IMPORTANT: We highly recommend you assign a domain name, e.g. YOURSITE.com, you must edit the DNS settings (A record) to point to the IP address of your cloud instance"
 
 if [ -z $BASH_VERSION ] ; then
 	echo "You must run this script using bash" 1>&2
@@ -55,6 +57,7 @@ if ! which nginx > /dev/null 2>&1; then
     echo "Nginx not installed -- installing"
     apt-get -qy install nginx
     mkdir /var/log/multidasher
+    chmod -R 777 /var/www
 else
 	echo "Nginx installed -- skipping"
     apt-get -qy install nginx
@@ -104,7 +107,7 @@ fi
 
 echo ""
 echo "-----------------------------------------------"
-echo "Configure settings php								 "
+echo "Configure settings php						 "
 echo "-----------------------------------------------"
 echo ""
 if [ ! -f /var/www/multidasher/drupal/web/sites/default/settings.php ]; then
@@ -161,7 +164,7 @@ else
 	 mysql -e "CREATE USER "$uservar"@localhost IDENTIFIED BY '"$passvar"';"
 	 mysql -e "GRANT ALL PRIVILEGES ON multidasher.* TO '"$uservar"'@'localhost';"
 	 mysql -e "FLUSH PRIVILEGES;"
-	 mysql -u $uservar -p$passvar multidasher < '/var/www/multidasher/database/db.sql'
+	 mysql -u $uservar -p${passvar} multidasher < '/var/www/multidasher/example-database/db.sql'
 fi
 
 echo ""

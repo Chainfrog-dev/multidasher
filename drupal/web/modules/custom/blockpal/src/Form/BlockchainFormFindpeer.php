@@ -108,10 +108,10 @@ class BlockchainFormFindpeer extends ConfigFormBase {
       // $result = $this->multichain->launchMultichainDaemon($name);
       // $this->multichain->createLoadNode($name);
       // $this->multichain->updateAddresses($name);
-      parent::submitForm($form, $form_state);
+      // parent::submitForm($form, $form_state);
       drupal_set_message('you have connected to the blockchain');
-      $this->config('blockchain.settings')
-      ->reset();
+      // $this->config('blockchain.settings')
+      // ->reset();
     }
   }
 

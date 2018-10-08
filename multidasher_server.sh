@@ -9,6 +9,8 @@
 
 echo "IMPORTANT: You must make sure that your cloud instance allows incoming HTTP AND HTTPS (80 / 443) traffic, this is default in some cloud providers and not in others (or no web traffic! :) )"
 echo "IMPORTANT: We highly recommend you assign a domain name, e.g. YOURSITE.com, you must edit the DNS settings (A record) to point to the IP address of your cloud instance"
+echo "IMPORTANT: Certbot will prompt you for an email, you must provide one"
+echo "IMPORTANT: When Certbot prompts you for DNS settings, choose [1], no redirect"
 
 if [ -z $BASH_VERSION ] ; then
 	echo "You must run this script using bash" 1>&2
@@ -21,10 +23,10 @@ if [[ $EUID -ne 0 ]]; then
 	exit 1
 fi
 
-read -p 'If you have setup a domain redirected to this ip address, enter it here: [EG: multidasher.org], else [enter] to not setup a domain => ' domain
-read -p 'Select a NEW user to be configured in mysql: ' uservar
-read -sp 'Select a password to be configured for user in mysql: ' passvar
-read -sp 'Select a password for user admin in drupal: ' drupalpassword
+read -p 'If you have setup a domain redirected to this ip address, enter it here: [EG: multidasher.org], else [enter] to not setup a domain => 'domain
+read -p 'Select a NEW user to be configured in mysql: 'uservar
+read -sp 'Select a password to be configured for user in mysql: 'passvar
+read -sp 'Select a password for user admin in drupal: 'drupalpassword
 
 echo ""
 echo "------------------------------------------------"
@@ -66,8 +68,8 @@ echo "-----------------------------------------------"
 echo ""
 
 if ! grep -q "^deb .*ppa:ondrej/php" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
-	add-apt-repository ppa:ondrej/php
-	apt-get update
+	add-apt-repository -y ppa:ondrej/php
+	apt-get -y update
 fi
 apt-get -y install curl php-cli php-mbstring git unzip php7.2 php7.2-curl php7.2-gd php7.2-mbstring php7.2-xml php7.2-json php7.2-mysql php7.2-opcache php7.2-fpm
 cd /var/www
@@ -95,8 +97,8 @@ if [ -z $domain ] ; then
 	ufw enable
 	ufw status
 
-	add-apt-repository ppa:certbot/certbot
-	apt-get update
+	add-apt-repository -y ppa:certbot/certbot
+	apt-get -y update
 	apt-get install -qy python-certbot-nginx
 	sudo certbot --nginx -d $domain
 fi
@@ -199,6 +201,7 @@ chmod +x drush.phar
 mv drush.phar /usr/local/bin/drush
 cd /var/www/multidasher/drupal
 drush upwd admin $drupalpassword
+drush cr
 composer install
 
 cp /var/www/multidasher/nginx/multidasher.cloud.nginx /etc/nginx/sites-enabled/multidasher

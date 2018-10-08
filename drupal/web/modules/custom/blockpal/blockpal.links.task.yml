@@ -17,12 +17,14 @@
 # options: (optional) An array of options to be passed to l() when generating
 #   a link from this menu item.
 
-blockpal.admin: # The first plugin ID
-  route_name: blockpal.form  
-  title: 'Settings'
-  base_route: blockpal.form
-blockpal.admin_3rd_party: # The second plugin ID
-  route_name: blockchain.findpeer
-  title: 'Third party services'
+blockpal.firsttab: # The first plugin ID
+  route_name: blockchain.firsttab  
+  title: 'TAB 1'
+  parent: system.admin_structure
+  base_route: blockchain.form
+blockpal.secondtab: # The second plugin ID
+  route_name: blockchain.secondtab  
+  title: 'TAB 2'
   base_route: blockchain.findpeer
+  parent: system.admin_structure
   weight: 100

@@ -98,26 +98,22 @@ echo "Add site to hosts								 "
 echo "-----------------------------------------------"
 echo ""
 
-if [ -z $domain ] ; then
-  echo "not setting up DNS settings"
-  else
-	echo '127.0.0.1	'$domain >> /etc/hosts
-	echo ""
-	echo "-----------------------------------------------"
-	echo "Install certbot 								 "
-	echo "-----------------------------------------------"
-	echo ""
-	ufw allow OpenSSH
-	ufw allow in 443/tcp comment "https: for certbot"
-	ufw allow 'Nginx HTTP'
-	ufw enable
-	ufw status
+echo '127.0.0.1	'$domain >> /etc/hosts
+echo ""
+echo "-----------------------------------------------"
+echo "Install certbot 								 "
+echo "-----------------------------------------------"
+echo ""
+ufw allow OpenSSH
+ufw allow in 443/tcp comment "https: for certbot"
+ufw allow 'Nginx HTTP'
+ufw enable
+ufw status
 
-	add-apt-repository -y ppa:certbot/certbot
-	apt-get -y update
-	apt-get install -qy python-certbot-nginx
-	sudo certbot --nginx -d $domain
-fi
+add-apt-repository -y ppa:certbot/certbot
+apt-get -y update
+apt-get install -qy python-certbot-nginx
+sudo certbot --nginx -d $domain
 
 echo ""
 echo "-----------------------------------------------"

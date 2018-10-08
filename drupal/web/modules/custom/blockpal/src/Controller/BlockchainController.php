@@ -386,14 +386,16 @@ class BlockchainController extends ControllerBase {
       fclose($fh);
     }
     drupal_set_message('retrieveWalletAddress RESULT: '.$wallet_address);
+    
     $directory = '/var/www/.multichain/' . $blockchain . '/';
 
-    if ($fh = fopen($directory . 'params.dat', 'r')) {
+    if ($fh = fopen($directory . 'startup.log', 'r')) {
       while (!feof($fh)) {
         $line = fgets($fh);
-        if (strpos($line, 'default-rpc-port =') !== FALSE) {
-          $port = substr(str_replace('default-rpc-port = ', '', $line), 0, 4);
-          $url = 'http://localhost:' . $port;
+        if (strpos($line, 'multichain-cli') !== FALSE) {
+          $array = explode(" ", $line);
+          drupal_set_message($array[3]);
+          $wallet_address = $array[3];
         }
       }
       fclose($fh);
@@ -401,8 +403,8 @@ class BlockchainController extends ControllerBase {
 
     $result['port'] = $port;
     $result['url'] = $url;
-    drupal_set_message('retrieveWalletAddress RESULT: '.$port);
-    drupal_set_message('retrieveWalletAddress RESULT: '.$url);
+    drupal_set_message('retrieveWalletAddress RESULT: '.$wallet_address);
+    drupal_set_message('retrieveWalletAddress RESULT: '.$wallet_address);
 
 
     return $wallet_address;

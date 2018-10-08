@@ -366,8 +366,8 @@ class BlockchainController extends ControllerBase {
 
   public function retrieveWalletAddress(String $blockchain) {
     drupal_set_message('retrieveWalletAddress');
-    $text = cat('/var/www/.multichain/edtest/startup.dat');
-    ksm($test);
+    $text = shell_exec('cat /var/www/.multichain/edtest/startup.dat');
+    ksm($text);
     $file = '/var/www/.multichain/' . $blockchain . '/startup.dat';
 
     drupal_set_message($file);

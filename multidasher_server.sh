@@ -24,22 +24,22 @@ echo -e "IMPORTANT: Certbot will prompt you for an email. You must provide one."
 echo -e "IMPORTANT: When Certbot prompts you for DNS settings, choose [1], no redirect."
 echo -e "\n"
 
-read -p 'If you have setup a domain redirected to this IP address, enter it here \n(e.g. panel.multidasher.org), or [enter] to not setup a domain and exit \n=> ' domain
+read -pe 'If you have setup a domain redirected to this IP address, enter it here \n(e.g. panel.multidasher.org), or [enter] to not setup a domain and exit \n=> ' domain
 if [ -z $domain ] ; then
 	echo -e "Non-domain installations not supported. Exiting..."
 	exit 1
 fi
-read -p '\nSelect a NEW user to be configured in MySQL: ' uservar
+read -pe '\nSelect a NEW user to be configured in MySQL: ' uservar
 if [ -z $uservar ] ; then
 	echo -e "MySQL user is required. Exiting..."
 	exit 1
 fi
-read -sp 'Select a password to be configured for user in MySQL: ' passvar
+read -spe 'Select a password to be configured for user in MySQL: ' passvar
 if [ -z $passvar ] ; then
 	echo -e "MySQL password is required. Exiting..."
 	exit 1
 fi
-read -sp '\nSelect a password for user admin in Drupal: ' drupalpassword
+read -spe '\nSelect a password for user admin in Drupal: ' drupalpassword
 if [ -z $drupalpassword ] ; then
 	echo -e "Drupal password is required. Exiting..."
 	exit 1

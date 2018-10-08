@@ -372,15 +372,15 @@ class BlockchainController extends ControllerBase {
     if ($fh = fopen($directory, 'r')) {
       while (!feof($fh)) {
         $line = fgets($fh);
-        if (strpos($line, 'Minimal blockchain parameter set is created, default address: ') !== FALSE) {
-          $wallet_address = preg_replace('/\s+/', '', subscr($line, -38));
+        if (strpos($line, 'multichain-cli') !== FALSE) {
+          $array = explode(" ", $line);
+          $wallet_address = $array[3];
         }
       fclose($fh);
       }
     return $wallet_address;
     }
   }
-
 
   /**
    *

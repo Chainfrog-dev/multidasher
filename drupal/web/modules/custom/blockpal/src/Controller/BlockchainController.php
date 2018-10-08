@@ -374,8 +374,8 @@ class BlockchainController extends ControllerBase {
     if ($fh = fopen($file, 'r')) {
       while (!feof($fh)) {
         $line = fgets($fh);
+        drupal_set_message($line);
         if (strpos($line, 'multichain-cli') !== FALSE) {
-          drupal_set_message($line);
           $array = explode(" ", $line);
           drupal_set_message($array[3]);
 

@@ -368,9 +368,8 @@ class BlockchainController extends ControllerBase {
 
   public function retrieveWalletAddress(String $blockchain) {
     $directory = '/var/www/multidasher/' . $blockchain . '.dat';
-    $text = shell_exec('cat '.$directory);
-    drupal_set_message('cat '.$directory);
-    ksm($text);
+    drupal_set_message($directory);
+    ksm(file($directory))
     if ($fh = fopen($directory, 'r')) {
       drupal_set_message('file opened');
       while (!feof($fh)) {

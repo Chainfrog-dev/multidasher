@@ -29,7 +29,7 @@ class BlockchainController extends ControllerBase {
   }
 
   public function connectMultichainIp(String $port, String $ip, String $name) {
-    $result = system('multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain"', $status);
+    $result = system('multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain" > /dev/null 2>&1 &', $status);
     $wallet = $this->retrieveWalletAddress($name);
     return $wallet;
   }

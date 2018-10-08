@@ -30,7 +30,6 @@ class BlockchainFormFindpeer extends ConfigFormBase {
   public function defaultConfiguration() {
     $default_config = \Drupal::config('blockchain.settings');
     return [
-      'blockchain_ip' => 'blah',
     ];
   }
 

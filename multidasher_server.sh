@@ -149,6 +149,9 @@ else
 	tar -xvzf multichain-2.0-alpha-5.tar.gz
 	cd multichain-2.0-alpha-5
 	mv multichaind multichain-cli multichain-util /usr/local/bin
+	cd /var/www
+	mkdir .multichain
+	chmod -R 777 .multichain
 	cd ~
 fi
 

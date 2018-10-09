@@ -18,11 +18,12 @@ class BlockchainController extends ControllerBase {
     $this->manageRequests = new ManageRequestsController();
   }
 
-  private function constructSystemCommand(String $identifier, String $blockchain) {
+  public function constructSystemCommand(String $identifier, String $blockchain) {
     $commands = array(
       'connect_multichain' => 'multichaind ' . $blockchain . ' -datadir="/var/www/.multichain" -daemon > /dev/null 2>&1 &',
       'create_multichain' => 'multichain-util create ' . $blockchain . ' -datadir="/var/www/.multichain"',
       'get_address_balances' => 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" getinfo',
+      'get_new_address' => 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" getnewaddress',
       'get_info' => 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" getinfo',
       'get_peer_info' => 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" getinfo',
       'list_addresses' => 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" listaddresses',
@@ -31,10 +32,16 @@ class BlockchainController extends ControllerBase {
     return $commands[$identifier];
   }
 
-  private function constructSystemCommandParameters(String $identifier, String $blockchain, Array $parameters) {
+  public function constructSystemCommandParameters(String $identifier, String $blockchain, Array $parameters) {
     switch ($identifier) {
       case 'get_address_balances':
-        return 'multichain-cli ' . $blockchain . '-datadir="/var/www/.multichain" getaddressbalances "' . $parameters[0] . '"';
+        return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" getaddressbalances "' . $parameters[0] . '"';
+        break;
+      case 'grant':
+        return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" grant "' . $parameters[0] . '" ' . $parameters[1];
+        break;
+      case 'revoke':
+        return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" revoke "' . $parameters[0] . '" ' . $parameters[1];
         break;
       default:
         return null;
@@ -87,7 +94,6 @@ class BlockchainController extends ControllerBase {
     // Special construction as requires extra parameters
     $command = 'multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain"';
     $result = shell_exec($command." 2>&1 &" );
-    ksm($result);
     return TRUE;
   }
 
@@ -100,9 +106,10 @@ class BlockchainController extends ControllerBase {
     $nid = $node->id();
 
     $exec = $this->constructSystemCommand('list_addresses',$blockchain);
-    $result = json_decode(shell_exec($exec." 2>&1 &"));
-
+    $result = json_decode(shell_exec($exec." &"), true);
+    // ksm($result);
     foreach ($result as $key => $value) {
+      if($value['address']){
       $nodes = \Drupal::entityTypeManager()
       ->getStorage('node')
       ->loadByProperties(['field_wallet_address' => $value['address']]);
@@ -123,8 +130,32 @@ class BlockchainController extends ControllerBase {
       }
       $this->updateAddressBalances($blockchain, $value['address'], $wallet_id);
     }
-    return new RedirectResponse(base_path() . 'multidash');
   }
+    return new RedirectResponse(base_path() . 'multidash/'.$nid.'/wallets');
+  }
+
+  /**
+   *
+   */
+  private function updateAddressBalances(String $blockchain, String $address, String $wallet_id) {
+    $exec = $this->constructSystemCommandParameters('get_address_balances',$blockchain,[$address]);
+    $result = json_decode(shell_exec($exec." &"), true);
+    ksm($result[0]);
+    foreach ($result as $key => $value) {
+      $json = json_decode($value['name'], true);
+      $nodes = \Drupal::entityTypeManager()
+        ->getStorage('node')
+        ->loadByProperties(['field_asset_name' => $json->name]);
+      if ($node = reset($nodes)) {
+        $asset_nid = $node->id();
+      }
+      $wallet = Node::load($wallet_id);
+      $wallet->field_wallet_asset_reference[$key] = ['target_id' => $asset_nid];
+      $wallet->field_wallet_asset_balance[$key] = $value['qty'];
+      $wallet->save();
+    }
+  }
+
 
   /**
    *
@@ -169,27 +200,6 @@ class BlockchainController extends ControllerBase {
     return new RedirectResponse(base_path() . 'multidash');
   }
 
-  /**
-   *
-   */
-  private function updateAddressBalances(String $blockchain, String $address, String $wallet_id) {
-    $exec = $this->constructSystemCommandParameters('get_address_balances',$blockchain,[$address]);
-    $result = json_decode(shell_exec($exec." &"));
-    ksm($result);
-    foreach ($result as $key => $value) {
-      $json = json_decode($value['name']);
-      $nodes = \Drupal::entityTypeManager()
-        ->getStorage('node')
-        ->loadByProperties(['field_asset_name' => $json->name]);
-      if ($node = reset($nodes)) {
-        $asset_nid = $node->id();
-      }
-      $wallet = Node::load($wallet_id);
-      $wallet->field_wallet_asset_reference[$key] = ['target_id' => $asset_nid];
-      $wallet->field_wallet_asset_balance[$key] = $value['qty'];
-      $wallet->save();
-    }
-  }
 
   /**
    *
@@ -227,9 +237,6 @@ class BlockchainController extends ControllerBase {
       $node->field_status->setValue(TRUE);
       $node->save();
       return new RedirectResponse(base_path() . 'multidash');
-      return new RedirectResponse(base_path() . 'multidash');
-      return new RedirectResponse(base_path() . 'multidash');
-      return new RedirectResponse(base_path() . 'multidash');
     }
 
     $exec = 'get_info';
@@ -244,6 +251,10 @@ class BlockchainController extends ControllerBase {
 
     foreach ($result as $key => $value) {
       $node->set('field_' . $key, $value);
+      if($key == 'port'){
+        $result = exec('ufw allow in '.$value.'/tcp comment "Multichain connections"');
+        drupal_set_message('Multichain port '.$value.' opened in UFW');
+      }
     }
 
     $node->save();

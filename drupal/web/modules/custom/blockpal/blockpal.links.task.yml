@@ -17,6 +17,13 @@
 # options: (optional) An array of options to be passed to l() when generating
 #   a link from this menu item.
 
+
+blockpal.tab_0:
+  title: Dashboard
+  route_name: view.dashboard.page_1
+  base_route: blockchain.form
+  weight: 0
+
 blockpal.tab_1:
   route_name : blockchain.form
   title: Create new MultiChain
@@ -28,3 +35,20 @@ blockpal.tab_2:
   title: Connect to existing MultiChain
   base_route: blockchain.form
   weight: 20
+
+blockpal.tab_3:
+  title: Create new Wallet address
+  route_name: node.add
+  base_route: blockchain.form
+  route_parameters:
+    node_type: 'blockchain_wallet'
+  weight: 30
+
+blockpal.tab_4:
+  title: Create new Digital Asset
+  route_name: node.add
+  base_route: blockchain.form
+  route_parameters:
+    node_type: 'blockchain_asset'
+  weight: 30
+

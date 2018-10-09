@@ -12,7 +12,7 @@ class ReadStdoutController extends ControllerBase {
   /**
   *
   */
-  private function retrieveUserPassword(String $blockchain) {
+  public function retrieveUserPassword(String $blockchain) {
     $directory = '/var/www/.multichain/' . $blockchain . '/';
 
     if ($fh = fopen($directory . 'multichain.conf', 'r')) {
@@ -58,7 +58,7 @@ class ReadStdoutController extends ControllerBase {
   /**
    *
    */
-  private function retrievePortUrl(String $blockchain) {
+  public function retrievePortUrl(String $blockchain) {
     $directory = '/var/www/.multichain/' . $blockchain . '/';
 
     if ($fh = fopen($directory . 'params.dat', 'r')) {

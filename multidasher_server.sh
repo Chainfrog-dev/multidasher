@@ -179,7 +179,6 @@ else
 	mv multichaind multichain-cli multichain-util /usr/local/bin
 	cd /var/www
 	mkdir .multichain
-	chmod -R 777 .multichain
 	cd ~
 fi
 
@@ -238,6 +237,7 @@ drush cr
 cp /var/www/multidasher/nginx/multidasher.cloud.nginx /etc/nginx/sites-enabled/multidasher
 sed -i -e 's/CHANGEME/'$domain'/g' /etc/nginx/sites-enabled/multidasher
 rm /etc/nginx/sites-enabled/default
+chmod -R 777 /var/www/.multichain
 
 service nginx restart
 

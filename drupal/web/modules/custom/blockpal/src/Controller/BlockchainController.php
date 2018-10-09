@@ -29,7 +29,7 @@ class BlockchainController extends ControllerBase {
   }
 
   public function connectMultichainIp(String $port, String $ip, String $name) {
-    system('multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain" > /var/www/multidasher/'.$name.'.dat 2>&1 &', $status);
+    system('multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain" -debug > /var/www/multidasher/'.$name.'.dat 2>&1 &', $status);
     drupal_set_message('multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain" > /var/www/multidasher/'.$name.'.dat 2>&1 &');
     drupal_set_message($status);
     return $status;

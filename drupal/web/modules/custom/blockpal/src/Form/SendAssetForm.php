@@ -45,33 +45,10 @@ class SendAssetForm extends FormBase {
       '#prefix' => '<h2>Address Book</h2>',
     ];
 
-    // Default settings.
-    $view = Views::getView('recipients');
-    if (is_object($view)) {
-        $view->setArguments(['1334']);
-        $view->setDisplay('default');
-        $view->preExecute();
-        $view->execute();
-        $result = $view->result;
-        if($result){
-        foreach ($result as $key => $value) {
-          $node = Node::load(($value->nid));
-          $title = $node->label();
-          $address = $node->field_recipient_wallet_address->getString();
-          $asset = Node::load($node->field_recipient_asset->getString());
-          $asset_title = $asset->label();
-          $form['text_area'][$title]['#markup'] = '<div class="row">Title: '.$title.'</div><div class="row">Address: '.$address.'</div><div class="row">Asset: '.$asset_title.'</div>';
-          $form['text_area'][$title]['#prefix'] = '<h3>'.$title.'</h3>';
-          $form['text_area'][$title]['#suffix'] = '</br>';
-        }
-      }
-    }
-
     $form['ajax_wrapper'] = [
       '#type' => 'container',
       '#attributes' => ['id' => 'ajax-wrapper'],
     ];
-
 
     $blockchains = $this->loadBlockchainOptions();
     $options = array_flip($blockchains);
@@ -157,6 +134,28 @@ class SendAssetForm extends FormBase {
         'id' => ['select-asset'],
       ],
     ];
+        // Default settings.
+    $view = Views::getView('recipients');
+    if (is_object($view)) {
+        $view->setArguments([$form_state->getValue('select_blockchain')]);
+        $view->setDisplay('default');
+        $view->preExecute();
+        $view->execute();
+        $result = $view->result;
+        if($result){
+        foreach ($result as $key => $value) {
+          $node = Node::load(($value->nid));
+          $title = $node->label();
+          $address = $node->field_recipient_wallet_address->getString();
+          $asset = Node::load($node->field_recipient_asset->getString());
+          $asset_title = $asset->label();
+          $form['ajax_wrapper']['text_area'][$title]['#markup'] = '<div class="row">Title: '.$title.'</div><div class="row">Address: '.$address.'</div><div class="row">Asset: '.$asset_title.'</div>';
+          $form['ajax_wrapper']['text_area'][$title]['#prefix'] = '<h3>'.$title.'</h3>';
+          $form['ajax_wrapper']['text_area'][$title]['#suffix'] = '</br>';
+        }
+      }
+    }
+
     $form_state->setRebuild(TRUE);
     return $form['ajax_wrapper'];
   }
@@ -239,9 +238,10 @@ class SendAssetForm extends FormBase {
 
     $parameters[0] = $form_state->getValue('select_address');
     $parameters[1] = $form_state->getValue('select_recipient');
-    $parameters[2] = "9-264-17915";
+    $parameters[2] = $form_state->getValue('asset');
     $parameters[3] = +$form_state->getValue('quantity');
     $result = $this->execute->executeRequest($blockchain,'sendassetfrom',$parameters);
+    ksm($result);
   }
 
 

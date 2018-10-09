@@ -231,9 +231,9 @@ wget -O drush.phar https://github.com/drush-ops/drush-launcher/releases/download
 chmod +x drush.phar
 mv drush.phar /usr/local/bin/drush
 cd /var/www/multidasher/drupal
+composer install
 drush upwd admin $drupalpassword
 drush cr
-composer install
 
 cp /var/www/multidasher/nginx/multidasher.cloud.nginx /etc/nginx/sites-enabled/multidasher
 sed -i -e 's/CHANGEME/'$domain'/g' /etc/nginx/sites-enabled/multidasher

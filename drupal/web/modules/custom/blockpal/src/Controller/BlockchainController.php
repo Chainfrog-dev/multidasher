@@ -5,38 +5,91 @@ namespace Drupal\blockpal\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\node\Entity\Node;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\blockpal\Controller\ReadStdoutController;
+use Drupal\blockpal\Controller\ManageRequestsController;
 
 /**
  * Defines BlockchainController class.
  */
 class BlockchainController extends ControllerBase {
 
+  public function __construct() {
+    $this->readStdout = new ReadStdoutController();
+    $this->manageRequests = new ManageRequestsController();
+  }
+
+  private function constructSystemCommand(String $identifier, String $blockchain) {
+    $commands = array(
+      'connect_multichain' => 'multichaind ' . $blockchain . ' -datadir="/var/www/.multichain" -daemon > /dev/null 2>&1 &',
+      'create_multichain' => 'multichain-util create ' . $blockchain . ' -datadir="/var/www/.multichain"',
+      'get_address_balances' => 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" getinfo',
+      'get_info' => 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" getinfo',
+      'get_peer_info' => 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" getinfo',
+      'list_addresses' => 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" listaddresses',
+      'stop_multichain' => 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" stop',
+    );
+    return $commands[$identifier];
+  }
+
+  private function constructSystemCommandParameters(String $identifier, String $blockchain, Array $parameters) {
+    switch ($identifier) {
+      case 'get_address_balances':
+        return 'multichain-cli ' . $blockchain . '-datadir="/var/www/.multichain" getaddressbalances "' . $parameters[0] . '"';
+        break;
+      default:
+        return null;
+        break;
+    }  
+  }
+
   /**
    *
    */
   public function launchMultichain(String $blockchain) {
-    $launch_util = $this->launchMultichainUtil($blockchain);
-    $launch_daemon = $this->launchMultichainDaemon($blockchain);
-    return TRUE;
+    $exec = $this->constructSystemCommand('create_multichain',$blockchain);
+    $result = shell_exec($exec." &");
+    drupal_set_message($result);
+
+    $exec = $this->constructSystemCommand('connect_multichain',$blockchain);
+    $result = shell_exec($exec." &");
+    drupal_set_message($result);
+
+    return new RedirectResponse(base_path() . 'multidash');
   }
+
+  /**
+   *
+   */
+  public function startMultichainDaemon(String $nodeId = '') {
+    $node = $this->blockpalNodeLoad($nodeId);
+    $blockchain = $node->field_blockchain_id->getString();
+
+    $exec = $this->constructSystemCommand('connect_multichain',$blockchain);
+    $result = shell_exec($exec." 2>&1 &");
+    drupal_set_message($result);
+
+    return new RedirectResponse(base_path() . 'multidash');
+  }
+
 
   /**
    *
    */
   public function checkMultichainStatus(String $blockchain) {
-    system('multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" listaddresses', $status);
-    return $status;
+    $exec = $this->constructSystemCommand('list_addresses',$blockchain);
+    $result = shell_exec($exec." 2>&1 &");
+    drupal_set_message($result);
+
+    return $result;
   }
 
   public function connectMultichainIp(String $port, String $ip, String $name) {
-    $command = 'multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain" -debug';
-    $result = shell_exec( $command." 2>&1 &" );
+    // Special construction as requires extra parameters
+    $command = 'multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain"';
+    $result = shell_exec($command." 2>&1 &" );
     ksm($result);
     return TRUE;
-    // multichaind edtest@207.154.216.254:2893 -datadir="/var/www/.multichain" > ./debug.log 2>&1 & 
   }
-
-
 
   /**
    *
@@ -46,12 +99,13 @@ class BlockchainController extends ControllerBase {
     $blockchain = $node->field_blockchain_id->getString();
     $nid = $node->id();
 
-    $result = $this->executeRequest($blockchain, 'listaddresses', []);
+    $exec = $this->constructSystemCommand('list_addresses',$blockchain);
+    $result = json_decode(shell_exec($exec." 2>&1 &"));
 
-    foreach ($result['result'] as $key => $value) {
+    foreach ($result as $key => $value) {
       $nodes = \Drupal::entityTypeManager()
-        ->getStorage('node')
-        ->loadByProperties(['field_wallet_address' => $value['address']]);
+      ->getStorage('node')
+      ->loadByProperties(['field_wallet_address' => $value['address']]);
       if (!$node = reset($nodes)) {
         $node = Node::create(['type' => 'blockchain_wallet']);
         $node->set('title', $value['address']);
@@ -79,33 +133,11 @@ class BlockchainController extends ControllerBase {
     $node = $this->blockpalNodeLoad('');
     $blockchain = $node->field_blockchain_id->getString();
     $blockchain_nid = $node->id();
-    // $result = $this->executeRequest($blockchain, 'getpeerinfo', []);.
-    $result['result'][0] = json_decode('{
-        "id" : 144085,
-        "addr" : "172.31.23.199:1985",
-        "addrlocal" : "172.31.18.153:37104",
-        "services" : "0000000000000001",
-        "lastsend" : 1538571441,
-        "lastrecv" : 1538571441,
-        "bytessent" : 6741887,
-        "bytesrecv" : 6745862,
-        "conntime" : 1537528933,
-        "pingtime" : 0.00694,
-        "version" : 70002,
-        "subver" : "/MultiChain:0.2.0.4/",
-        "handshakelocal" : "1YCwzVAKXWQHivLUygx9QRgCx1yjmnQzhBcuJG",
-        "handshake" : "177a32Rif1KVsjCMyQjHmNTWPaUhT8Hwo7US7u",
-        "inbound" : false,
-        "startingheight" : 29,
-        "banscore" : 0,
-        "synced_headers" : 200,
-        "synced_blocks" : -1,
-        "inflight" : [
-        ],
-        "whitelisted" : false
-    }');
 
-    foreach ($result['result'] as $key => $value) {
+    $exec = $this->constructSystemCommand('get_peer_info', $blockchain);
+    $result = json_decode(shell_exec($exec." &"));
+
+    foreach ($result as $key => $value) {
 
       $nodes = \Drupal::entityTypeManager()
         ->getStorage('node')
@@ -117,6 +149,7 @@ class BlockchainController extends ControllerBase {
         $node->set('field_peer_id', $value->id);
         $node->field_peer_blockchain_ref = ['target_id' => $blockchain_nid];
       }
+
       else {
 
         $node = Node::create(['type' => 'blockchain_peer']);
@@ -140,42 +173,22 @@ class BlockchainController extends ControllerBase {
    *
    */
   private function updateAddressBalances(String $blockchain, String $address, String $wallet_id) {
-    $result = $this->executeRequest($blockchain, 'getaddressbalances', [$address]);
-
-    foreach ($result['result'] as $key => $value) {
-
+    $exec = $this->constructSystemCommandParameters('get_address_balances',$blockchain,[$address]);
+    $result = json_decode(shell_exec($exec." &"));
+    ksm($result);
+    foreach ($result as $key => $value) {
       $json = json_decode($value['name']);
-
       $nodes = \Drupal::entityTypeManager()
         ->getStorage('node')
         ->loadByProperties(['field_asset_name' => $json->name]);
-
       if ($node = reset($nodes)) {
         $asset_nid = $node->id();
       }
-
       $wallet = Node::load($wallet_id);
       $wallet->field_wallet_asset_reference[$key] = ['target_id' => $asset_nid];
       $wallet->field_wallet_asset_balance[$key] = $value['qty'];
       $wallet->save();
-
     }
-  }
-
-  /**
-   *
-   */
-  public function launchMultichainUtil(String $blockchain) {
-    system('multichain-util create ' . $blockchain . ' -datadir="/var/www/.multichain"', $status);
-    return $status;
-  }
-
-  /**
-   *
-   */
-  public function launchMultichainDaemon(String $blockchain) {
-    system('multichaind ' . $blockchain . ' -datadir="/var/www/.multichain" -daemon > /dev/null 2>&1 &', $status);
-    return $status;
   }
 
   /**
@@ -184,20 +197,10 @@ class BlockchainController extends ControllerBase {
   public function stopMultichainDaemon(String $nodeId = '') {
     $node = $this->blockpalNodeLoad($nodeId);
     $blockchain = $node->field_blockchain_id->getString();
-    system('multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" stop', $status);
+    $exec = $this->constructSystemCommand('stop_multichain',$blockchain);
+    $result = shell_exec($exec." &");
+    drupal_set_message($result);
     $node->field_status->setValue(FALSE);
-    $node->save();
-    return new RedirectResponse(base_path() . 'multidash');
-  }
-
-  /**
-   *
-   */
-  public function startMultichainDaemon(String $nodeId = '') {
-    $node = $this->blockpalNodeLoad($nodeId);
-    $blockchain = $node->field_blockchain_id->getString();
-    $result = system('multichaind ' . $blockchain . ' -datadir="~/.multichain" -daemon > /dev/null 2>&1 &');
-    $node->field_status->setValue(TRUE);
     $node->save();
     return new RedirectResponse(base_path() . 'multidash');
   }
@@ -207,51 +210,46 @@ class BlockchainController extends ControllerBase {
    */
   public function updateParameters() {
     $node = $this->blockpalNodeLoad('');
+    $type_name = $node->type->entity->label();
     $status = $node->field_status->getValue();
+    $blockchain = $node->field_blockchain_id->getString();
 
-    if (!$node) {
-
+    if (!$node || $type_name !== 'Blockchain') {
       drupal_set_message('Failed to load node', 'error');
       return new RedirectResponse(base_path() . 'multidash');
-
     }
 
     if ($status[0]['value'] == FALSE) {
-
+      $exec = 'connect_multichain';
+      $command = $this->constructSystemCommand($exec, $blockchain);
       drupal_set_message('Starting blockchain, Please try again', 'error');
-      $this->startMultichainDaemon($node->id());
-      return new RedirectResponse(base_path() . 'multidash');
-
-    }
-
-    $type_name = $node->type->entity->label();
-    if ($type_name == 'Blockchain') {
-
-      $userPasswordObject = $this->retrieveUserPassword($node->field_blockchain_id->getString());
-      $user = $userPasswordObject['user'];
-      $password = $userPasswordObject['password'];
-
-      $portUrlObject = $this->retrievePortUrl($node->field_blockchain_id->getString());
-      $port = $portUrlObject['port'];
-      $url = $portUrlObject['url'];
-
-      $payload = $this->preparePayload('getinfo');
-      $result = $this->sendRequest($url, $payload, $user, $password);
-
-      if (!$result['result']) {
-        drupal_set_message('No results returned, something went wrong', 'error');
-        return new RedirectResponse(base_path() . 'multidash');
-      }
-
-      foreach ($result['result'] as $key => $value) {
-        $node->set('field_' . $key, $value);
-      }
-
+      $result = shell_exec($command." 2>&1 &");
+      $node->field_status->setValue(TRUE);
       $node->save();
-      drupal_set_message("Node with nid " . $node->id() . " saved!\n");
       return new RedirectResponse(base_path() . 'multidash');
-
+      return new RedirectResponse(base_path() . 'multidash');
+      return new RedirectResponse(base_path() . 'multidash');
+      return new RedirectResponse(base_path() . 'multidash');
     }
+
+    $exec = 'get_info';
+    $parameters = [];
+    $command = $this->constructSystemCommand($exec, $blockchain);
+    $result = json_decode(shell_exec($command." &"));
+
+    if (!$result) {
+      drupal_set_message('No results returned, something went wrong', 'error');
+      return new RedirectResponse(base_path() . 'multidash');
+    }
+
+    foreach ($result as $key => $value) {
+      $node->set('field_' . $key, $value);
+    }
+
+    $node->save();
+    drupal_set_message("Node with nid " . $node->id() . " saved!\n");
+    return new RedirectResponse(base_path() . 'multidash');
+
   }
 
   /**
@@ -289,125 +287,5 @@ class BlockchainController extends ControllerBase {
     }
   }
 
-  /**
-   *
-   */
-  public function executeRequest(String $blockchain, String $command, array $parameters) {
-    $userPasswordObject = $this->retrieveUserPassword($blockchain);
-    $user = $userPasswordObject['user'];
-    $password = $userPasswordObject['password'];
-
-    $portUrlObject = $this->retrievePortUrl($blockchain);
-    $port = $portUrlObject['port'];
-    $url = $portUrlObject['url'];
-
-    $payload = $this->preparePayload($command, $parameters);
-    $response = $this->sendRequest($url, $payload, $user, $password);
-
-    return $response;
-  }
-
-  /**
-   *
-   */
-  private function preparePayload(String $method, array $params = []) {
-
-    return json_encode([
-      'id' => time(),
-      'method' => $method,
-      'params' => $params,
-    ]);
-
-  }
-
-  /**
-   *
-   */
-  private function sendRequest($url, $payload, $user, $password) {
-    $ch = curl_init($url);
-
-    curl_setopt($ch, CURLOPT_POST, TRUE);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($ch, CURLOPT_USERPWD, $user . ':' . $password);
-
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-      'Content-Type: application/json',
-      'Content-Length: ' . strlen($payload),
-    ]);
-
-    $response = curl_exec($ch);
-    $result = json_decode($response, TRUE);
-    return $result;
-  }
-
-  /**
-   *
-   */
-  private function retrieveUserPassword(String $blockchain) {
-    $directory = '/var/www/.multichain/' . $blockchain . '/';
-
-    if ($fh = fopen($directory . 'multichain.conf', 'r')) {
-      while (!feof($fh)) {
-        $line = fgets($fh);
-        if (strpos($line, 'rpcuser=') !== FALSE) {
-          $user = preg_replace('/\s+/', '', str_replace('rpcuser=', '', $line));
-        }
-        if (strpos($line, 'rpcpassword=') !== FALSE) {
-          $password = preg_replace('/\s+/', '', str_replace('rpcpassword=', '', $line));
-        }
-      }
-      fclose($fh);
-    }
-
-    $result['user'] = $user;
-    $result['password'] = $password;
-
-    return $result;
-  }
-
-  public function retrieveWalletAddress(String $blockchain) {
-    $directory = '/var/www/multidasher/' . $blockchain . '.dat';
-    drupal_set_message($directory);
-    ksm(file($directory));
-    if ($fh = fopen($directory, 'r')) {
-      drupal_set_message('file opened');
-      while (!feof($fh)) {
-        $line = fgets($fh);
-        drupal_set_message('LINE '.$line);
-        if (strpos($line, 'multichain-cli') !== FALSE) {
-          $array = explode(" ", $line);
-          $wallet_address = $array[3];
-        }
-      }
-      fclose($fh);
-    }
-
-    drupal_set_message('retrieveWalletAddress RESULT: '.$wallet_address);
-    return $wallet_address;
-  }
-
-  /**
-   *
-   */
-  private function retrievePortUrl(String $blockchain) {
-    $directory = '/var/www/.multichain/' . $blockchain . '/';
-
-    if ($fh = fopen($directory . 'params.dat', 'r')) {
-      while (!feof($fh)) {
-        $line = fgets($fh);
-        if (strpos($line, 'default-rpc-port =') !== FALSE) {
-          $port = substr(str_replace('default-rpc-port = ', '', $line), 0, 4);
-          $url = 'http://localhost:' . $port;
-        }
-      }
-      fclose($fh);
-    }
-
-    $result['port'] = $port;
-    $result['url'] = $url;
-
-    return $result;
-  }
 
 }

@@ -54,4 +54,3 @@ blockchain.update-peers:
     _title: 'Get Peers'
   requirements:
     _role: 'administrator'
-

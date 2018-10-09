@@ -1,5 +1,0 @@
-blockpal.form:
-  title: 'Blockpal settings'
-  description: 'Configure settings for the Lorem Ipsum module.'
-  route_name: blockchain.form
-  parent: 'system.admin_config_development'

@@ -1,0 +1,63 @@
+multidasher.form:
+  path: '/admin/config/development/multidasher'
+  defaults:
+    _form: '\Drupal\multidasher\Form\BlockchainForm'
+    _title: 'Create a new multidasher'
+  requirements:
+    _role: 'administrator'
+multidasher.findpeer:
+  path: '/admin/config/development/multidasher/findpeer'
+  defaults:
+    _form: '\Drupal\multidasher\Form\BlockchainFormFindpeer'
+    _title: 'Find Peer'
+  requirements:
+    _role: 'administrator'
+multidasher.send_asset_form:
+  path: '/admin/config/development/multidasher/sendasset'
+  defaults:
+    _title: 'Send Asset Form'
+    _form: '\Drupal\multidasher\Form\SendAssetForm'
+  requirements:
+    _role: 'administrator'
+multidasher.update-parameters:
+  path: '/multidasher/{node}/update-parameters'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\BlockchainController::updateParameters'
+    _title: 'update-parameters'
+  requirements:
+    _role: 'administrator'
+multidasher.start-multidasher:
+  path: '/multidasher/{node}/start-multidasher'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\BlockchainController::startMultichainDaemon'
+    _title: 'start-multidasher'
+  requirements:
+    _role: 'administrator'
+multidasher.launch-multidasher:
+  path: '/multidasher/launch-multidasher'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\BlockchainController::launchMultichain'
+    _title: 'Launch-multidasher'
+  requirements:
+    _role: 'administrator'
+multidasher.stop-multidasher:
+  path: '/multidasher/{node}/stop-multidasher'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\BlockchainController::stopMultichainDaemon'
+    _title: 'Launch-multidasher'
+  requirements:
+    _role: 'administrator'
+multidasher.update-addresses:
+  path: '/multidasher/{node}/update-addresses'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\BlockchainController::updateAddresses'
+    _title: 'List Addresses'
+  requirements:
+    _role: 'administrator'
+multidasher.update-peers:
+  path: '/multidasher/{node}/update-peers'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\BlockchainController::getPeerInfo'
+    _title: 'Get Peers'
+  requirements:
+    _role: 'administrator'

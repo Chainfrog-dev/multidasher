@@ -1,0 +1,5 @@
+multidasher.form:
+  title: 'multidasher settings'
+  description: 'Configure settings for the Lorem Ipsum module.'
+  route_name: multidasher.form
+  parent: 'system.admin_config_development'

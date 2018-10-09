@@ -1,0 +1,14 @@
+{
+  "name": "drupal//var/www/multidasher/drupal/web/modules/custom/multidasher",
+  "type": "drupal-module",
+  "description": "Multichain integration for Drupal",
+  "keywords": ["Drupal"],
+  "license": "GPL-2.0+",
+  "homepage": "https://www.drupal.org/project/multidasher",
+  "minimum-stability": "dev",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/multidasher",
+    "source": "http://cgit.drupalcode.org/multidasher"
+  },
+  "require": { }
+}

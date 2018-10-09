@@ -50,6 +50,8 @@ class ManageRequestsController extends ControllerBase {
    *
    */
   private function sendRequest($url, $payload, $user, $password) {
+    ksm($url);
+    ksm($payload);
     $ch = curl_init($url);
 
     curl_setopt($ch, CURLOPT_POST, TRUE);

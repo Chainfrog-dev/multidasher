@@ -22,8 +22,8 @@ class BlockchainController extends ControllerBase {
     $commands = array(
       'connect_multichain' => 'multichaind ' . $blockchain . ' -datadir="/var/www/.multichain" -daemon > /dev/null 2>&1 &',
       'create_multichain' => 'multichain-util create ' . $blockchain . ' -datadir="/var/www/.multichain"',
-      'get_address_balances' => 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" getinfo',
       'get_new_address' => 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" getnewaddress',
+      'get_balances' => 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" getmultibalances',      
       'get_info' => 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" getinfo',
       'get_peer_info' => 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" getinfo',
       'list_addresses' => 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" listaddresses',
@@ -61,7 +61,7 @@ class BlockchainController extends ControllerBase {
     $result = shell_exec($exec." &");
     drupal_set_message($result);
 
-    return new RedirectResponse(base_path() . 'multidash');
+    return new RedirectResponse(base_path() . 'multidasher');
   }
 
   /**
@@ -75,7 +75,7 @@ class BlockchainController extends ControllerBase {
     $result = shell_exec($exec." 2>&1 &");
     drupal_set_message($result);
 
-    return new RedirectResponse(base_path() . 'multidash');
+    return new RedirectResponse(base_path() . 'multidasher');
   }
 
 
@@ -107,31 +107,19 @@ class BlockchainController extends ControllerBase {
 
     $exec = $this->constructSystemCommand('list_addresses',$blockchain);
     $result = json_decode(shell_exec($exec." &"), true);
-    // ksm($result);
+    if(!$result) return new RedirectResponse(base_path() . 'multidasher/'.$nid.'/wallets');;
     foreach ($result as $key => $value) {
       if($value['address']){
       $nodes = \Drupal::entityTypeManager()
       ->getStorage('node')
       ->loadByProperties(['field_wallet_address' => $value['address']]);
-      if (!$node = reset($nodes)) {
-        $node = Node::create(['type' => 'blockchain_wallet']);
-        $node->set('title', $value['address']);
-        $node->set('field_wallet_ismine', TRUE);
-        $node->set('field_wallet_address', $value['address']);
-        $node->field_wallet_blockchain_ref->target_id = $nid;
-        $node->set('uid', 1);
-        $node->status = 1;
-        $node->enforceIsNew();
-        $node->save();
-        $wallet_id = $node->id();
-      }
       if ($node = reset($nodes)) {
         $wallet_id = $node->id();
+        $this->updateAddressBalances($blockchain, $value['address'], $wallet_id);
       }
-      $this->updateAddressBalances($blockchain, $value['address'], $wallet_id);
     }
   }
-    return new RedirectResponse(base_path() . 'multidash/'.$nid.'/wallets');
+    return new RedirectResponse(base_path() . 'multidasher/'.$nid.'/wallets');
   }
 
   /**
@@ -140,19 +128,22 @@ class BlockchainController extends ControllerBase {
   private function updateAddressBalances(String $blockchain, String $address, String $wallet_id) {
     $exec = $this->constructSystemCommandParameters('get_address_balances',$blockchain,[$address]);
     $result = json_decode(shell_exec($exec." &"), true);
-    ksm($result[0]);
+
     foreach ($result as $key => $value) {
       $json = json_decode($value['name'], true);
-      $nodes = \Drupal::entityTypeManager()
-        ->getStorage('node')
-        ->loadByProperties(['field_asset_name' => $json->name]);
-      if ($node = reset($nodes)) {
-        $asset_nid = $node->id();
+      ksm($json);
+      if($json['name']){
+        $nodes = \Drupal::entityTypeManager()
+          ->getStorage('node')
+          ->loadByProperties(['field_asset_name' => $json['name']]);
+        if ($node = reset($nodes)) {
+          $asset_nid = $node->id();
+          $wallet = Node::load($wallet_id);
+          $wallet->field_wallet_asset_reference[$key] = ['target_id' => $asset_nid];
+          $wallet->field_wallet_asset_balance[$key] = $value['qty'];
+          $wallet->save();
+        }
       }
-      $wallet = Node::load($wallet_id);
-      $wallet->field_wallet_asset_reference[$key] = ['target_id' => $asset_nid];
-      $wallet->field_wallet_asset_balance[$key] = $value['qty'];
-      $wallet->save();
     }
   }
 
@@ -197,7 +188,7 @@ class BlockchainController extends ControllerBase {
       $node->save();
 
     }
-    return new RedirectResponse(base_path() . 'multidash');
+    return new RedirectResponse(base_path() . 'multidasher');
   }
 
 
@@ -212,7 +203,7 @@ class BlockchainController extends ControllerBase {
     drupal_set_message($result);
     $node->field_status->setValue(FALSE);
     $node->save();
-    return new RedirectResponse(base_path() . 'multidash');
+    return new RedirectResponse(base_path() . 'multidasher');
   }
 
   /**
@@ -226,7 +217,7 @@ class BlockchainController extends ControllerBase {
 
     if (!$node || $type_name !== 'Blockchain') {
       drupal_set_message('Failed to load node', 'error');
-      return new RedirectResponse(base_path() . 'multidash');
+      return new RedirectResponse(base_path() . 'multidasher');
     }
 
     if ($status[0]['value'] == FALSE) {
@@ -236,7 +227,7 @@ class BlockchainController extends ControllerBase {
       $result = shell_exec($command." 2>&1 &");
       $node->field_status->setValue(TRUE);
       $node->save();
-      return new RedirectResponse(base_path() . 'multidash');
+      return new RedirectResponse(base_path() . 'multidasher');
     }
 
     $exec = 'get_info';
@@ -246,7 +237,7 @@ class BlockchainController extends ControllerBase {
 
     if (!$result) {
       drupal_set_message('No results returned, something went wrong', 'error');
-      return new RedirectResponse(base_path() . 'multidash');
+      return new RedirectResponse(base_path() . 'multidasher');
     }
 
     foreach ($result as $key => $value) {
@@ -259,7 +250,7 @@ class BlockchainController extends ControllerBase {
 
     $node->save();
     drupal_set_message("Node with nid " . $node->id() . " saved!\n");
-    return new RedirectResponse(base_path() . 'multidash');
+    return new RedirectResponse(base_path() . 'multidasher');
 
   }
 

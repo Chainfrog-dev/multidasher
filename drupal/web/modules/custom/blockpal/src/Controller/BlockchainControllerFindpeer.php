@@ -59,7 +59,7 @@ class BlockchainController extends ControllerBase {
       }
       $this->updateAddressBalances($blockchain, $value['address'], $wallet_id);
     }
-    return new RedirectResponse(base_path() . 'multidash');
+    return new RedirectResponse(base_path() . 'multidasher');
   }
 
   /**
@@ -123,7 +123,7 @@ class BlockchainController extends ControllerBase {
       $node->save();
 
     }
-    return new RedirectResponse(base_path() . 'multidash');
+    return new RedirectResponse(base_path() . 'multidasher');
   }
 
   /**
@@ -177,7 +177,7 @@ class BlockchainController extends ControllerBase {
     system('multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" stop', $status);
     $node->field_status->setValue(FALSE);
     $node->save();
-    return new RedirectResponse(base_path() . 'multidash');
+    return new RedirectResponse(base_path() . 'multidasher');
   }
 
   /**
@@ -189,7 +189,7 @@ class BlockchainController extends ControllerBase {
     $result = system('multichaind ' . $blockchain . ' -datadir="~/.multichain" -daemon > /dev/null 2>&1 &');
     $node->field_status->setValue(TRUE);
     $node->save();
-    return new RedirectResponse(base_path() . 'multidash');
+    return new RedirectResponse(base_path() . 'multidasher');
   }
 
   /**
@@ -202,7 +202,7 @@ class BlockchainController extends ControllerBase {
     if (!$node) {
 
       drupal_set_message('Failed to load node', 'error');
-      return new RedirectResponse(base_path() . 'multidash');
+      return new RedirectResponse(base_path() . 'multidasher');
 
     }
 
@@ -210,7 +210,7 @@ class BlockchainController extends ControllerBase {
 
       drupal_set_message('Starting blockchain, Please try again', 'error');
       $this->startMultichainDaemon($node->id());
-      return new RedirectResponse(base_path() . 'multidash');
+      return new RedirectResponse(base_path() . 'multidasher');
 
     }
 
@@ -230,7 +230,7 @@ class BlockchainController extends ControllerBase {
 
       if (!$result['result']) {
         drupal_set_message('No results returned, something went wrong', 'error');
-        return new RedirectResponse(base_path() . 'multidash');
+        return new RedirectResponse(base_path() . 'multidasher');
       }
 
       foreach ($result['result'] as $key => $value) {
@@ -239,7 +239,7 @@ class BlockchainController extends ControllerBase {
 
       $node->save();
       drupal_set_message("Node with nid " . $node->id() . " saved!\n");
-      return new RedirectResponse(base_path() . 'multidash');
+      return new RedirectResponse(base_path() . 'multidasher');
 
     }
   }

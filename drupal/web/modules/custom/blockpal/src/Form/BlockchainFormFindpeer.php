@@ -39,7 +39,6 @@ class BlockchainFormFindpeer extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Default settings.
     // Form constructor.
-
     $form = parent::buildForm($form, $form_state);
     $config = $this->config('blockchain.settings');
     drupal_set_message($config->get('blockchain_ip'));

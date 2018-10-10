@@ -146,37 +146,37 @@ class BlockchainController extends ControllerBase {
 
     $exec = $this->constructSystemCommand('get_peer_info', $blockchain);
     $result = json_decode(shell_exec($exec." &"));
+    ksm($result);
+    // foreach ($result as $key => $value) {
 
-    foreach ($result as $key => $value) {
+    //   $nodes = \Drupal::entityTypeManager()
+    //     ->getStorage('node')
+    //     ->loadByProperties(['field_peer_address' => $value->addr]);
 
-      $nodes = \Drupal::entityTypeManager()
-        ->getStorage('node')
-        ->loadByProperties(['field_peer_address' => $value->addr]);
+    //   if ($node = reset($nodes)) {
+    //     $node->set('field_peer_address', $value->addr);
+    //     $node->set('field_peer_address_local', $value->addrlocal);
+    //     $node->set('field_peer_id', $value->id);
+    //     $node->field_peer_blockchain_ref = ['target_id' => $blockchain_nid];
+    //   }
 
-      if ($node = reset($nodes)) {
-        $node->set('field_peer_address', $value->addr);
-        $node->set('field_peer_address_local', $value->addrlocal);
-        $node->set('field_peer_id', $value->id);
-        $node->field_peer_blockchain_ref = ['target_id' => $blockchain_nid];
-      }
+    //   else {
 
-      else {
+    //     $node = Node::create(['type' => 'blockchain_peer']);
+    //     $node->set('title', $value->id);
+    //     $node->set('field_peer_address', $value->addr);
+    //     $node->set('field_peer_address_local', $value->addrlocal);
+    //     $node->set('field_peer_id', $value->id);
+    //     $node->field_peer_blockchain_ref = ['target_id' => $blockchain_nid];
+    //     $node->status = 1;
+    //     $node->enforceIsNew();
 
-        $node = Node::create(['type' => 'blockchain_peer']);
-        $node->set('title', $value->id);
-        $node->set('field_peer_address', $value->addr);
-        $node->set('field_peer_address_local', $value->addrlocal);
-        $node->set('field_peer_id', $value->id);
-        $node->field_peer_blockchain_ref = ['target_id' => $blockchain_nid];
-        $node->status = 1;
-        $node->enforceIsNew();
+    //   }
 
-      }
+    //   $node->save();
 
-      $node->save();
-
-    }
-    return new RedirectResponse(base_path() . 'multidasher');
+    // }
+    // return new RedirectResponse(base_path() . 'multidasher');
   }
 
 

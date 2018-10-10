@@ -45,7 +45,7 @@ class BlockchainControllerFindpeer extends ControllerBase {
     //     "whitelisted" : false
     // }');
 
-    foreach ($result['result'] as $key => $value) {
+    foreach ($result as $key => $value) {
 
       $nodes = \Drupal::entityTypeManager()
         ->getStorage('node')

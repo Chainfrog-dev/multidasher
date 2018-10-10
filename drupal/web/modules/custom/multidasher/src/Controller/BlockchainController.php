@@ -146,7 +146,6 @@ class BlockchainController extends ControllerBase {
 
     $exec = $this->constructSystemCommand('get_peer_info', $blockchain);
     $result = json_decode(shell_exec($exec." &"),true);
-    ksm($result);
     foreach ($result as $key => $value) {
 
       $nodes = \Drupal::entityTypeManager()

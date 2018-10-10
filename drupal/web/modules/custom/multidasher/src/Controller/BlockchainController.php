@@ -145,7 +145,7 @@ class BlockchainController extends ControllerBase {
     $blockchain_nid = $node->id();
 
     $exec = $this->constructSystemCommand('get_peer_info', $blockchain);
-    $result = json_decode(shell_exec($exec." &"));
+    $result = json_decode(shell_exec($exec." &"),true);
     ksm($result);
     // foreach ($result as $key => $value) {
 
@@ -176,7 +176,7 @@ class BlockchainController extends ControllerBase {
     //   $node->save();
 
     // }
-    // return new RedirectResponse(base_path() . 'multidasher');
+    return new RedirectResponse(base_path() . 'multidasher');
   }
 
 

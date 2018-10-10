@@ -56,12 +56,7 @@ class BlockchainController extends ControllerBase {
     $exec = $this->constructSystemCommand('create_multichain',$blockchain);
     $result = shell_exec($exec." &");
     drupal_set_message($result);
-
-    $exec = $this->constructSystemCommand('connect_multichain',$blockchain);
-    $result = shell_exec($exec." &");
-    drupal_set_message($result);
-
-    return new RedirectResponse(base_path() . 'multidasher');
+    return new RedirectResponse(base_path() . 'multidasher/'.$blockchain.'/form/edit_params');
   }
 
   /**
@@ -88,13 +83,6 @@ class BlockchainController extends ControllerBase {
     drupal_set_message($result);
 
     return $result;
-  }
-
-  public function connectMultichainIp(String $port, String $ip, String $name) {
-    // Special construction as requires extra parameters
-    $command = 'multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain"';
-    $result = shell_exec($command." 2>&1 &" );
-    return TRUE;
   }
 
   /**

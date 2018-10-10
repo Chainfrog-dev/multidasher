@@ -61,3 +61,11 @@ multidasher.update-peers:
     _title: 'Get Peers'
   requirements:
     _role: 'administrator'
+multidasher.edit_params:
+  path: '/multidasher/{name}/form/edit_params'
+  defaults:
+    _form: '\Drupal\multidasher\Form\EditParams'
+    _title: 'EditParams'
+  requirements:
+    _access: 'TRUE'
+  

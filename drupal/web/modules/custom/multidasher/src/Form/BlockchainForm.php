@@ -85,11 +85,11 @@ class BlockchainForm extends ConfigFormBase {
     $result = $form_state->getValue('blockchain_name');
     drupal_set_message($result);
 
-    $this->multichain->launchMultichain(t($result));
+    $this->multichain->launchMultichain($result);
     $this->loadBlockchainOptions();
-    drupal_set_message('worked');
-    $url = Url::fromRoute('view.dashboard.page_1');
+    $url = Url::fromRoute('multidasher.edit_params',['name' => $form_state->getValue('blockchain_name')]);
     $form_state->setRedirectUrl($url);
+
   }
 
   /**

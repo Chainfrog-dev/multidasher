@@ -27,21 +27,21 @@ multidasher.update-parameters:
   requirements:
     _role: 'administrator'
 multidasher.start-multidasher:
-  path: '/multidasher/{node}/start-multidasher'
+  path: '/multidasher/{node}/start-blockchain'
   defaults:
     _controller: '\Drupal\multidasher\Controller\BlockchainController::startMultichainDaemon'
     _title: 'start-multidasher'
   requirements:
     _role: 'administrator'
 multidasher.launch-multidasher:
-  path: '/multidasher/launch-multidasher'
+  path: '/multidasher/launch-blockchain'
   defaults:
     _controller: '\Drupal\multidasher\Controller\BlockchainController::launchMultichain'
     _title: 'Launch-multidasher'
   requirements:
     _role: 'administrator'
 multidasher.stop-multidasher:
-  path: '/multidasher/{node}/stop-multidasher'
+  path: '/multidasher/{node}/stop-blockchain'
   defaults:
     _controller: '\Drupal\multidasher\Controller\BlockchainController::stopMultichainDaemon'
     _title: 'Launch-multidasher'

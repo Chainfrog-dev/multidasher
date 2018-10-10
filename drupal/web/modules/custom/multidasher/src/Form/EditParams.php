@@ -86,6 +86,20 @@ class EditParams extends FormBase {
     $result = shell_exec($exec." &");
     drupal_set_message($result);
 
+    $node = Node::create(['type' => 'params']);
+    $node->set('title', $blockchain.'_params');
+    $node->set('body', $form_state->getValue('params'));
+
+    $nodes = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->loadByProperties(['field_blockchain_id' => $blockchain]);
+    if ($blockchain_node = reset($nodes)) {
+      $nid = $blockchain_node->id();
+      $node->field_params_blockchain_ref = ['target_id' => $nid];
+    }
+    $node->status = 1;
+    $node->enforceIsNew();
+    $node->save();
     $url = Url::fromRoute('view.dashboard.page_1');
     $form_state->setRedirectUrl($url);
   }

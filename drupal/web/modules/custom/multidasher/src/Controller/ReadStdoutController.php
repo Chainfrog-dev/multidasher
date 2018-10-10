@@ -34,22 +34,38 @@ class ReadStdoutController extends ControllerBase {
     return $result;
   }
 
-  public function retrieveWalletAddress(String $blockchain) {
-    $directory = '/var/www/multidasher/' . $blockchain . '.dat';
-    drupal_set_message($directory);
-    ksm(file($directory));
-    if ($fh = fopen($directory, 'r')) {
-      drupal_set_message('file opened');
-      while (!feof($fh)) {
-        $line = fgets($fh);
-        drupal_set_message('LINE '.$line);
-        if (strpos($line, 'multichain-cli') !== FALSE) {
-          $array = explode(" ", $line);
-          $wallet_address = $array[3];
-        }
+  public function retrieveWalletAddress(String $message) {
+
+    $separator = "\r\n";
+    $line = strtok$message, $separator);
+
+    while ($line !== false) {
+      # do something with $line
+      $line = strtok( $separator );
+      if (strpos($line, 'multichain-cli') !== FALSE) {
+        $array = explode(" ", $line);
+        $wallet_address = $array[3];
       }
-      fclose($fh);
     }
+
+    // drupal_set_message('retrieveWalletAddress RESULT: '.$wallet_address);
+    // return $wallet_address;
+
+    // $directory = '/var/www/.multichain/' . $blockchain . '.dat';
+    // drupal_set_message($directory);
+    // ksm(file($directory));
+    // if ($fh = fopen($directory, 'r')) {
+    //   drupal_set_message('file opened');
+    //   while (!feof($fh)) {
+    //     $line = fgets($fh);
+    //     drupal_set_message('LINE '.$line);
+    //     if (strpos($line, 'multichain-cli') !== FALSE) {
+    //       $array = explode(" ", $line);
+    //       $wallet_address = $array[3];
+    //     }
+    //   }
+    //   fclose($fh);
+    // }
 
     drupal_set_message('retrieveWalletAddress RESULT: '.$wallet_address);
     return $wallet_address;

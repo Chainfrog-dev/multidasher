@@ -86,7 +86,6 @@ class BlockchainFormFindpeer extends ConfigFormBase {
     $ip = $form_state->getValue('blockchain_ip');
     $name = $form_state->getValue('blockchain_name');
     $url = Url::fromRoute('view.dashboard.page_1');
-    $form_state->setRedirectUrl($url);
     $wallet = $this->readStdout->retrieveWalletAddress($name);
     $result = $this->findPeer->connectMultichainIp($port, $ip, $name);
     ksm($result);
@@ -96,10 +95,12 @@ class BlockchainFormFindpeer extends ConfigFormBase {
       ->set('blockchain_name', $form_state->getValue('blockchain_name'))
       ->save();
     drupal_set_message('RESULT: '.$wallet);
-    parent::submitForm($form, $form_state);
-    $exec = $this->multichain->constructSystemCommand('connect_multichain',$name);
-    $result = shell_exec($exec." &");
+    // $exec = $this->multichain->constructSystemCommand('connect_multichain',$name);
+    // $result = shell_exec($exec." &");
     drupal_set_message($result);
+
+    // $form_state->setRedirectUrl($url);
+    parent::submitForm($form, $form_state);
 
     // $this->multichain->createLoadNode($name);
     // $this->multichain->updateAddresses($name);

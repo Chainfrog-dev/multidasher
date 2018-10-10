@@ -86,6 +86,10 @@ class BlockchainFormFindpeer extends ConfigFormBase {
     $ip = $form_state->getValue('blockchain_ip');
     $name = $form_state->getValue('blockchain_name');
     $url = Url::fromRoute('view.dashboard.page_1');
+
+    $command = 'multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain"';
+    $result = shell_exec($command." 2>&1 &" );
+    ksm($result);
     $wallet = $this->readStdout->retrieveWalletAddress($name);
     $result = $this->findPeer->connectMultichainIp($port, $ip, $name);
     ksm($result);

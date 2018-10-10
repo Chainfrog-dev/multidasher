@@ -11,13 +11,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  */
 class BlockchainControllerFindpeer extends ControllerBase {
 
-  public function connectMultichainIp(String $port, String $ip, String $name) {
-    // Special construction as requires extra parameters
-    $command = 'multichaind '.$name.'@'.$ip.':'.$port.' -datadir="/var/www/.multichain"';
-    $result = shell_exec($command." 2>&1 &" );
-    return TRUE;
-  }
-
   /**
    *
    */

@@ -7,7 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 use Drupal\multidasher\Controller\BlockchainControllerFindpeer;
-use Drupal\multidasher\Controller\BlockchainControllerFindpeer;
 use Drupal\multidasher\Controller\ReadStdoutController;
 use Drupal\Core\Block\BlockPluginInterface;
 

@@ -66,8 +66,9 @@ class ReadStdoutController extends ControllerBase {
     //   }
     //   fclose($fh);
     // }
-
-    drupal_set_message('retrieveWalletAddress RESULT: '.$wallet_address);
+    if(!$wallet_address){
+      drupal_set_message('retrieveWalletAddress didnt get it', 'error');
+    }
     return $wallet_address;
   }
 

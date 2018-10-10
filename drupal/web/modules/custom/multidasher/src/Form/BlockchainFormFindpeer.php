@@ -91,7 +91,7 @@ class BlockchainFormFindpeer extends ConfigFormBase {
     $result = shell_exec($command." 2>&1 &" );
     ksm($result);
     $wallet = $this->readStdout->retrieveWalletAddress($name);
-    $result = $this->findPeer->connectMultichainIp($port, $ip, $name);
+    // $result = $this->findPeer->connectMultichainIp($port, $ip, $name);
     ksm($result);
     $this->config('blockchain.settings')
       ->set('blockchain_port', $form_state->getValue('blockchain_port'))

@@ -43,6 +43,7 @@ class BlockchainFormFindpeer extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Default settings.
     // Form constructor.
+    $config = $this->config('blockchain.settings');
     $form = parent::buildForm($form, $form_state);
     // Will print 'en'.
     // print $config->get('langcode');

@@ -37,7 +37,7 @@ class ReadStdoutController extends ControllerBase {
   public function retrieveWalletAddress(String $message) {
 
     $separator = "\r\n";
-    $line = strtok$message, $separator);
+    $line = strtok($message, $separator);
 
     while ($line !== false) {
       # do something with $line

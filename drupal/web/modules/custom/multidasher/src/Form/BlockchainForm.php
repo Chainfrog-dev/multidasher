@@ -106,7 +106,7 @@ class BlockchainForm extends ConfigFormBase {
    */
   protected function loadBlockchainOptions() {
     $directory = '/var/www/.multichain';
-    $scanned_directory = array_diff(scandir($directory), ['..', '.', '.cli_history', 'multichain.conf']);
+    $scanned_directory = array_diff(scandir($directory), ['..', '.', '.cli_history', 'multichain.conf','params.dat']);
     $nids = [];
     foreach ($scanned_directory as $key => $value) {
       $nids[$value] = $this->multichain->createLoadNode($value);

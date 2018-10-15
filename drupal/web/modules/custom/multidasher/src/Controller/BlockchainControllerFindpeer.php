@@ -20,30 +20,6 @@ class BlockchainControllerFindpeer extends ControllerBase {
     $blockchain_nid = $node->id();
     $result = $this->executeRequest($blockchain, 'getpeerinfo', []);
     ksm($result);
-    // $result['result'][0] = json_decode('{
-    //     "id" : 144085,
-    //     "addr" : "172.31.23.199:1985",
-    //     "addrlocal" : "172.31.18.153:37104",
-    //     "services" : "0000000000000001",
-    //     "lastsend" : 1538571441,
-    //     "lastrecv" : 1538571441,
-    //     "bytessent" : 6741887,
-    //     "bytesrecv" : 6745862,
-    //     "conntime" : 1537528933,
-    //     "pingtime" : 0.00694,
-    //     "version" : 70002,
-    //     "subver" : "/MultiChain:0.2.0.4/",
-    //     "handshakelocal" : "1YCwzVAKXWQHivLUygx9QRgCx1yjmnQzhBcuJG",
-    //     "handshake" : "177a32Rif1KVsjCMyQjHmNTWPaUhT8Hwo7US7u",
-    //     "inbound" : false,
-    //     "startingheight" : 29,
-    //     "banscore" : 0,
-    //     "synced_headers" : 200,
-    //     "synced_blocks" : -1,
-    //     "inflight" : [
-    //     ],
-    //     "whitelisted" : false
-    // }');
 
     foreach ($result as $key => $value) {
 

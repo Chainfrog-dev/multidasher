@@ -1,0 +1,164 @@
+/*Core style sheet variables and global styles go in here
+ Material colors*/
+ 
+$primary-color : #006363;
+$primary-color-lighter: lighten($primary-color, 15%);
+$primary-color-lighter-2: lighten($primary-color, 30%);
+$primary-color-darker: darken($primary-color, 15%); 
+$primary-color-darker-2: darken($primary-color, 30%); 
+$primary-font: "Roboto Condensed";
+$body-text: "Roboto";
+$bold-grey: #707070;
+$background-dark: #000000;
+$background-grey: #f0f0f0;
+$background-grey-light: #DCDCDC;
+$green-text: #009A9A;
+$small-text: 14px;
+
+h1,h2,h3,h4,h5,h6 {
+
+}
+
+h1 {
+	font-family: $primary-font;
+	color: $bold-grey;
+	font-size: 30px;
+}
+
+p, span, body {
+	font-family: $primary-font;
+	font-size: 18px;
+	color: $bold-grey
+}
+
+h2 {
+	font-family: $primary-font;
+	color: $bold-grey;
+	font-size: 20px;
+}
+
+
+// Global rules
+.pull-left {
+	float: left;
+}
+
+.pull-right {
+	float: right;
+}
+
+.fullwidth {
+	width: 100%;
+	margin: 10px 0;
+}
+
+.spacer {
+    margin: 20px 0;
+}
+
+.row {
+	padding: 7px 0;
+	border-top: solid 1px $background-grey-light;
+	span {
+		font-size: 20px;
+		color: $green-text;
+		font-weight: bold;
+	}
+	.inner-row.fullwidth span { 
+	  font-family: $primary-font;
+	  font-size: 18px;
+	  font-weight: normal;
+	  color: $bold-grey;
+	}
+}
+
+// Styles for injected CSS
+:host ::ng-deep .pull-right { 
+  float: right;
+}
+
+:host ::ng-deep span { 
+  font-family: $primary-font;
+  font-size: 18px;
+}
+
+:host ::ng-deep .pull-left { 
+  float: left;
+}
+
+:host ::ng-deep .inner-row.fullwidth { 
+  width: 100%;
+  float: left;
+  margin: 5px 0px 0;
+  padding: 5px 0 0;
+
+	&:first-of-type {
+		margin-top: 15px;
+	}
+	&:last-of-type {
+		margin-bottom: 15px;
+	}
+
+}
+
+.developer {
+	border: solid 5px red;
+    padding: 10px;
+    text-align: justify;
+    display: none;
+}
+
+@media only screen and (min-width: 840px) {
+
+	h2 {
+		margin: 0;
+		padding: 0;
+	}
+
+	section.main {
+		padding: 30px;
+		background: rgba(255, 255, 255, 0.9);
+	}
+
+	.container-fluid {
+		width: 100%;
+		&.hero {
+		    background-image: url(/assets/images/running_dog.jpg);
+		    background-position: center;
+		    background-repeat: no-repeat;
+		    background-size: cover;
+		    height: calc(100vh - 125px);
+		    overflow-y: auto;
+		    
+			.container__inner {
+				padding: 100px 0;
+				width: 1180px; 
+				margin: 0 auto;
+			}
+
+		}
+
+	}
+
+	.container__inner {
+		padding: 20px;
+	}
+
+}
+
+
+@media only screen and (max-width: 840px) {
+
+	.container-fluid {
+		width: 100%;
+		.main {
+		    min-height: calc(100vh - 181px);
+		}
+	}
+
+	.container__inner {
+		padding:  0 37px 65px 37px;
+	}
+
+}
+

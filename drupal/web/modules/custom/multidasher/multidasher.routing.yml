@@ -69,3 +69,57 @@ multidasher.edit_params:
   requirements:
     _access: 'TRUE'
   
+multidasher.export_blockchain:
+  path: '/multidasher/export/blockchain'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\JsonExportController::exportBlockchains'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+
+multidasher.export_load_info:
+  path: '/multidasher/export/{node}/load-status'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\JsonExportController::loadStatus'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+
+multidasher.export_load_wallets:
+  path: '/multidasher/export/{node}/load-wallets'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\JsonExportController::loadWallets'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+
+multidasher.export_get_total_balance:
+  path: '/multidasher/export/{node}/total-balance'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\JsonExportController::getTotalBalance'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+multidasher.launch_multichain:
+  path: '/multidasher/launch-blockchain/{blockchain}'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\JsonExportController::launchBlockchain'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+multidasher.submit_blockchain:
+  path: '/multidasher/submit-blockchain'
+  methods:  [POST]
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\JsonExportController::submitParams'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+multidasher.update_blockchain_options:
+  path: '/multidasher/update-blockchain-options'
+  methods:  [POST]
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\JsonExportController::updateBlockchainOptions'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'

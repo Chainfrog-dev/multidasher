@@ -1,0 +1,40 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport="true"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="!(isHandset$ | async)">
+    <mat-toolbar class="inner-menu">
+      <span class="menu-logo">
+          <a routerLink="/"><img src="../assets/images/multidasher.png" alt="Petmeddata logo"></a>
+      </span>
+    </mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item routerLink="dashboard">Dashboard</a>
+      <a mat-list-item routerLink="form">form</a>
+      <a mat-list-item routerLink="table">table</a>
+      <div class="linebreak"></div>
+      <a class="menu-item logout" (click)="logout()" mat-list-item href="#">Log out</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <div class="logo">
+        <span class="title">MultiDasher</span>
+        <p class="slogan">An open source tool to create, manage and send your digital assets</p>
+      </div>
+    </mat-toolbar>
+    <!-- Add Content Here -->
+    <router-outlet></router-outlet>   
+  </mat-sidenav-content>
+</mat-sidenav-container>

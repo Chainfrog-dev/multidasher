@@ -1,0 +1,74 @@
+/*Import global styles*/
+@import '../../core.scss';
+
+/*Styles for sidebar / header */
+.sidenav {
+    width: 300px;
+  	box-shadow: 3px 0 6px rgba(0,0,0,.24);
+  	padding: 37px 0px 0px 37px;
+    .mat-nav-list .mat-list-item {
+  		margin-left: -16px;
+  		background: white;
+	  	color: $primary-color;
+  		font-size: 22px;
+	  	font-family: $primary-font;
+	  	&.logout {
+	  		color: black;
+	  	}
+  	}
+}
+
+.mat-drawer-content {
+	background: $background-dark;
+	min-height: 100vh;
+}
+
+
+.logo {
+	text-align: center;
+	width: calc(100% - 80px);
+	.title {
+	    color: white;
+	    font-size: 40px;
+	}
+
+	.slogan {
+	    color: white;
+	    font-size: 22px;	    
+		display: inline-block;
+		margin-left: 20px;
+	}
+
+}
+
+
+.menu-logo {
+    float: left;
+    img {
+    	margin: 0 auto;
+        width: 185px;
+        display: block;
+    }
+}
+
+mat-toolbar {
+	padding: 0;
+	background-color: $background-grey;
+	&.inner-menu {
+		background-color: white;
+	}
+}
+
+.linebreak {
+    background: $background-grey-light;
+    height: 1.5px;
+    margin: 5px 0;
+    width: calc(100% - 30px);
+}
+
+@media only screen and (min-width: 840px) {
+}
+
+
+@media only screen and (max-width: 840px) {
+}

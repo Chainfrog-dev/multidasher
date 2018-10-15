@@ -1,0 +1,20 @@
+/*Import global styles*/
+@import '../../core.scss';
+
+table {
+  width: 100%;
+}
+
+.more-button {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+.dashboard-card-content {
+  text-align: center;
+}
+
+.cards__container {
+	padding: 40px 0;
+}

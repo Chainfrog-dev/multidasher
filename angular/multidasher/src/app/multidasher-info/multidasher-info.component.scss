@@ -1,0 +1,8 @@
+/*Import global styles*/
+@import '../../core.scss';
+
+span.pull-right {
+	position: absolute;
+	right: 0;
+	color: $black-text; 
+}

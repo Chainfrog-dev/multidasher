@@ -119,7 +119,6 @@ class BlockchainController extends ControllerBase {
 
     foreach ($result as $key => $value) {
       $json = json_decode($value['name'], true);
-      ksm($json);
       if($json['name']){
         $nodes = \Drupal::entityTypeManager()
           ->getStorage('node')

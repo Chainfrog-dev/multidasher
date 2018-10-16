@@ -7,6 +7,8 @@ use Drupal\node\Entity\Node;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Drupal\multidasher\Controller\BlockchainController;
 use Symfony\Component\HttpFoundation\Request;
+use Drupal\views\Views;
+
 
 
 /**
@@ -58,6 +60,7 @@ class JsonExportController extends ControllerBase {
     }
     if($response){
       $json_array['data']['status'] = 1;
+      $json_array['data']['info'] = json_decode($response);
       return new JsonResponse($json_array);
     }
   }
@@ -157,6 +160,48 @@ class JsonExportController extends ControllerBase {
     }
   }
 
+  public function exportWallets(String $nodeId = '') {
+    $json_array = array(
+      'data' => array()
+    );
+
+    $node = $this->multidasherNodeLoad($nodeId);
+    $blockchain = $node->field_blockchain_id->getString();
+    $nid = $node->id();
+
+        // Default settings.
+    $view = Views::getView('multidasher_wallet');
+    if (is_object($view)) {
+        $view->setArguments([$nid]);
+        $view->setDisplay('page_1');
+        $view->preExecute();
+        $view->execute();
+        $result = $view->result;
+        if($result){
+        foreach ($result as $key => $value) {
+          $wallet = Node::load(($value->nid));
+          $balance = array();
+          foreach ($wallet->field_wallet_asset_reference->getValue(['target_id']) as $key => $value) {
+            $asset = node::load($value['target_id']);
+            $balance_object = array(
+              'target_id' => $value['target_id'],
+              'value' => $wallet->field_wallet_asset_balance->getValue(['value'])[$key]['value'],
+              'name' => $asset->get('title')->value
+            );
+            array_push($balance,$balance_object);
+          }
+          $json_array['data'][$wallet->get('title')->value] = array(
+            'wallet_id' => $wallet->get('nid')->value,
+            'name' => $wallet->get('title')->value,
+            'address' => $wallet->get('title')->value,
+            'balance' => $balance,
+          );
+        }
+      }
+    }
+    return new JsonResponse($json_array);
+  }
+
 
     /**
    *
@@ -234,36 +279,54 @@ class JsonExportController extends ControllerBase {
     }
   }
 
+  public function addWallet(Request $request) {
+    $json_array = array(
+      'data' => array()
+    );
 
-  // /**
-  //  *
-  //  */
-  // private function returnWallets(String $blockchain, String $address, String $wallet_id) {
-  //   $exec = $this->blockchainController->constructSystemCommandParameters('get_address_balances',$blockchain,[$address]);
-  //   $result = json_decode(shell_exec($exec." &"), true);
+    $node = $this->multidasherNodeLoad('');
+    $blockchain = $node->field_blockchain_id->getString();
+    $blockchain_nid = $node->id();
 
-  //   foreach ($result as $key => $value) {
-  //     $json = json_decode($value['name'], true);
-  //     if($json['name']){
-  //       $nodes = \Drupal::entityTypeManager()
-  //         ->getStorage('node')
-  //         ->loadByProperties(['field_asset_name' => $json['name']]);
-  //       if ($node = reset($nodes)) {
-  //         $asset_nid = $node->id();
-  //         $wallet = Node::load($wallet_id);
-  //         $wallet->field_wallet_asset_reference[$key] = ['target_id' => $asset_nid];
-  //         $wallet->field_wallet_asset_balance[$key] = $value['qty'];
-  //         $wallet->save();
-  //       }
-  //     }
-  //   }
-  //   return $json;
-  // }
+    $params = array();
+    $content = $request->getContent();
 
+    if (!empty($content)) {
+      $params = json_decode($content, TRUE);
+    }
 
-  /**
-   *
-   */
+    $title = $params['title'];
+    $permissions_list = $params['permissions'];
+
+    $node = Node::load($entity->id());
+
+    $exec = 'get_new_address';
+    $multichain = new BlockchainController();
+    $command = $multichain->constructSystemCommand($exec, $blockchain);
+    $result = shell_exec($command." &");
+
+    $node = Node::create(['type' => 'blockchain_wallet']);
+    $node->set('title', $title);
+    $node->set('field_wallet_ismine', true);
+    $address =  preg_replace('/\s+/', '', $result);
+    $node->set('field_wallet_address', $address);
+    $node->field_wallet_blockchain_ref = ['target_id' => $blockchain_nid];
+    $node->status = 1;
+    $node->enforceIsNew();
+
+    // Grant permissions to wallet.
+    $exec = 'grant';
+    $parameters[0] = $address;
+    $parameters[1] = $permissions_list;
+
+    $request = new ManageRequestsController();
+    $message = $request->executeRequest($blockchain, 'grant', $parameters);
+    $node->save();
+    $json_array['data']['message'] = $message;
+    $json_array['status'] = 1;
+    return new JsonResponse($json_array);
+  }
+
   private function multidasherNodeLoad(String $nodeId) {
     if ($nodeId == '') {
       $route_match = \Drupal::service('current_route_match');

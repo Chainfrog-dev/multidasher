@@ -123,3 +123,18 @@ multidasher.update_blockchain_options:
     _title: 'JsonExport'
   requirements:
     _access: 'TRUE'
+multidasher.export_wallets:
+  path: '/multidasher/export/{node}/export-wallets'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\JsonExportController::exportWallets'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+multidasher.export_wallets:
+  path: '/multidasher/{node}/add-wallet'
+  methods:  [POST]
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\JsonExportController::addWallet'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'

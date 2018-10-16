@@ -32,7 +32,7 @@ export interface Blockchain {
 
 export class MultidasherTableComponent implements OnInit {
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns: string[] = ['name', 'wallets','balance', 'status'];
+  displayedColumns: string[] = ['name', 'wallets','balance', 'status', 'refresh', 'info'];
   dataSource = new MatTableDataSource();
   blockchainArray : Blockchain[] = [];
   active: boolean = false;
@@ -46,6 +46,7 @@ export class MultidasherTableComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource.sort = this.sort;
+    this.dataSource = new MatTableDataSource(this.blockchainArray);
     this.getBlockchains();
   }
 
@@ -61,24 +62,9 @@ export class MultidasherTableComponent implements OnInit {
           'wallets' : [],
           'balance' : []
         }
-
-      // Load the status
-      console.log(blockchain.id);
-      const status = await this.getStatus(blockchain.id);
-      console.log(status);
-      blockchain.status = status['data']['status'];
-
-      // Load the wallets
-      const wallets = await this.getWallets(blockchain.id);
-      blockchain.wallets = wallets;
-
-      const balances = await this.getTotalBalance(blockchain.id);
-      blockchain.balance = balances;
-
       this.blockchainArray.push(blockchain);
+      this.refreshBlockchain(blockchain);
     } 
-    console.log(this.blockchainArray);
-    this.dataSource = new MatTableDataSource(this.blockchainArray);
     this.active = true;
   }
 
@@ -108,16 +94,31 @@ export class MultidasherTableComponent implements OnInit {
     const response = await this.dataService.getTotalBalance(nid).toPromise();
     let balances : Currency[] = [];
     if(response['data']['total']){
-    console.log(response);
-    for(let data of response['data']['total']){
-      let balance : Currency = {
-        name: data['name']['name'],
-        balance: data['qty'],
+      for(let data of response['data']['total']){
+        let balance : Currency = {
+          name: data['name']['name'],
+          balance: data['qty'],
+        }
+        balances.push(balance);
       }
-      balances.push(balance);
     }
-  }
     return balances;
+  }
+
+  async refreshBlockchain(blockchain: Blockchain) {
+      // Load the status
+      const status = await this.getStatus(blockchain.id);
+      blockchain.status = status['data']['status'];
+
+      // Load the wallets
+      const wallets = await this.getWallets(blockchain.id);
+      blockchain.wallets = wallets;
+
+      const balances = await this.getTotalBalance(blockchain.id);
+      blockchain.balance = balances;
+
+      let tableItem = this.blockchainArray.filter(item => item['id'].indexOf(blockchain.id) === 0)[0];
+      tableItem = blockchain;
   }
 
 

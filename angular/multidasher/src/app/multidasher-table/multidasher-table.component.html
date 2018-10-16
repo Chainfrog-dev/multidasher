@@ -39,6 +39,22 @@
           </td>
         </ng-container>
 
+        <!-- Name Column -->
+        <ng-container matColumnDef="refresh">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Refresh</th>
+          <td mat-cell *matCellDef="let row">
+            <mat-icon aria-label="Side nav toggle icon">refresh</mat-icon>
+          </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="info">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>info</th>
+          <td mat-cell *matCellDef="let row">
+            <a routerLink="blockchain/{{row.id}}/view-info"><mat-icon aria-label="Side nav toggle icon">info</mat-icon></a>
+          </td>
+        </ng-container>
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>

@@ -16,6 +16,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatStepperModule } from '@angular/material/stepper';
 import { CreateBlockchainComponent } from './create-blockchain/create-blockchain.component';
+import { MultidasherInfoComponent } from './multidasher-info/multidasher-info.component';
+import { MultidasherWalletsComponent } from './multidasher-wallets/multidasher-wallets.component';
+import { CreateAddressComponent } from './create-address/create-address.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +27,10 @@ import { CreateBlockchainComponent } from './create-blockchain/create-blockchain
     MultidasherDashboardComponent,
     MultidasherFormComponent,
     MultidasherTableComponent,
-    CreateBlockchainComponent
+    CreateBlockchainComponent,
+    MultidasherInfoComponent,
+    MultidasherWalletsComponent,
+    CreateAddressComponent
   ],
   imports: [
     BrowserModule,
@@ -48,18 +54,22 @@ import { CreateBlockchainComponent } from './create-blockchain/create-blockchain
     HttpClientModule,
     FlexLayoutModule,
     MatStepperModule,
-    RouterModule.forRoot([
+    RouterModule.forRoot([ 
       {
-        path: 'dashboard',
-        component: MultidasherDashboardComponent
-      },
-      {
-        path: 'table',
+        path: '',
         component: MultidasherTableComponent
       },
       {
         path: 'form',
         component: MultidasherFormComponent
+      },
+      {
+        path: 'blockchain/:blockchainId/view-info',
+        component: MultidasherInfoComponent
+      },
+      {
+        path: 'blockchain/:blockchainId/wallets',
+        component: MultidasherWalletsComponent
       }
     ]),
 

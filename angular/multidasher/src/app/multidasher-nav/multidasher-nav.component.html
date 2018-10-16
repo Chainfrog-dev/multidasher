@@ -12,10 +12,22 @@
       </span>
     </mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item routerLink="dashboard">Dashboard</a>
-      <a mat-list-item routerLink="form">form</a>
-      <a mat-list-item routerLink="table">table</a>
+      <a mat-list-item routerLink="/">Home</a>
       <div class="linebreak"></div>
+      <div *ngIf="activeBlockchain == null">
+        <h3>Select your Blockchain</h3>
+        <div *ngFor="let blockchain of blockchainArray"><a mat-list-item routerLink="blockchain/{{blockchain.id}}/view-info">{{blockchain.name}}</a></div>
+      </div>
+      <div *ngIf="activeBlockchain !== null">
+        <h3>Manage your Blockchain</h3>
+        <a mat-list-item routerLink="blockchain/{{activeBlockchain}}/view-info">Overview</a>
+        <a mat-list-item routerLink="blockchain/{{activeBlockchain}}/view-info">Information</a>
+        <a mat-list-item routerLink="blockchain/{{activeBlockchain}}/view-info">Assets</a>
+        <a mat-list-item routerLink="blockchain/{{activeBlockchain}}/wallets">Wallets</a>
+        <a mat-list-item routerLink="blockchain/{{activeBlockchain}}/view-info">Transactions</a>
+        <a mat-list-item routerLink="blockchain/{{activeBlockchain}}/view-info">Recepients</a>
+        <a mat-list-item routerLink="blockchain/{{activeBlockchain}}/view-info">Actions</a>
+      </div>
       <a class="menu-item logout" (click)="logout()" mat-list-item href="#">Log out</a>
     </mat-nav-list>
   </mat-sidenav>

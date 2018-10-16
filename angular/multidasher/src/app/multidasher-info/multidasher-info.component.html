@@ -1,0 +1,11 @@
+<div class="container-fluid">
+  <div class="container__inner" id="top">
+		<mat-card class="example-card">
+		  <mat-card-content>
+			<mat-list>
+			  <div *ngFor="let item of infoArray"><mat-list-item>{{item.key}}<span class="pull-right">{{item.value}}</span></mat-list-item><mat-divider></mat-divider></div>
+			</mat-list>
+		  </mat-card-content>
+		</mat-card>
+	</div>
+</div>

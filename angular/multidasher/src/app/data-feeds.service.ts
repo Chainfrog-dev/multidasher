@@ -19,7 +19,6 @@ export class DataService {
   }
 
   getBlockchains() : Observable<promise> {
-  	console.log('executing');
     return this.http.get(
       this.host+'/multidasher/export/blockchain',
       {headers : new HttpHeaders(), 
@@ -28,7 +27,6 @@ export class DataService {
   }
 
   getBlockchainInfo(nid) : Observable<promise> {
-  	console.log('executing');
     return this.http.get(
       this.host+'/multidasher/export/'+nid+'/load-status',
       {headers : new HttpHeaders(), 
@@ -37,9 +35,8 @@ export class DataService {
   }
 
   getWallets(nid) : Observable<promise> {
-  	console.log('executing');
     return this.http.get(
-      this.host+'/multidasher/export/'+nid+'/load-wallets',
+      this.host+'/multidasher/export/'+nid+'/export-wallets',
       {headers : new HttpHeaders(), 
       responseType: 'json'}
     );

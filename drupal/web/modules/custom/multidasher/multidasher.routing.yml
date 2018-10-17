@@ -130,7 +130,14 @@ multidasher.export_wallets:
     _title: 'JsonExport'
   requirements:
     _access: 'TRUE'
-multidasher.export_wallets:
+multidasher.export_assets:
+  path: '/multidasher/export/{node}/export-assets'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\JsonExportController::exportAssets'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+multidasher.add_wallet:
   path: '/multidasher/{node}/add-wallet'
   methods:  [POST]
   defaults:

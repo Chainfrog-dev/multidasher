@@ -13,7 +13,13 @@
 			<mat-list>
 			  <div *ngFor="let wallet of wallets">
 			  	<mat-list-item>  
-			  	    <h4 mat-line>{{wallet.name}} <span class="pull-right"><mat-icon aria-label="Side nav toggle icon">account_balance</mat-icon><mat-icon aria-label="Side nav toggle icon">send</mat-icon></span></h4>
+			  	    <h4 mat-line>{{wallet.name}} | {{ wallet.address }}
+			  	    	<span class="pull-right">
+				  	    	<mat-icon aria-label="Side nav toggle icon">account_balance</mat-icon>
+				  	    	<mat-icon aria-label="Side nav toggle icon">send</mat-icon>
+				  	    	<mat-icon (click)="getWallets(blockchainId)" aria-label="Side nav toggle icon">refresh</mat-icon>
+				  	    </span>
+				  	</h4>
 				    <p mat-line *ngFor="let line of wallet.balance"> {{line.name}} | {{ line.value}}</p>
 				</mat-list-item>
 			  	<mat-divider></mat-divider>
@@ -33,22 +39,12 @@
 		      <mat-card fxFlex="360px" class="dashboard-card">
 		        <mat-card-header>
 		          <mat-card-title>
-		            Add a new blockchain
-		            <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
-		              <mat-icon>more_vert</mat-icon>
-		            </button>
-		            <mat-menu #menu="matMenu" xPosition="before">
-		              <button mat-menu-item>Create a new blockchain</button>
-		              <button mat-menu-item>View your existing blockchains</button>
-		            </mat-menu>
+		            <h2>Add a new wallet</h2>
 		          </mat-card-title>
 		        </mat-card-header>
 		        <mat-card-content class="dashboard-card-content">
 		        	<app-create-address></app-create-address>
 		        </mat-card-content>
-		        <mat-card-actions>
-		          <button mat-raised-button color="primary">Create now</button>
-		        </mat-card-actions>
 		      </mat-card>
 	     </div>
     </div>

@@ -121,52 +121,52 @@ function multidasher_node_insert(EntityInterface $entity) {
     }
   }
 
-  if ($entity->bundle() == 'blockchain_wallet') {
-    $node = Node::load($entity->id());
+  // if ($entity->bundle() == 'blockchain_wallet') {
+  //   $node = Node::load($entity->id());
 
-    foreach ($node->field_wallet_blockchain_ref as $item) {
-      if ($item->entity) {
-        $blockchain = $item->entity->label();
-      }
-    }
+  //   foreach ($node->field_wallet_blockchain_ref as $item) {
+  //     if ($item->entity) {
+  //       $blockchain = $item->entity->label();
+  //     }
+  //   }
 
-    $exec = 'get_new_address';
-    $multichain = new BlockchainController();
-    $command = $multichain->constructSystemCommand($exec, $blockchain);
-    drupal_set_message($command);
+  //   $exec = 'get_new_address';
+  //   $multichain = new BlockchainController();
+  //   $command = $multichain->constructSystemCommand($exec, $blockchain);
+  //   drupal_set_message($command);
 
-    $result = shell_exec($command." &");
-    drupal_set_message($result);
-    if(!$result){
-      drupal_set_message('something went wrong','error');
-      throw new \Exception('something went wrong');
-      return;
-    }
+  //   $result = shell_exec($command." &");
+  //   drupal_set_message($result);
+  //   if(!$result){
+  //     drupal_set_message('something went wrong','error');
+  //     throw new \Exception('something went wrong');
+  //     return;
+  //   }
 
-    $node->field_wallet_ismine->setValue(TRUE);
-    $address =  preg_replace('/\s+/', '', $result);
-    $node->field_wallet_address->setValue($address);
-    $node->title->setValue($address);
+  //   $node->field_wallet_ismine->setValue(TRUE);
+  //   $address =  preg_replace('/\s+/', '', $result);
+  //   $node->field_wallet_address->setValue($address);
+  //   $node->title->setValue($address);
 
-    $permissions_master_string = "activate,admin,connect,create,issue,mine,receive,send";
-    $permissions_master = explode(',', $permissions_master_string);
-    $permissions = $node->field_wallet_permissions->referencedEntities();
-    $permissions_list = [];
+  //   $permissions_master_string = "activate,admin,connect,create,issue,mine,receive,send";
+  //   $permissions_master = explode(',', $permissions_master_string);
+  //   $permissions = $node->field_wallet_permissions->referencedEntities();
+  //   $permissions_list = [];
 
-    foreach ($permissions as $key => $value) {
-      $permissions_list[$key] = $value->getName();
-    }
+  //   foreach ($permissions as $key => $value) {
+  //     $permissions_list[$key] = $value->getName();
+  //   }
 
-    // Grant permissions to wallet.
-    $grant = implode(',', $permissions_list);
-    $exec = 'grant';
-    $parameters[0] = $address;
-    $parameters[1] = $grant;
-    $request = new ManageRequestsController();
-    $request->executeRequest($blockchain, 'grant', $parameters);
-    // drupal_set_message($result);
-    // drupal_set_message($result);
+  //   // Grant permissions to wallet.
+  //   $grant = implode(',', $permissions_list);
+  //   $exec = 'grant';
+  //   $parameters[0] = $address;
+  //   $parameters[1] = $grant;
+  //   $request = new ManageRequestsController();
+  //   $request->executeRequest($blockchain, 'grant', $parameters);
+  //   // drupal_set_message($result);
+  //   // drupal_set_message($result);
 
-    $node->save();
-  }
+  //   $node->save();
+  // }
 }

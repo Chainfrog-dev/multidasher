@@ -1,0 +1,17 @@
+<form [formGroup]="addressForm" novalidate>
+      <div>
+          <mat-form-field class="fullwidth">
+            <input matInput placeholder="Wallet Name" formControlName="title">
+            <mat-hint>Add your wallet name here, the address will be created automatically</mat-hint>
+          </mat-form-field>
+      </div>
+      <div>
+          <div formArrayName="permissions" *ngFor="let category of addressForm.controls['permissions'].controls; let i = index">
+            <div class="checkbox">
+              <mat-checkbox type="checkbox" [formControlName]="i" color="primary"></mat-checkbox>
+              <label>{{ permissions[i] }}</label>
+            </div>
+          </div>
+      </div>
+      <button [disabled]="addressForm.controls['title'].invalid" (click)="submitForm()" mat-raised-button color="primary">Create Address</button>
+</form>

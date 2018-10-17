@@ -29,7 +29,6 @@ export class MultidasherWalletsComponent implements OnInit {
 		) { }
 
 	ngOnInit() {
-
 		this.blockchainId = this.route.snapshot.params['blockchainId'];
 		this.getWallets(this.blockchainId);
 	}
@@ -43,7 +42,9 @@ export class MultidasherWalletsComponent implements OnInit {
 				balance: response['data'][key]['balance'],
 				address: response['data'][key]['address']
 			}
-			this.wallets.push(wallet);
+	        if (this.wallets.filter(item=> item.id == wallet.id).length == 0){
+				this.wallets.push(wallet);
+	        }
 		}
 
 	}

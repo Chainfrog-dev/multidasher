@@ -42,6 +42,14 @@ export class DataService {
     );
   }
 
+  getAssets(nid) : Observable<promise> {
+    return this.http.get(
+      this.host+'/multidasher/export/'+nid+'/export-assets',
+      {headers : new HttpHeaders(), 
+      responseType: 'json'}
+    );
+  }
+
   getTotalBalance(nid) : Observable<promise> {
     return this.http.get(
       this.host+'/multidasher/export/'+nid+'/total-balance',
@@ -67,6 +75,19 @@ export class DataService {
     );
   }
 
+  addAddress(nid: String, title: String, permissions: String) : Observable<promise> {
+    const data = {
+      'title' : title,
+      'permissions' : permissions
+    }
+
+    return this.http.post(
+      this.host+'/multidasher/'+nid+'/add-wallet',
+      data,
+      {headers : new HttpHeaders(), 
+      responseType: 'json'}
+    );
+  }
 
   submitBlockchain(name: String,params:String) : Observable<promise> {
   	const data = {

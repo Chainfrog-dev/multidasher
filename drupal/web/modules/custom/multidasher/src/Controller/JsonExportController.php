@@ -193,7 +193,7 @@ class JsonExportController extends ControllerBase {
           $json_array['data'][$wallet->get('title')->value] = array(
             'wallet_id' => $wallet->get('nid')->value,
             'name' => $wallet->get('title')->value,
-            'address' => $wallet->get('title')->value,
+            'address' => $wallet->get('field_wallet_address')->value,
             'balance' => $balance,
           );
         }
@@ -202,10 +202,36 @@ class JsonExportController extends ControllerBase {
     return new JsonResponse($json_array);
   }
 
+  public function exportAssets(String $nodeId = '') {
+    $json_array = array(
+      'data' => array()
+    );
 
-    /**
-   *
-   */
+    $node = $this->multidasherNodeLoad($nodeId);
+    $blockchain = $node->field_blockchain_id->getString();
+    $nid = $node->id();
+
+        // Default settings.
+    $view = Views::getView('multidash_assets');
+    if (is_object($view)) {
+        $view->setArguments([$nid]);
+        $view->setDisplay('page_1');
+        $view->preExecute();
+        $view->execute();
+        $result = $view->result;
+        if($result){
+        foreach ($result as $key => $value) {
+          $asset = Node::load(($value->nid));
+          $json_array['data'][$asset->get('title')->value] = array(
+            'description' => $asset->get('field_asset_description')->value,
+            'name' => $asset->get('title')->value
+          );
+        }
+      }
+    }
+    return new JsonResponse($json_array);
+  }
+
   public function loadWallets(String $nodeId = '') {
     $json_array = array(
       'data' => array()
@@ -297,8 +323,6 @@ class JsonExportController extends ControllerBase {
 
     $title = $params['title'];
     $permissions_list = $params['permissions'];
-
-    $node = Node::load($entity->id());
 
     $exec = 'get_new_address';
     $multichain = new BlockchainController();

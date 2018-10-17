@@ -19,6 +19,8 @@ import { CreateBlockchainComponent } from './create-blockchain/create-blockchain
 import { MultidasherInfoComponent } from './multidasher-info/multidasher-info.component';
 import { MultidasherWalletsComponent } from './multidasher-wallets/multidasher-wallets.component';
 import { CreateAddressComponent } from './create-address/create-address.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MultidasherAssetsComponent } from './multidasher-assets/multidasher-assets.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,8 @@ import { CreateAddressComponent } from './create-address/create-address.componen
     CreateBlockchainComponent,
     MultidasherInfoComponent,
     MultidasherWalletsComponent,
-    CreateAddressComponent
+    CreateAddressComponent,
+    MultidasherAssetsComponent
   ],
   imports: [
     BrowserModule,
@@ -54,6 +57,7 @@ import { CreateAddressComponent } from './create-address/create-address.componen
     HttpClientModule,
     FlexLayoutModule,
     MatStepperModule,
+    MatCheckboxModule,
     RouterModule.forRoot([ 
       {
         path: '',
@@ -70,6 +74,10 @@ import { CreateAddressComponent } from './create-address/create-address.componen
       {
         path: 'blockchain/:blockchainId/wallets',
         component: MultidasherWalletsComponent
+      },
+      {
+        path: 'blockchain/:blockchainId/assets',
+        component: MultidasherAssetsComponent
       }
     ]),
 

@@ -36,7 +36,7 @@ To enable secure HTTPS connectivity (strongly recommended) you will need to set 
 
         $ sudo ./multidasher_server.sh
         
-3. Do some Drupal stuff
+3. Read the instructions that are shown at the beginning of running the install script, and follow them carefully.
 
 4. Go to `http://localhost:80` and you'll be asked to create an administrator account.
 

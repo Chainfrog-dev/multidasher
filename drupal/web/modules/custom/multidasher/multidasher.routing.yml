@@ -4,63 +4,63 @@ multidasher.form:
     _form: '\Drupal\multidasher\Form\BlockchainForm'
     _title: 'Create a new multidasher'
   requirements:
-    _role: 'administrator'
+    _access: 'TRUE'
 multidasher.findpeer:
   path: '/admin/config/development/multidasher/findpeer'
   defaults:
     _form: '\Drupal\multidasher\Form\BlockchainFormFindpeer'
     _title: 'Find Peer'
   requirements:
-    _role: 'administrator'
+    _access: 'TRUE'
 multidasher.send_asset_form:
   path: '/admin/config/development/multidasher/sendasset'
   defaults:
     _title: 'Send Asset Form'
     _form: '\Drupal\multidasher\Form\SendAssetForm'
   requirements:
-    _role: 'administrator'
+    _access: 'TRUE'
 multidasher.update-parameters:
   path: '/multidasher/{node}/update-parameters'
   defaults:
     _controller: '\Drupal\multidasher\Controller\BlockchainController::updateParameters'
     _title: 'update-parameters'
   requirements:
-    _role: 'administrator'
+    _access: 'TRUE'
 multidasher.start-multidasher:
   path: '/multidasher/{node}/start-blockchain'
   defaults:
     _controller: '\Drupal\multidasher\Controller\BlockchainController::startMultichainDaemon'
     _title: 'start-multidasher'
   requirements:
-    _role: 'administrator'
+    _access: 'TRUE'
 multidasher.launch-multidasher:
   path: '/multidasher/launch-blockchain'
   defaults:
     _controller: '\Drupal\multidasher\Controller\BlockchainController::launchMultichain'
     _title: 'Launch-multidasher'
   requirements:
-    _role: 'administrator'
+    _access: 'TRUE'
 multidasher.stop-multidasher:
   path: '/multidasher/{node}/stop-blockchain'
   defaults:
     _controller: '\Drupal\multidasher\Controller\BlockchainController::stopMultichainDaemon'
     _title: 'Launch-multidasher'
   requirements:
-    _role: 'administrator'
+    _access: 'TRUE'
 multidasher.update-addresses:
   path: '/multidasher/{node}/update-addresses'
   defaults:
     _controller: '\Drupal\multidasher\Controller\BlockchainController::updateAddresses'
     _title: 'List Addresses'
   requirements:
-    _role: 'administrator'
+    _access: 'TRUE'
 multidasher.update-peers:
   path: '/multidasher/{node}/update-peers'
   defaults:
     _controller: '\Drupal\multidasher\Controller\BlockchainController::getPeerInfo'
     _title: 'Get Peers'
   requirements:
-    _role: 'administrator'
+    _access: 'TRUE'
 multidasher.edit_params:
   path: '/multidasher/{name}/form/edit_params'
   defaults:
@@ -81,6 +81,22 @@ multidasher.export_load_info:
   path: '/multidasher/export/{node}/load-status'
   defaults:
     _controller: '\Drupal\multidasher\Controller\JsonExportController::loadStatus'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+
+multidasher.export_asset_transactions:
+  path: '/multidasher/export/{node}/load-transactions/{asset}'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\JsonExportController::loadAssetTransactions'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+
+multidasher.export_recepients:
+  path: '/multidasher/export/{node}/export-recepients'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\JsonExportController::exportRecepients'
     _title: 'JsonExport'
   requirements:
     _access: 'TRUE'
@@ -142,6 +158,22 @@ multidasher.add_wallet:
   methods:  [POST]
   defaults:
     _controller: '\Drupal\multidasher\Controller\JsonExportController::addWallet'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+multidasher.add_asset:
+  path: '/multidasher/{node}/add-asset'
+  methods:  [POST]
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\JsonExportController::addAsset'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+multidasher.add_recepient:
+  path: '/multidasher/{node}/add-recepient'
+  methods:  [POST]
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\JsonExportController::addRecepient'
     _title: 'JsonExport'
   requirements:
     _access: 'TRUE'

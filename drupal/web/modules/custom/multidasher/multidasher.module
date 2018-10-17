@@ -49,44 +49,44 @@ function multidasher_form_alter(&$form, FormStateInterface $form_state, $form_id
  */
 function multidasher_node_update(EntityInterface $entity) {
 
-  if ($entity->bundle() == 'blockchain_wallet') {
-    $node = Node::load($entity->id());
-    $request = new ManageRequestsController();
+  // if ($entity->bundle() == 'blockchain_wallet') {
+  //   $node = Node::load($entity->id());
+  //   $request = new ManageRequestsController();
 
-    foreach ($node->field_wallet_blockchain_ref as $item) {
-      if ($item->entity) {
-        $blockchain = $item->entity->label();
-      }
-    }
+  //   foreach ($node->field_wallet_blockchain_ref as $item) {
+  //     if ($item->entity) {
+  //       $blockchain = $item->entity->label();
+  //     }
+  //   }
 
-    $address = $node->field_wallet_address->getString();
+  //   $address = $node->field_wallet_address->getString();
 
-    $permissions_master_string = "activate,admin,connect,create,issue,mine,receive,send";
-    $permissions_master = explode(',', $permissions_master_string);
-    $permissions = $node->field_wallet_permissions->referencedEntities();
-    $permissions_list = [];
+  //   $permissions_master_string = "activate,admin,connect,create,issue,mine,receive,send";
+  //   $permissions_master = explode(',', $permissions_master_string);
+  //   $permissions = $node->field_wallet_permissions->referencedEntities();
+  //   $permissions_list = [];
 
-    foreach ($permissions as $key => $value) {
-      $permissions_list[$key] = $value->getName();
-    }
+  //   foreach ($permissions as $key => $value) {
+  //     $permissions_list[$key] = $value->getName();
+  //   }
 
-    // Grant permissions to wallet.
-    $grant = implode(',', $permissions_list);
-    $exec = 'grant';
-    $parameters[0] = $address;
-    $parameters[1] = $grant;
-    $command = $request->executeRequest($blockchain, 'grant', $parameters);
+  //   // Grant permissions to wallet.
+  //   $grant = implode(',', $permissions_list);
+  //   $exec = 'grant';
+  //   $parameters[0] = $address;
+  //   $parameters[1] = $grant;
+  //   $command = $request->executeRequest($blockchain, 'grant', $parameters);
 
-    // Revoke permissions from wallet.
-    $revoke_array = array_diff($permissions_list, $permissions_master);
-    $revoke = implode(',', $revoke_array);
-    $exec = 'revoke';
-    $parameters[0] = $address;
-    $parameters[1] = $revoke;
-    if($revoke){
-      $command = $request->executeRequest($blockchain, 'revoke', $parameters);
-    }
-  }
+  //   // Revoke permissions from wallet.
+  //   $revoke_array = array_diff($permissions_list, $permissions_master);
+  //   $revoke = implode(',', $revoke_array);
+  //   $exec = 'revoke';
+  //   $parameters[0] = $address;
+  //   $parameters[1] = $revoke;
+  //   if($revoke){
+  //     $command = $request->executeRequest($blockchain, 'revoke', $parameters);
+  //   }
+  // }
 }
 
 /**
@@ -94,32 +94,32 @@ function multidasher_node_update(EntityInterface $entity) {
  */
 function multidasher_node_insert(EntityInterface $entity) {
 
-  if ($entity->bundle() == 'blockchain_asset') {
-    $node = Node::load($entity->id());
-    $request = new ManageRequestsController();
-    $asset_name = $node->field_asset_name->getString();
-    $asset_quantity = $node->field_asset_quantity->getString();
-    $asset_open = $node->field_asset_open->getString();
-    $description = $node->field_asset_description->getString();
-    $command = 'issue';
-    $address_node = Node::load($node->field_asset_issue_address->getString());
-    $address = $address_node->field_wallet_address->getString();
-    $blockchain_node = Node::load($node->field_asset_blockchain_ref->getString());
-    $blockchain = $blockchain_node->field_blockchain_id->getString();
-    $parameters[0] = $address;
-    $parameters[1] = json_encode([
-      'name' => $asset_name,
-      'open' => $asset_open,
-    ]);
-    $parameters[2] = +$asset_quantity;
-    $response = $request->executeRequest($blockchain, $command, $parameters);
-    if($response['error']['message']){
-      drupal_set_message($response['error']['message'], 'error');
-      throw new \Exception($response['error']['message']);
-    }else{
-      drupal_set_message('Congratulations, you have issued ' . $asset_quantity . ' ' . $asset_name . ' to ' . $address);
-    }
-  }
+  // if ($entity->bundle() == 'blockchain_asset') {
+  //   $node = Node::load($entity->id());
+  //   $request = new ManageRequestsController();
+  //   $asset_name = $node->field_asset_name->getString();
+  //   $asset_quantity = $node->field_asset_quantity->getString();
+  //   $asset_open = $node->field_asset_open->getString();
+  //   $description = $node->field_asset_description->getString();
+  //   $command = 'issue';
+  //   $address_node = Node::load($node->field_asset_issue_address->getString());
+  //   $address = $address_node->field_wallet_address->getString();
+  //   $blockchain_node = Node::load($node->field_asset_blockchain_ref->getString());
+  //   $blockchain = $blockchain_node->field_blockchain_id->getString();
+  //   $parameters[0] = $address;
+  //   $parameters[1] = json_encode([
+  //     'name' => $asset_name,
+  //     'open' => $asset_open,
+  //   ]);
+  //   $parameters[2] = +$asset_quantity;
+  //   $response = $request->executeRequest($blockchain, $command, $parameters);
+  //   if($response['error']['message']){
+  //     drupal_set_message($response['error']['message'], 'error');
+  //     throw new \Exception($response['error']['message']);
+  //   }else{
+  //     drupal_set_message('Congratulations, you have issued ' . $asset_quantity . ' ' . $asset_name . ' to ' . $address);
+  //   }
+  // }
 
   // if ($entity->bundle() == 'blockchain_wallet') {
   //   $node = Node::load($entity->id());

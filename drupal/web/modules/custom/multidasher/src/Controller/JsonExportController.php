@@ -9,8 +9,6 @@ use Drupal\multidasher\Controller\BlockchainController;
 use Symfony\Component\HttpFoundation\Request;
 use Drupal\views\Views;
 
-
-
 /**
  * Controller for export json.
  */
@@ -64,6 +62,33 @@ class JsonExportController extends ControllerBase {
       return new JsonResponse($json_array);
     }
   }
+
+  public function loadAssetTransactions(String $nodeId = '') {
+    $json_array = array(
+      'data' => array()
+    );
+
+    $node = $this->multidasherNodeLoad($nodeId);
+    $blockchain = $node->field_blockchain_id->getString();
+
+    $route_match = \Drupal::service('current_route_match');
+    $asset = $route_match->getParameter('asset');
+
+    $exec = $this->blockchainController->constructSystemCommandParameters('list_asset_transactions',$blockchain, [$asset]);
+    $response = shell_exec($exec);
+
+    if(!$response){
+      $json_array['data']['status'] = 0;
+      $json_array['data']['response'] = 'didnt start, trying hard reboot';
+      return new JsonResponse($json_array);
+    }
+    if($response){
+      $json_array['data']['status'] = 1;
+      $json_array['data']['info'] = json_decode($response);
+      return new JsonResponse($json_array);
+    }
+  }
+
 
   public function launchBlockchain() {
     $route_match = \Drupal::service('current_route_match');
@@ -202,7 +227,7 @@ class JsonExportController extends ControllerBase {
     return new JsonResponse($json_array);
   }
 
-  public function exportAssets(String $nodeId = '') {
+  public function exportRecepients(String $nodeId = '') {
     $json_array = array(
       'data' => array()
     );
@@ -212,6 +237,43 @@ class JsonExportController extends ControllerBase {
     $nid = $node->id();
 
         // Default settings.
+    $view = Views::getView('recipients');
+    if (is_object($view)) {
+        $view->setArguments([$nid]);
+        $view->setDisplay('page_1');
+        $view->preExecute();
+        $view->execute();
+        $result = $view->result;
+        if($result){
+        foreach ($result as $key => $value) {
+          $recepient = Node::load(($value->nid));
+          foreach ($recepient->field_recipient_asset->getValue(['target_id']) as $key => $value) {
+            $asset = node::load($value['target_id']);
+            $asset_name = $asset->get('title')->value;
+          }
+
+          $json_array['data'][$recepient->get('title')->value] = array(
+            'name' => $recepient->get('title')->value,
+            'description' => $recepient->get('body')->value,
+            'asset' => $asset_name,
+            'address' => $recepient->get('field_recipient_wallet_address')->value,
+          );
+        }
+      }
+    }
+    return new JsonResponse($json_array);
+  }
+
+  public function exportAssets(String $nodeId = '') {
+    $json_array = array(
+      'data' => array()
+    );
+
+    $node = $this->multidasherNodeLoad($nodeId);
+    $blockchain = $node->field_blockchain_id->getString();
+    $nid = $node->id();
+
+    // Default settings.
     $view = Views::getView('multidash_assets');
     if (is_object($view)) {
         $view->setArguments([$nid]);
@@ -329,14 +391,14 @@ class JsonExportController extends ControllerBase {
     $command = $multichain->constructSystemCommand($exec, $blockchain);
     $result = shell_exec($command." &");
 
-    $node = Node::create(['type' => 'blockchain_wallet']);
-    $node->set('title', $title);
-    $node->set('field_wallet_ismine', true);
+    $wallet = Node::create(['type' => 'blockchain_wallet']);
+    $wallet->set('title', $title);
+    $wallet->set('field_wallet_ismine', true);
     $address =  preg_replace('/\s+/', '', $result);
-    $node->set('field_wallet_address', $address);
-    $node->field_wallet_blockchain_ref = ['target_id' => $blockchain_nid];
-    $node->status = 1;
-    $node->enforceIsNew();
+    $wallet->set('field_wallet_address', $address);
+    $wallet->field_wallet_blockchain_ref = ['target_id' => $blockchain_nid];
+    $wallet->status = 1;
+    $wallet->enforceIsNew();
 
     // Grant permissions to wallet.
     $exec = 'grant';
@@ -345,7 +407,7 @@ class JsonExportController extends ControllerBase {
 
     $request = new ManageRequestsController();
     $message = $request->executeRequest($blockchain, 'grant', $parameters);
-    $node->save();
+    $wallet->save();
     $json_array['data']['message'] = $message;
     $json_array['status'] = 1;
     return new JsonResponse($json_array);
@@ -359,6 +421,112 @@ class JsonExportController extends ControllerBase {
 
     $node = Node::load($nodeId);
     return $node;
+  }
+
+  public function addAsset(Request $request) {
+    $json_array = array(
+      'data' => array()
+    );
+
+    $node = $this->multidasherNodeLoad('');
+    $blockchain = $node->field_blockchain_id->getString();
+    $blockchain_nid = $node->id();
+
+    $params = array();
+    $content = $request->getContent();
+
+    if (!empty($content)) {
+      $params = json_decode($content, TRUE);
+    }
+
+    $title = $params['title'];
+    $asset_name = $params['title'];
+    $asset_quantity = $params['asset_quantity'];
+    $asset_open = $params['open'];
+    $recepient = $params['recepient'];
+    $description = $params['description'];
+
+    $asset = Node::create(['type' => 'blockchain_asset']);
+    $asset->field_asset_blockchain_ref = ['target_id' => $blockchain_nid];
+    $asset->set('field_asset_description', $description);
+    $asset->set('title', $asset_name);
+    $asset->set('field_asset_name', $asset_name);
+    $asset->set('field_asset_open', $asset_open);
+    $asset->set('field_asset_quantity', $asset_quantity);
+    $wallets = \Drupal::entityTypeManager()
+      ->getStorage('node')
+      ->loadByProperties(['field_wallet_address' => $recepient]);
+    if ($wallet = reset($wallets)) {
+      $wallet_id = $wallet->id();
+      $asset->field_asset_issue_address = ['target_id' => $wallet_id];
+    }
+    $asset->enforceIsNew();
+    $asset->save();
+
+    $command = 'issue';
+    $parameters[0] = $recepient;
+    $parameters[1] = $asset_name;
+    $parameters[2] = +$asset_quantity;
+
+    $request = new ManageRequestsController();
+    $response = $request->executeRequest($blockchain, $command, $parameters);
+
+    if($response['error']['message']){
+      $json_array['data']['message'] = $response['error']['message'];
+      $json_array['status'] = 0;
+      $json_array['parameters'] = $parameters;
+    }else{
+      $json_array['data']['message'] = $response;
+      $json_array['status'] = 1;
+      $json_array['quantity'] = $asset_quantity;
+
+    }
+    return new JsonResponse($json_array);
+  }
+
+  public function addRecepient(Request $request) {
+    $json_array = array(
+      'data' => array()
+    );
+
+    $node = $this->multidasherNodeLoad('');
+    $blockchain = $node->field_blockchain_id->getString();
+    $blockchain_nid = $node->id();
+
+    $params = array();
+    $content = $request->getContent();
+
+    if (!empty($content)) {
+      $params = json_decode($content, TRUE);
+    }
+
+    $title = $params['title'];
+    $description = $params['description'];
+    $address = $params['address'];
+    $asset_name = $params['asset_name'];
+
+    $json_array['data']['params'] = $params;
+    $json_array['data']['address'] = $address;
+    $json_array['data']['blockchain_nid'] = $blockchain_nid;
+
+    $recepient = Node::create(['type' => 'recipient']);
+
+    $recepient->field_recipient_blockchain_ref = ['target_id' => $blockchain_nid];
+    $recepient->set('body', $description);
+    $recepient->set('title', $title);
+    $recepient->set('field_recipient_wallet_address', $address);
+    $assets = \Drupal::entityTypeManager()
+      ->getStorage('node')
+      ->loadByProperties(['field_asset_name' =>$asset_name]);
+    if ($asset = reset($assets)) {
+      $asset_id = $asset->id();
+      $recepient->field_recipient_asset = ['target_id' => $asset_id];
+    }
+    $recepient->enforceIsNew();
+    $recepient->save();
+    $json_array['data']['message'] = 'created new recepient';
+    $json_array['status'] = 1;
+    return new JsonResponse($json_array);
   }
 
 }

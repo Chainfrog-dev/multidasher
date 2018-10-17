@@ -34,9 +34,25 @@ export class DataService {
     );
   }
 
+  getAssetTransactions(nid, asset) : Observable<promise> {
+    return this.http.get(
+      this.host+'/multidasher/export/'+nid+'/load-transactions/'+asset,
+      {headers : new HttpHeaders(), 
+      responseType: 'json'}
+    );
+  }
+
   getWallets(nid) : Observable<promise> {
     return this.http.get(
       this.host+'/multidasher/export/'+nid+'/export-wallets',
+      {headers : new HttpHeaders(), 
+      responseType: 'json'}
+    );
+  }
+
+  getRecepients(nid) : Observable<promise> {
+    return this.http.get(
+      this.host+'/multidasher/export/'+nid+'/export-recepients',
       {headers : new HttpHeaders(), 
       responseType: 'json'}
     );
@@ -75,6 +91,14 @@ export class DataService {
     );
   }
 
+  updateAddresses(nid: String) : Observable<promise> {
+    return this.http.get(
+      this.host+'/multidasher/'+nid+'/update-addresses',
+      {headers : new HttpHeaders(), 
+      responseType: 'json'}
+    );
+  }
+
   addAddress(nid: String, title: String, permissions: String) : Observable<promise> {
     const data = {
       'title' : title,
@@ -83,6 +107,40 @@ export class DataService {
 
     return this.http.post(
       this.host+'/multidasher/'+nid+'/add-wallet',
+      data,
+      {headers : new HttpHeaders(), 
+      responseType: 'json'}
+    );
+  }
+
+  addAsset(nid: String, title: String, assetQuantity: Number, assetOpen: Boolean, recepient: String, description: String) : Observable<promise> {
+    const data = {
+      'title' : title,
+      'asset_name' : title,
+      'asset_quantity' : assetQuantity,
+      'asset_open' : assetOpen,
+      'recepient' : recepient,
+      'description' : description
+    }
+    console.log(assetQuantity);
+    return this.http.post(
+      this.host+'/multidasher/'+nid+'/add-asset',
+      data,
+      {headers : new HttpHeaders(), 
+      responseType: 'json'}
+    );
+  }
+
+  addRecepient(nid: String, title: String, description: String, address: String, assetName: String) : Observable<promise> {
+    const data = {
+      'title' : title,
+      'asset_name' : assetName,
+      'description' : description,
+      'address' : address
+    }
+    console.log(data);
+    return this.http.post(
+      this.host+'/multidasher/'+nid+'/add-recepient',
       data,
       {headers : new HttpHeaders(), 
       responseType: 'json'}

@@ -11,12 +11,11 @@
 		<mat-card class="example-card">
 		  <mat-card-content>
 			<mat-list>
-			  <div *ngFor="let asset of assets">
+			  <div *ngFor="let recepient of recepients">
 			  	<mat-list-item>  
-			  	    <h4 mat-line>{{asset.name}} | {{ asset.description }}
+			  	    <h4 mat-line>{{recepient.name}} | {{ recepient.address }}
 			  	    	<span class="pull-right">
-		  	    	        <a routerLink="/blockchain/{{blockchainId}}/assets/{{asset.name}}"><mat-icon aria-label="Side nav toggle icon">account_balance</mat-icon></a>
-				  	    	<a routerLink="/blockchain/{{blockchainId}}/assets/{{asset.name}}"><mat-icon (click)="getWallets(blockchainId)" aria-label="Side nav toggle icon">refresh</mat-icon></a>
+				  	    	<mat-icon aria-label="Side nav toggle icon">send</mat-icon>
 				  	    </span>
 				  	</h4>
 				</mat-list-item>
@@ -37,11 +36,11 @@
 		      <mat-card fxFlex="360px" class="dashboard-card">
 		        <mat-card-header>
 		          <mat-card-title>
-		            <h2>Issue a new asset</h2>
+		            <h2>Create a new recepient</h2>
 		          </mat-card-title>
 		        </mat-card-header>
 		        <mat-card-content class="dashboard-card-content">
-		        	<app-create-asset></app-create-asset>
+		        	<app-create-recepient></app-create-recepient>
 		        </mat-card-content>
 		      </mat-card>
 	     </div>

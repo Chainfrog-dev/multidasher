@@ -20,13 +20,10 @@
       </div>
       <div *ngIf="activeBlockchain !== null">
         <h3>Manage your Blockchain</h3>
-        <a mat-list-item routerLink="blockchain/{{activeBlockchain}}/view-info">Overview</a>
         <a mat-list-item routerLink="blockchain/{{activeBlockchain}}/view-info">Information</a>
         <a mat-list-item routerLink="blockchain/{{activeBlockchain}}/assets">Assets</a>
         <a mat-list-item routerLink="blockchain/{{activeBlockchain}}/wallets">Wallets</a>
-        <a mat-list-item routerLink="blockchain/{{activeBlockchain}}/view-info">Transactions</a>
-        <a mat-list-item routerLink="blockchain/{{activeBlockchain}}/view-info">Recepients</a>
-        <a mat-list-item routerLink="blockchain/{{activeBlockchain}}/view-info">Actions</a>
+        <a mat-list-item routerLink="blockchain/{{activeBlockchain}}/recepients">Recepients</a>
       </div>
       <a class="menu-item logout" (click)="logout()" mat-list-item href="#">Log out</a>
     </mat-nav-list>

@@ -31,10 +31,17 @@ export class MultidasherWalletsComponent implements OnInit {
 	ngOnInit() {
 		this.blockchainId = this.route.snapshot.params['blockchainId'];
 		this.getWallets(this.blockchainId);
+		this.updateBalances();
+	}
+
+	async updateBalances() {
+      var message = await this.dataService.updateAddresses(this.blockchainId).toPromise();
+      console.log(message);
 	}
 
 	async getWallets(nid : String) {
 		const response = await this.dataService.getWallets(nid).toPromise();
+		console.log(response);
 		for(let key in response['data']){
 			let wallet : Wallet = {
 				id: response['data'][key]['wallet_id'],

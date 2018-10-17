@@ -31,9 +31,8 @@ export class MultidasherAssetsComponent implements OnInit {
 		console.log(response);
 		for(let key in response['data']){
 			let asset : Asset = {
-				'description': response['data'][key]['wallet_id'],
+				'description': response['data'][key]['description'],
 				'name': response['data'][key]['name'],
-				'quantity': response['data'][key]['balance']
 			}
 	        if (this.assets.filter(item=> item.name == asset.name).length == 0){
 				this.assets.push(asset);

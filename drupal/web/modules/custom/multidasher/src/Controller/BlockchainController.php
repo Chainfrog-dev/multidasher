@@ -7,6 +7,7 @@ use Drupal\node\Entity\Node;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Drupal\multidasher\Controller\ReadStdoutController;
 use Drupal\multidasher\Controller\ManageRequestsController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Defines BlockchainController class.
@@ -36,6 +37,9 @@ class BlockchainController extends ControllerBase {
     switch ($identifier) {
       case 'get_address_balances':
         return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" getaddressbalances "' . $parameters[0] . '"';
+        break;
+      case 'list_asset_transactions':
+        return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" listassettransactions "' . $parameters[0] . '"';
         break;
       case 'grant':
         return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" grant "' . $parameters[0] . '" ' . $parameters[1];
@@ -89,25 +93,36 @@ class BlockchainController extends ControllerBase {
    *
    */
   public function updateAddresses(String $nodeId = '') {
+
+    $json_array = array(
+      'data' => array()
+    );
+
     $node = $this->multidasherNodeLoad($nodeId);
     $blockchain = $node->field_blockchain_id->getString();
     $nid = $node->id();
 
     $exec = $this->constructSystemCommand('list_addresses',$blockchain);
     $result = json_decode(shell_exec($exec." &"), true);
-    if(!$result) return new RedirectResponse(base_path() . 'multidasher/'.$nid.'/wallets');;
-    foreach ($result as $key => $value) {
-      if($value['address']){
-      $nodes = \Drupal::entityTypeManager()
-      ->getStorage('node')
-      ->loadByProperties(['field_wallet_address' => $value['address']]);
-      if ($node = reset($nodes)) {
-        $wallet_id = $node->id();
-        $this->updateAddressBalances($blockchain, $value['address'], $wallet_id);
+    if(!$result) {
+      $json_array['status'] = 0;
+      $json_array['message'] = 'failed :(';
+    }else{
+      foreach ($result as $key => $value) {
+        if($value['address']){
+        $nodes = \Drupal::entityTypeManager()
+        ->getStorage('node')
+        ->loadByProperties(['field_wallet_address' => $value['address']]);
+        if ($node = reset($nodes)) {
+          $wallet_id = $node->id();
+          $this->updateAddressBalances($blockchain, $value['address'], $wallet_id);
+        }
       }
     }
   }
-    return new RedirectResponse(base_path() . 'multidasher/'.$nid.'/wallets');
+    $json_array['status'] = 1;
+    $json_array['message'] = 'worked!';
+    return new JsonResponse($json_array);
   }
 
   /**
@@ -118,11 +133,10 @@ class BlockchainController extends ControllerBase {
     $result = json_decode(shell_exec($exec." &"), true);
 
     foreach ($result as $key => $value) {
-      $json = json_decode($value['name'], true);
-      if($json['name']){
+      if($value['name']){
         $nodes = \Drupal::entityTypeManager()
           ->getStorage('node')
-          ->loadByProperties(['field_asset_name' => $json['name']]);
+          ->loadByProperties(['field_asset_name' => $value['name']]);
         if ($node = reset($nodes)) {
           $asset_nid = $node->id();
           $wallet = Node::load($wallet_id);

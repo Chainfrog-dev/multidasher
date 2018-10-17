@@ -10,6 +10,8 @@ MultiDasher is developed, tested and designed to be run on Ubuntu 18.04.
 
 If you want to have a look at how MultiDasher functions, please visit [the MultiDasher website](https://multidasher.org/) and click on Demo.
 
+The [Wiki](https://github.com/Chainfrog-dev/multidasher/wiki) has a lot of resources too, and is worth browsing through.
+
 ### Installation
 
 The following instructions should have you up and running with MultiDasher on an Ubuntu 18.04 machine within minutes. How many minutes depends on your knowledge of Drupal and IP networking.

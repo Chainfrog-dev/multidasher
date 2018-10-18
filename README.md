@@ -28,11 +28,9 @@ The following instructions should have you up and running with MultiDasher on an
 
 Enabling a MultiDasher instance to connect out through personal firewalls and ensuring IP routing is conducted correctly requires some networking knowledge, so we recommend either using a cloud instance of Ubuntu, or running a virtual box on your machine.
 
-Amazon Web Services provides free cloud servers for personal use. See the Wiki for [AWS Setup Instructions]( https://github.com/Chainfrog-dev/multidasher/wiki/AWS-Setup-Instructions).
+Amazon Web Services provides free cloud servers for personal use. See the Wiki for [AWS Setup Instructions]( https://github.com/Chainfrog-dev/multidasher/wiki/AWS-Setup-Instructions). Other cloud service providers exist, for example [DigitalOcean](https://www.digitalocean.com/), [Google Cloud Platform](https://cloud.google.com/compute/docs/quickstart-linux) and [Microsoft Azure](https://azure.microsoft.com/en-us/free/).
 
-Other cloud service providers exist, for example DigitalOcean and Microsoft Azure.
-
-If you want to use MultiDasher on your own machine, we recommend a virtual box, for example using Vagrant. See the Vagrant Setup Instructions for a step by step guide. See the [Vagrant Setup Instructions](https://github.com/Chainfrog-dev/multidasher/wiki/Vagrant-Setup-Instructions).
+If you want to use MultiDasher on your own machine, we recommend a virtual box, for example using Vagrant. See the [Vagrant Setup Instructions](https://github.com/Chainfrog-dev/multidasher/wiki/Vagrant-Setup-Instructions) for a step-by-step guide.
 
 To enable secure HTTPS connectivity (strongly recommended) you will need to set up an A Host for a domain or subdomain to point at your server instance, as HTTPS requires digital certificates that are linked to domain names. See [Domain Names and Digital Certificates](https://github.com/Chainfrog-dev/multidasher/wiki/Domain-Names-and-Digital-Certificates).
 

@@ -2,7 +2,7 @@
 
 ## What is MultiDasher?
 
-[MultiDasher](http://www.multidasher.org/) is an open source admin dashboard for [MultiChain](http://www.multichain.com/) blockchains, based on [Drupal 8](http://www.drupal.org/). Drupal and the Adminimal theme provide a GUI for managing and interacting with permissioned MultiChain blockchains, and the content management capabilities of Drupal allow for a more visual and intuitive experience with chains, and for other extensions to be added to the system.
+[MultiDasher](http://www.multidasher.org/) is an open source admin dashboard for [MultiChain](http://www.multichain.com/) blockchains, based on [Drupal 8](http://www.drupal.org/). Drupal and MultiChain provide a backend for functionality, and Angular provides a GUI for managing and interacting with permissioned blockchains. The content management capabilities of Drupal allow for a more intuitive experience with chains, and for other extensions to be added to the system, with the potential for linking different Drupal installations together to share tokens and data.
 
 MultiDasher is developed, tested and designed to be run on Ubuntu 18.04.
 

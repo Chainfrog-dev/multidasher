@@ -7,26 +7,22 @@ use Drupal\node\Entity\Node;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * Defines BlockchainController class.
+ * Defines PeerController class.
  */
-class BlockchainControllerFindpeer extends ControllerBase {
+class PeerController extends ControllerBase {
 
   /**
-   *
+   * Loads peer information from Multichain.
    */
   public function getPeerInfo() {
     $node = $this->multidasherNodeLoad('');
     $blockchain = $node->field_blockchain_id->getString();
     $blockchain_nid = $node->id();
     $result = $this->executeRequest($blockchain, 'getpeerinfo', []);
-    ksm($result);
-
     foreach ($result as $key => $value) {
-
       $nodes = \Drupal::entityTypeManager()
         ->getStorage('node')
         ->loadByProperties(['field_peer_address' => $value->addr]);
-
       if ($node = reset($nodes)) {
         $node->set('field_peer_address', $value->addr);
         $node->set('field_peer_address_local', $value->addrlocal);
@@ -34,7 +30,6 @@ class BlockchainControllerFindpeer extends ControllerBase {
         $node->field_peer_blockchain_ref = ['target_id' => $blockchain_nid];
       }
       else {
-
         $node = Node::create(['type' => 'blockchain_peer']);
         $node->set('title', $value->id);
         $node->set('field_peer_address', $value->addr);
@@ -43,11 +38,8 @@ class BlockchainControllerFindpeer extends ControllerBase {
         $node->field_peer_blockchain_ref = ['target_id' => $blockchain_nid];
         $node->status = 1;
         $node->enforceIsNew();
-
       }
-
       $node->save();
-
     }
     return new RedirectResponse(base_path() . 'multidasher');
   }

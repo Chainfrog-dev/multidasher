@@ -20,7 +20,7 @@ export class DataService {
 
   getBlockchains() : Observable<promise> {
     return this.http.get(
-      this.host+'/multidasher/export/blockchain',
+      this.host+'/multidasher/export/export-blockchain',
       {headers : new HttpHeaders(), 
       responseType: 'json'}
     );
@@ -28,7 +28,7 @@ export class DataService {
 
   getBlockchainInfo(nid) : Observable<promise> {
     return this.http.get(
-      this.host+'/multidasher/export/'+nid+'/load-status',
+      this.host+'/multidasher/export/'+nid+'/status',
       {headers : new HttpHeaders(), 
       responseType: 'json'}
     );
@@ -44,7 +44,7 @@ export class DataService {
 
   getWallets(nid) : Observable<promise> {
     return this.http.get(
-      this.host+'/multidasher/export/'+nid+'/export-wallets',
+      this.host+'/multidasher/export/'+nid+'/wallets',
       {headers : new HttpHeaders(), 
       responseType: 'json'}
     );
@@ -52,7 +52,7 @@ export class DataService {
 
   getRecepients(nid) : Observable<promise> {
     return this.http.get(
-      this.host+'/multidasher/export/'+nid+'/export-recepients',
+      this.host+'/multidasher/export/'+nid+'/recepients',
       {headers : new HttpHeaders(), 
       responseType: 'json'}
     );
@@ -60,7 +60,7 @@ export class DataService {
 
   getAssets(nid) : Observable<promise> {
     return this.http.get(
-      this.host+'/multidasher/export/'+nid+'/export-assets',
+      this.host+'/multidasher/export/'+nid+'/assets',
       {headers : new HttpHeaders(), 
       responseType: 'json'}
     );
@@ -76,7 +76,7 @@ export class DataService {
 
   createBlockchain(blockchain : String) : Observable<promise> {
     return this.http.get(
-      this.host+'/multidasher/launch-blockchain/'+blockchain,
+      this.host+'/multidasher/create/launch-blockchain/'+blockchain,
       {headers : new HttpHeaders(), 
       responseType: 'json'}
     );
@@ -84,7 +84,7 @@ export class DataService {
 
   updateBlockchainOptions() : Observable<promise> {
     return this.http.post(
-      this.host+'/multidasher/update-blockchain-options',
+      this.host+'/multidasher/cron/update-blockchains',
       '',
       {headers : new HttpHeaders(), 
       responseType: 'json'}
@@ -93,7 +93,7 @@ export class DataService {
 
   updateAddresses(nid: String) : Observable<promise> {
     return this.http.get(
-      this.host+'/multidasher/'+nid+'/update-addresses',
+      this.host+'/multidasher/cron/'+nid+'/update-address',
       {headers : new HttpHeaders(), 
       responseType: 'json'}
     );
@@ -106,7 +106,7 @@ export class DataService {
     }
 
     return this.http.post(
-      this.host+'/multidasher/'+nid+'/add-wallet',
+      this.host+'/multidasher/add/'+nid+'/wallet',
       data,
       {headers : new HttpHeaders(), 
       responseType: 'json'}
@@ -124,7 +124,7 @@ export class DataService {
     }
     console.log(assetQuantity);
     return this.http.post(
-      this.host+'/multidasher/'+nid+'/add-asset',
+      this.host+'/multidasher/add/'+nid+'/asset',
       data,
       {headers : new HttpHeaders(), 
       responseType: 'json'}
@@ -154,7 +154,7 @@ export class DataService {
   	}
   	console.log(data);
     return this.http.post(
-      this.host+'/multidasher/submit-blockchain',
+      this.host+'/multidasher/create/blockchain-params',
       data,
       {headers : new HttpHeaders(), 
       responseType: 'json'}

@@ -1,179 +1,112 @@
-multidasher.form:
-  path: '/admin/config/development/multidasher'
+multidasher.export_blockchains:
+  path: '/multidasher/export/export-blockchains'
   defaults:
-    _form: '\Drupal\multidasher\Form\BlockchainForm'
-    _title: 'Create a new multidasher'
-  requirements:
-    _access: 'TRUE'
-multidasher.findpeer:
-  path: '/admin/config/development/multidasher/findpeer'
-  defaults:
-    _form: '\Drupal\multidasher\Form\BlockchainFormFindpeer'
-    _title: 'Find Peer'
-  requirements:
-    _access: 'TRUE'
-multidasher.send_asset_form:
-  path: '/admin/config/development/multidasher/sendasset'
-  defaults:
-    _title: 'Send Asset Form'
-    _form: '\Drupal\multidasher\Form\SendAssetForm'
-  requirements:
-    _access: 'TRUE'
-multidasher.update-parameters:
-  path: '/multidasher/{node}/update-parameters'
-  defaults:
-    _controller: '\Drupal\multidasher\Controller\BlockchainController::updateParameters'
-    _title: 'update-parameters'
-  requirements:
-    _access: 'TRUE'
-multidasher.start-multidasher:
-  path: '/multidasher/{node}/start-blockchain'
-  defaults:
-    _controller: '\Drupal\multidasher\Controller\BlockchainController::startMultichainDaemon'
-    _title: 'start-multidasher'
-  requirements:
-    _access: 'TRUE'
-multidasher.launch-multidasher:
-  path: '/multidasher/launch-blockchain'
-  defaults:
-    _controller: '\Drupal\multidasher\Controller\BlockchainController::launchMultichain'
-    _title: 'Launch-multidasher'
-  requirements:
-    _access: 'TRUE'
-multidasher.stop-multidasher:
-  path: '/multidasher/{node}/stop-blockchain'
-  defaults:
-    _controller: '\Drupal\multidasher\Controller\BlockchainController::stopMultichainDaemon'
-    _title: 'Launch-multidasher'
-  requirements:
-    _access: 'TRUE'
-multidasher.update-addresses:
-  path: '/multidasher/{node}/update-addresses'
-  defaults:
-    _controller: '\Drupal\multidasher\Controller\BlockchainController::updateAddresses'
-    _title: 'List Addresses'
-  requirements:
-    _access: 'TRUE'
-multidasher.update-peers:
-  path: '/multidasher/{node}/update-peers'
-  defaults:
-    _controller: '\Drupal\multidasher\Controller\BlockchainController::getPeerInfo'
-    _title: 'Get Peers'
-  requirements:
-    _access: 'TRUE'
-multidasher.edit_params:
-  path: '/multidasher/{name}/form/edit_params'
-  defaults:
-    _form: '\Drupal\multidasher\Form\EditParams'
-    _title: 'EditParams'
-  requirements:
-    _access: 'TRUE'
-  
-multidasher.export_blockchain:
-  path: '/multidasher/export/blockchain'
-  defaults:
-    _controller: '\Drupal\multidasher\Controller\JsonExportController::exportBlockchains'
+    _controller: '\Drupal\multidasher\Controller\StatisticsController::exportBlockchains'
     _title: 'JsonExport'
   requirements:
     _access: 'TRUE'
 
-multidasher.export_load_info:
-  path: '/multidasher/export/{node}/load-status'
+multidasher.blockchain_status:
+  path: '/multidasher/export/{node}/status'
   defaults:
-    _controller: '\Drupal\multidasher\Controller\JsonExportController::loadStatus'
+    _controller: '\Drupal\multidasher\Controller\StatisticsController::loadStatus'
     _title: 'JsonExport'
   requirements:
     _access: 'TRUE'
 
-multidasher.export_asset_transactions:
-  path: '/multidasher/export/{node}/load-transactions/{asset}'
+multidasher_assets.add_asset:
+  path: '/multidasher/add/{node}/asset'
   defaults:
-    _controller: '\Drupal\multidasher\Controller\JsonExportController::loadAssetTransactions'
+    _controller: '\Drupal\multidasher\Controller\AssetsController::addAsset'
     _title: 'JsonExport'
   requirements:
     _access: 'TRUE'
 
-multidasher.export_recepients:
-  path: '/multidasher/export/{node}/export-recepients'
+multidasher_assets.get_assets:
+  path: '/multidasher/export/{node}/assets'
   defaults:
-    _controller: '\Drupal\multidasher\Controller\JsonExportController::exportRecepients'
+    _controller: '\Drupal\multidasher\Controller\AssetsController::exportAssets'
     _title: 'JsonExport'
   requirements:
     _access: 'TRUE'
 
-multidasher.export_load_wallets:
-  path: '/multidasher/export/{node}/load-wallets'
+multidasher_assets.load_transactions:
+  path: '/multidasher/export/{node}/status/load-transactions/{asset}'
   defaults:
-    _controller: '\Drupal\multidasher\Controller\JsonExportController::loadWallets'
+    _controller: '\Drupal\multidasher\Controller\AssetsController::loadAssetTransactions'
     _title: 'JsonExport'
   requirements:
     _access: 'TRUE'
 
-multidasher.export_get_total_balance:
+multidasher_create.initiate_blockchain:
+  path: '/multidasher/create/launch-blockchain/{blockchain}'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\CreateBlockchainController::launchBlockchain'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+
+multidasher_create.create_blockchain:
+  path: '/multidasher/create/blockchain-params'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\CreateBlockchainController::createBlockchainParams'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+
+multidasher_cron.load_transactions:
+  path: '/multidasher/cron/update-blockchains'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\CronController::createDrupalBlockchains'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+
+multidasher_cron.load_transactions:
+  path: '/multidasher/cron/{node}/update-address'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\CronController::updateAddresses'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+
+multidasher_recepients.add_recepient:
+  path: '/multidasher/add/{node}/recepient'
+  methods:  [POST]
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\RecepientController::addRecepient'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+
+multidasher_recepients.get_recepients:
+  path: '/multidasher/export/{node}/recepients'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\RecepientController::exportRecepients'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+
+multidasher_wallets.add_wallet:
+  path: '/multidasher/add/{node}/wallet'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\WalletController::addWallet'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+
+multidasher_wallets.get_wallets:
+  path: '/multidasher/export/{node}/wallets'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\WalletController::exportWallets'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+
+multidasher_wallets.get_total_balance:
   path: '/multidasher/export/{node}/total-balance'
   defaults:
-    _controller: '\Drupal\multidasher\Controller\JsonExportController::getTotalBalance'
-    _title: 'JsonExport'
-  requirements:
-    _access: 'TRUE'
-multidasher.launch_multichain:
-  path: '/multidasher/launch-blockchain/{blockchain}'
-  defaults:
-    _controller: '\Drupal\multidasher\Controller\JsonExportController::launchBlockchain'
-    _title: 'JsonExport'
-  requirements:
-    _access: 'TRUE'
-multidasher.submit_blockchain:
-  path: '/multidasher/submit-blockchain'
-  methods:  [POST]
-  defaults:
-    _controller: '\Drupal\multidasher\Controller\JsonExportController::submitParams'
-    _title: 'JsonExport'
-  requirements:
-    _access: 'TRUE'
-multidasher.update_blockchain_options:
-  path: '/multidasher/update-blockchain-options'
-  methods:  [POST]
-  defaults:
-    _controller: '\Drupal\multidasher\Controller\JsonExportController::updateBlockchainOptions'
-    _title: 'JsonExport'
-  requirements:
-    _access: 'TRUE'
-multidasher.export_wallets:
-  path: '/multidasher/export/{node}/export-wallets'
-  defaults:
-    _controller: '\Drupal\multidasher\Controller\JsonExportController::exportWallets'
-    _title: 'JsonExport'
-  requirements:
-    _access: 'TRUE'
-multidasher.export_assets:
-  path: '/multidasher/export/{node}/export-assets'
-  defaults:
-    _controller: '\Drupal\multidasher\Controller\JsonExportController::exportAssets'
-    _title: 'JsonExport'
-  requirements:
-    _access: 'TRUE'
-multidasher.add_wallet:
-  path: '/multidasher/{node}/add-wallet'
-  methods:  [POST]
-  defaults:
-    _controller: '\Drupal\multidasher\Controller\JsonExportController::addWallet'
-    _title: 'JsonExport'
-  requirements:
-    _access: 'TRUE'
-multidasher.add_asset:
-  path: '/multidasher/{node}/add-asset'
-  methods:  [POST]
-  defaults:
-    _controller: '\Drupal\multidasher\Controller\JsonExportController::addAsset'
-    _title: 'JsonExport'
-  requirements:
-    _access: 'TRUE'
-multidasher.add_recepient:
-  path: '/multidasher/{node}/add-recepient'
-  methods:  [POST]
-  defaults:
-    _controller: '\Drupal\multidasher\Controller\JsonExportController::addRecepient'
+    _controller: '\Drupal\multidasher\Controller\WalletController::getTotalBalance'
     _title: 'JsonExport'
   requirements:
     _access: 'TRUE'

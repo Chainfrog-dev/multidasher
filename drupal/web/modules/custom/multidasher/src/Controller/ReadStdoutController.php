@@ -10,8 +10,8 @@ use Drupal\Core\Controller\ControllerBase;
 class ReadStdoutController extends ControllerBase {
 
   /**
-  *
-  */
+   *
+   */
   public function retrieveUserPassword(String $blockchain) {
     $directory = '/var/www/.multichain/' . $blockchain . '/';
 
@@ -34,14 +34,17 @@ class ReadStdoutController extends ControllerBase {
     return $result;
   }
 
+  /**
+   *
+   */
   public function retrieveWalletAddress(String $message) {
 
     $separator = "\r\n";
     $line = strtok($message, $separator);
 
-    while ($line !== false) {
-      # do something with $line
-      $line = strtok( $separator );
+    while ($line !== FALSE) {
+      // Do something with $line.
+      $line = strtok($separator);
       if (strpos($line, 'multichain-cli') !== FALSE) {
         $array = explode(" ", $line);
         $wallet_address = $array[3];
@@ -49,8 +52,7 @@ class ReadStdoutController extends ControllerBase {
     }
 
     // drupal_set_message('retrieveWalletAddress RESULT: '.$wallet_address);
-    // return $wallet_address;
-
+    // return $wallet_address;.
     // $directory = '/var/www/.multichain/' . $blockchain . '.dat';
     // drupal_set_message($directory);
     // ksm(file($directory));
@@ -66,7 +68,7 @@ class ReadStdoutController extends ControllerBase {
     //   }
     //   fclose($fh);
     // }
-    if(!$wallet_address){
+    if (!$wallet_address) {
       drupal_set_message('retrieveWalletAddress didnt get it', 'error');
     }
     return $wallet_address;

@@ -20,7 +20,7 @@ export class DataService {
 
   getBlockchains() : Observable<promise> {
     return this.http.get(
-      this.host+'/multidasher/export/export-blockchain',
+      this.host+'/multidasher/export/export-blockchains',
       {headers : new HttpHeaders(), 
       responseType: 'json'}
     );

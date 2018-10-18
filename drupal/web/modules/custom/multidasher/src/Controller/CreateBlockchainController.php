@@ -12,6 +12,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class CreateBlockchainController extends ControllerBase {
 
   /**
+   * {@inheritdoc}
+   */
+  public function __construct() {
+    $this->blockchainController = new RequestsController();
+  }
+
+  /**
    * Iniitate the blockchain
    */
   public function launchBlockchain() {

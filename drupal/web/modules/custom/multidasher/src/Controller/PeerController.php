@@ -12,10 +12,17 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class PeerController extends ControllerBase {
 
   /**
+   * {@inheritdoc}
+   */
+  public function __construct() {
+    $this->blockchainController = new RequestsController();
+  }
+
+  /**
    * Loads peer information from Multichain.
    */
   public function getPeerInfo() {
-    $node = $this->multidasherNodeLoad('');
+    $node = $this->blockchainController->multidasherNodeLoad('');
     $blockchain = $node->field_blockchain_id->getString();
     $blockchain_nid = $node->id();
     $result = $this->executeRequest($blockchain, 'getpeerinfo', []);

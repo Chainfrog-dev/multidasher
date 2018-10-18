@@ -46,7 +46,7 @@ class StatisticsController extends ControllerBase {
       'data' => [],
     ];
 
-    $node = $this->multidasherNodeLoad($nodeId);
+    $node = $this->blockchainController->multidasherNodeLoad($nodeId);
     $blockchain = $node->field_blockchain_id->getString();
     $exec = $this->blockchainController->constructSystemCommand('get_info', $blockchain);
 

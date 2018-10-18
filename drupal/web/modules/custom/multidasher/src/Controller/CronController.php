@@ -12,6 +12,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class CronController extends ControllerBase {
 
   /**
+   * {@inheritdoc}
+   */
+  public function __construct() {
+    $this->blockchainController = new RequestsController();
+  }
+
+  /**
    * Helper function create Drupal nodeas if blockchain exists
    */
   public function createDrupalBlockchains() {
@@ -47,7 +54,7 @@ class CronController extends ControllerBase {
    * Helper function to start multichain deamon
    */
   public function startMultichainDaemon(String $nodeId = '') {
-    $node = $this->multidasherNodeLoad($nodeId);
+    $node = $this->blockchainController->multidasherNodeLoad($nodeId);
     $blockchain = $node->field_blockchain_id->getString();
 
     $exec = $this->constructSystemCommand('connect_multichain', $blockchain);
@@ -71,7 +78,7 @@ class CronController extends ControllerBase {
       'data' => [],
     ];
 
-    $node = $this->multidasherNodeLoad($nodeId);
+    $node = $this->blockchainController->multidasherNodeLoad($nodeId);
     $blockchain = $node->field_blockchain_id->getString();
     $nid = $node->id();
 
@@ -126,7 +133,7 @@ class CronController extends ControllerBase {
    * Helper function to create Drupal nodes if peer exists
    */
   public function getPeerInfo() {
-    $node = $this->multidasherNodeLoad('');
+    $node = $this->blockchainController->multidasherNodeLoad('');
     $blockchain = $node->field_blockchain_id->getString();
     $blockchain_nid = $node->id();
 
@@ -167,7 +174,7 @@ class CronController extends ControllerBase {
    * Helper function to stop multichain running locally
    */
   public function stopMultichainDaemon(String $nodeId = '') {
-    $node = $this->multidasherNodeLoad($nodeId);
+    $node = $this->blockchainController->multidasherNodeLoad($nodeId);
     $blockchain = $node->field_blockchain_id->getString();
     $exec = $this->constructSystemCommand('stop_multichain', $blockchain);
     $result = shell_exec($exec . " &");

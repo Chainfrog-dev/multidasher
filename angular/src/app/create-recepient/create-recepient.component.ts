@@ -8,6 +8,19 @@ export interface Asset {
 	name: string;
 }
 
+export interface Currency {
+	id?: string;
+	name: string;
+	balance: string;
+}
+export interface Wallet {
+	id: string;
+	name: string;
+	balance: Currency[];
+	address: string;
+}
+
+
 @Component({
   selector: 'app-create-recepient',
   templateUrl: './create-recepient.component.html',

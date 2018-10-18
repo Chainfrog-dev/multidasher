@@ -28,7 +28,7 @@ class RecepientController extends ControllerBase {
       'data' => [],
     ];
 
-    $node = $this->multidasherNodeLoad($nodeId);
+    $node = $this->blockchainController->multidasherNodeLoad($nodeId);
     $blockchain = $node->field_blockchain_id->getString();
     $nid = $node->id();
 
@@ -68,7 +68,7 @@ class RecepientController extends ControllerBase {
       'data' => [],
     ];
 
-    $node = $this->multidasherNodeLoad('');
+    $node = $this->blockchainController->multidasherNodeLoad('');
     $blockchain = $node->field_blockchain_id->getString();
     $blockchain_nid = $node->id();
 

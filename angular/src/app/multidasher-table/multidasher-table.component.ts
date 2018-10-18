@@ -76,17 +76,18 @@ export class MultidasherTableComponent implements OnInit {
   async getWallets(nid : string) {
     const response = await this.dataService.getWallets(nid).toPromise();
     let wallets: Wallet[] = [];
-    if(response['data']['wallet']){
-    for(let data of response['data']['wallet']){
-      let wallet : Wallet = {
-        id: data['wallet_id'],
-        name: data['name'],
-        balance: data['balance'],
-        address: data['address']
+    if(response['data']){
+      for(let key in response['data']){
+        let wallet : Wallet = {
+          id: response['data'][key]['wallet_id'],
+          name: response['data'][key]['name'],
+          balance: response['data'][key]['balance'],
+          address: response['data'][key]['address']
+        }
+        wallets.push(wallet);
       }
-      wallets.push(wallet);
     }
-    }
+    console.log(wallets);
     return wallets;
   }
 
@@ -96,7 +97,7 @@ export class MultidasherTableComponent implements OnInit {
     if(response['data']['total']){
       for(let data of response['data']['total']){
         let balance : Currency = {
-          name: data['name']['name'],
+          name: data['name'],
           balance: data['qty'],
         }
         balances.push(balance);
@@ -120,19 +121,5 @@ export class MultidasherTableComponent implements OnInit {
       let tableItem = this.blockchainArray.filter(item => item['id'].indexOf(blockchain.id) === 0)[0];
       tableItem = blockchain;
   }
-
-
-  // async getBalance(balance) {
-  //   let currencies : Currency[] = [];
-  //   for (let id of balance){
-  //     let currency : Currency = {
-  //       'id' : id.target_id,
-  //       'name' : id.target_id,
-  //       'balance' : 0 
-  //     }
-  //     currencies.push(currency);
-  //   }
-  //   return currencies;
-  // }
 
 }

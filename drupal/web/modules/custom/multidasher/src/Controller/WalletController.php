@@ -23,59 +23,6 @@ class WalletController extends ControllerBase {
   /**
    * Returns Json of all wallets on a blockchain.
    */
-  // public function loadWallets(String $nodeId = '') {
-  //   $json_array = [
-  //     'data' => [],
-  //   ];
-
-  //   $node = $this->multidasherNodeLoad($nodeId);
-  //   $blockchain = $node->field_blockchain_id->getString();
-  //   $nid = $node->id();
-
-  //   $exec = $this->blockchainController->constructSystemCommand('list_addresses', $blockchain);
-  //   $response = json_decode(shell_exec($exec . " &"), TRUE);
-
-  //   if (!$response) {
-  //     $json_array['data']['status'] = 0;
-  //     return new JsonResponse($json_array);
-  //   }
-  //   else {
-  //     $json_array['data']['status'] = 1;
-  //   }
-
-  //   foreach ($response as $key => $value) {
-  //     if ($value['address']) {
-  //       $nodes = \Drupal::entityTypeManager()
-  //         ->getStorage('node')
-  //         ->loadByProperties(['field_wallet_address' => $value['address']]);
-  //       if ($node = reset($nodes)) {
-  //         $wallet_id = $node->id();
-  //         $wallet = Node::load($wallet_id);
-  //         $balance = [];
-  //         foreach ($wallet->field_wallet_asset_reference->getValue(['target_id']) as $key => $value) {
-  //           $asset = node::load($value['target_id']);
-  //           $balance_object = [
-  //             'target_id' => $value['target_id'],
-  //             'value' => $wallet->field_wallet_asset_balance->getValue(['value'])[$key]['value'],
-  //             'name' => $asset->get('title')->value,
-  //           ];
-  //           array_push($balance, $balance_object);
-  //         }
-  //         $json_array['data']['wallet'][] = [
-  //           'wallet_id' => $wallet->get('nid')->value,
-  //           'name' => $wallet->get('title')->value,
-  //           'address' => $wallet->get('title')->value,
-  //           'balance' => $balance,
-  //         ];
-  //       }
-  //     }
-  //   }
-  //   return new JsonResponse($json_array);
-  // }
-
-  /**
-   * Returns Json of all wallets on a blockchain.
-   */
   public function exportWallets(String $nodeId = '') {
     $json_array = [
       'data' => [],

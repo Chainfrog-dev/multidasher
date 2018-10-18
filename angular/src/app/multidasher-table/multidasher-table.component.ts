@@ -39,7 +39,7 @@ export class MultidasherTableComponent implements OnInit {
 
   constructor(
     private dataService : DataService
-  ) {}
+    ) {}
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -54,14 +54,14 @@ export class MultidasherTableComponent implements OnInit {
     const result = await this.dataService.getBlockchains().toPromise();
     for(let value of result['data']){
       let blockchain : Blockchain = 
-        {
-          'name' : value.name,
-          'id' : value.id,
-          'description' : value.description,
-          'status' : '',
-          'wallets' : [],
-          'balance' : []
-        }
+      {
+        'name' : value.name,
+        'id' : value.id,
+        'description' : value.description,
+        'status' : '',
+        'wallets' : [],
+        'balance' : []
+      }
       this.blockchainArray.push(blockchain);
       this.refreshBlockchain(blockchain);
     } 
@@ -107,19 +107,19 @@ export class MultidasherTableComponent implements OnInit {
   }
 
   async refreshBlockchain(blockchain: Blockchain) {
-      // Load the status
-      const status = await this.getStatus(blockchain.id);
-      blockchain.status = status['data']['status'];
+    // Load the status
+    const status = await this.getStatus(blockchain.id);
+    blockchain.status = status['data']['status'];
 
-      // Load the wallets
-      const wallets = await this.getWallets(blockchain.id);
-      blockchain.wallets = wallets;
+    // Load the wallets
+    const wallets = await this.getWallets(blockchain.id);
+    blockchain.wallets = wallets;
 
-      const balances = await this.getTotalBalance(blockchain.id);
-      blockchain.balance = balances;
+    const balances = await this.getTotalBalance(blockchain.id);
+    blockchain.balance = balances;
 
-      let tableItem = this.blockchainArray.filter(item => item['id'].indexOf(blockchain.id) === 0)[0];
-      tableItem = blockchain;
+    let tableItem = this.blockchainArray.filter(item => item['id'].indexOf(blockchain.id) === 0)[0];
+    tableItem = blockchain;
   }
 
 }

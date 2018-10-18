@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class CreateBlockchainController extends ControllerBase {
 
   /**
-   *
+   * Iniitate the blockchain
    */
   public function launchBlockchain() {
     $route_match = \Drupal::service('current_route_match');
@@ -35,7 +35,7 @@ class CreateBlockchainController extends ControllerBase {
   }
 
   /**
-   *
+   * Launch the blockchain with Params
    */
   public function createBlockchainParams(Request $request) {
     // Get your POST parameter.
@@ -84,28 +84,6 @@ class CreateBlockchainController extends ControllerBase {
       return new JsonResponse($json_array);
     }
 
-  }
-
-  /**
-   *
-   */
-  public function createLoadNode($blockchain_id) {
-    $nodes = \Drupal::entityTypeManager()
-      ->getStorage('node')
-      ->loadByProperties(['field_blockchain_id' => $blockchain_id]);
-    if ($node = reset($nodes)) {
-      return $node->id();
-    }
-    else {
-      $node = Node::create(['type' => 'blockchain']);
-      $node->set('title', t($blockchain_id));
-      $node->set('field_blockchain_id', t($blockchain_id));
-      $node->set('uid', 1);
-      $node->status = 1;
-      $node->enforceIsNew();
-      $node->save();
-      return $node->id();
-    }
   }
 
 }

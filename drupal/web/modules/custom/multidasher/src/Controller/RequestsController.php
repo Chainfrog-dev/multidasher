@@ -28,7 +28,7 @@ class RequestsController extends ControllerBase {
   }
 
   /**
-   *
+   * Construct complicated requests
    */
   public function constructSystemCommandParameters(String $identifier, String $blockchain, array $parameters) {
     switch ($identifier) {
@@ -55,7 +55,7 @@ class RequestsController extends ControllerBase {
   }
 
   /**
-   *
+   * Execture requests
    */
   public function executeRequest(String $blockchain, String $command, array $parameters) {
     $userPasswordObject = $this->readStdout->retrieveUserPassword($blockchain);
@@ -73,7 +73,7 @@ class RequestsController extends ControllerBase {
   }
 
   /**
-   *
+   * Prepare payload
    */
   private function preparePayload(String $method, array $params = []) {
 
@@ -86,7 +86,7 @@ class RequestsController extends ControllerBase {
   }
 
   /**
-   *
+   * Send request
    */
   private function sendRequest($url, $payload, $user, $password) {
     $ch = curl_init($url);
@@ -107,7 +107,7 @@ class RequestsController extends ControllerBase {
   }
 
   /**
-   *
+   * Load the Blockchain based on route
    */
   public function multidasherNodeLoad(String $nodeId) {
     if ($nodeId == '') {
@@ -119,7 +119,7 @@ class RequestsController extends ControllerBase {
   }
 
   /**
-   *
+   * Retrieve user / password from file
    */
   public function retrieveUserPassword(String $blockchain) {
     $directory = '/var/www/.multichain/' . $blockchain . '/';
@@ -144,7 +144,7 @@ class RequestsController extends ControllerBase {
   }
 
   /**
-   *
+   * retrieve wallet address from file
    */
   public function retrieveWalletAddress(String $message) {
 
@@ -167,7 +167,7 @@ class RequestsController extends ControllerBase {
   }
 
   /**
-   *
+   * Retrieve port url from file
    */
   public function retrievePortUrl(String $blockchain) {
     $directory = '/var/www/.multichain/' . $blockchain . '/';

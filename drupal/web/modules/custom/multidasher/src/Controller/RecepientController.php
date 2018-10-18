@@ -21,7 +21,7 @@ class RecepientController extends ControllerBase {
   }
 
   /**
-   *
+   * Export recepients
    */
   public function exportRecepients(String $nodeId = '') {
     $json_array = [
@@ -61,7 +61,7 @@ class RecepientController extends ControllerBase {
   }
 
   /**
-   *
+   * add Recepients
    */
   public function addRecepient(Request $request) {
     $json_array = [

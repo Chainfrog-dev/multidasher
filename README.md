@@ -12,7 +12,7 @@ In MultiDasher:
 
 * A decoupled Drupal installation functioning as a backend system provides content management and rich metadata for the blockchain assets (cryptocoins and tokens) and data streams, effectively adding "meaning" to the system.
 
-* MultiChain (as a blockchain component of the system) acts as transport layer by supporting peer-to-peer connectivity, provides irrefutable ownership of unique unforgeable digital assets, and reliable tamper-proof data synchronization through data streams.
+* MultiChain (as a blockchain component of the system) acts as transport layer by supporting peer-to-peer connectivity, providing irrefutable ownership of unique unforgeable digital assets, and reliable tamper-proof data synchronization through data streams.
 
 MultiDasher is developed, tested and designed to be run on Ubuntu 18.04.
 

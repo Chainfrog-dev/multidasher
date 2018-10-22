@@ -58,11 +58,11 @@ class RequestsController extends ControllerBase {
    * Execture requests
    */
   public function executeRequest(String $blockchain, String $command, array $parameters) {
-    $userPasswordObject = $this->readStdout->retrieveUserPassword($blockchain);
+    $userPasswordObject = $this->retrieveUserPassword($blockchain);
     $user = $userPasswordObject['user'];
     $password = $userPasswordObject['password'];
 
-    $portUrlObject = $this->readStdout->retrievePortUrl($blockchain);
+    $portUrlObject = $this->retrievePortUrl($blockchain);
     $port = $portUrlObject['port'];
     $url = $portUrlObject['url'];
 

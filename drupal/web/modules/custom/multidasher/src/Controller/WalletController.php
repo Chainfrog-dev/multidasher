@@ -117,8 +117,7 @@ class WalletController extends ControllerBase {
     $permissions_list = $params['permissions'];
 
     $exec = 'get_new_address';
-    $multichain = new BlockchainController();
-    $command = $multichain->constructSystemCommand($exec, $blockchain);
+    $command = $this->blockchainController->constructSystemCommand($exec, $blockchain);
     $result = shell_exec($command . " &");
 
     $wallet = Node::create(['type' => 'blockchain_wallet']);
@@ -134,9 +133,7 @@ class WalletController extends ControllerBase {
     $exec = 'grant';
     $parameters[0] = $address;
     $parameters[1] = $permissions_list;
-
-    $request = new ManageRequestsController();
-    $message = $request->executeRequest($blockchain, 'grant', $parameters);
+    $message = $this->blockchainController->executeRequest($blockchain, 'grant', $parameters);
     $wallet->save();
     $json_array['data']['message'] = $message;
     $json_array['status'] = 1;

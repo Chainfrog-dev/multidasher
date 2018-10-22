@@ -62,7 +62,7 @@ multidasher_cron.load_transactions:
   requirements:
     _access: 'TRUE'
 
-multidasher_cron.load_transactions:
+multidasher_cron.update-address:
   path: '/multidasher/cron/{node}/update-address'
   defaults:
     _controller: '\Drupal\multidasher\Controller\CronController::updateAddresses'

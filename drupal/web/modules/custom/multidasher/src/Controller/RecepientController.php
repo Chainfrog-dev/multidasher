@@ -17,7 +17,7 @@ class RecepientController extends ControllerBase {
    * {@inheritdoc}
    */
   public function __construct() {
-    $this->blockchainController = new BlockchainController();
+    $this->blockchainController = new RequestsController();
   }
 
   /**

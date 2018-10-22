@@ -26,7 +26,7 @@ The [Wiki](https://github.com/Chainfrog-dev/multidasher/wiki) has a lot of resou
 
 The following instructions should have you up and running with MultiDasher on an Ubuntu 18.04 machine within minutes. How many minutes depends on your knowledge of Drupal and IP networking.
 
-Enabling a MultiDasher instance to connect out through personal firewalls and ensuring IP routing is conducted correctly requires some networking knowledge, so we recommend either using a cloud instance of Ubuntu, or running a virtual box on your machine.
+Enabling a MultiDasher instance to connect out through personal firewalls and ensuring IP routing is conducted correctly requires some networking knowledge, so we recommend either using a cloud instance of Ubuntu, or running a virtual box on your machine. This also ensures you don't accidentally mess up your own workspace.
 
 Amazon Web Services provides free cloud servers for personal use. See the Wiki for [AWS Setup Instructions]( https://github.com/Chainfrog-dev/multidasher/wiki/AWS-Setup-Instructions). Other cloud service providers exist, for example [DigitalOcean](https://www.digitalocean.com/), [Google Cloud Platform](https://cloud.google.com/compute/docs/quickstart-linux) and [Microsoft Azure](https://azure.microsoft.com/en-us/free/).
 

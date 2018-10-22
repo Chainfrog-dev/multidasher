@@ -18,13 +18,19 @@ if [[ $EUID -ne 0 ]]; then
 	exit 1
 fi
 
-echo -e "IMPORTANT: You must make sure that your cloud instance allows incoming HTTP AND \nHTTPS (80/443) traffic. This is a default in some cloud providers, but not in \nothers (for example AWS)."
-echo -e "IMPORTANT: We highly recommend you assign a domain name, e.g. YOURSITE.com. You \nmust edit the DNS settings (A record) to point to the IP address of your cloud \ninstance."
+echo -e ""
+echo -e "--------------------------------------------------------------------------------"
+echo -e "IMPORTANT: You must make sure that your cloud instance allows incoming HTTP AND "
+echo -e "           HTTPS (80/443) traffic. This is a default in some cloud providers, "
+echo -e "           but not in others (for example AWS)."
+echo -e "IMPORTANT: You must assign a domain name, e.g. md.YOURSITE.com. Edit the DNS "
+echo -e "           settings A record to point to the IP address of your cloud instance."
 echo -e "IMPORTANT: Certbot will prompt you for an email. You must provide one."
 echo -e "IMPORTANT: When Certbot prompts you for DNS settings, choose [1], no redirect."
-echo -e "\n"
+echo -e "--------------------------------------------------------------------------------"
+echo -e ""
 
-read -p $'If you have setup a domain redirected to this IP address, enter it here \x0a(e.g. panel.multidasher.org), or [enter] to not setup a domain and exit \x0a=> ' domain
+read -p $'Enter the domain name redirected to this IP address (e.g. md.multidasher.org), \x0aor [enter] to not setup a domain and exit. \x0a=> ' domain
 if [ -z $domain ] ; then
 	echo -e "Non-domain installations not supported. Exiting..."
 	exit 1
@@ -61,26 +67,26 @@ if [ -z $drupalpassword ] ; then
 fi
 
 echo -e ""
-echo -e "------------------------------------------------"
-echo -e "Fixed locale                                    "
-echo -e "------------------------------------------------"
+echo -e "--------------------------------------------------------------------------------"
+echo -e "Fixing locale (cloud instances often do not have this set)"
+echo -e "--------------------------------------------------------------------------------"
 echo -e ""
 export LC_ALL="en_US.UTF-8"
 export LC_CTYPE="en_US.UTF-8"
 dpkg-reconfigure locales
 
 echo -e ""
-echo -e "------------------------------------------------"
-echo -e "Update server                                   "
-echo -e "------------------------------------------------"
+echo -e "--------------------------------------------------------------------------------"
+echo -e "Updating server                                   "
+echo -e "--------------------------------------------------------------------------------"
 echo -e ""
 apt-get -y update
 apt-get -y upgrade
 
 echo -e ""
-echo -e "-----------------------------------------------"
-echo -e "Install NGINX 								 "
-echo -e "-----------------------------------------------"
+echo -e "--------------------------------------------------------------------------------"
+echo -e "Installing NGINX 								 "
+echo -e "--------------------------------------------------------------------------------"
 echo -e ""
 
 if ! which nginx > /dev/null 2>&1; then
@@ -94,9 +100,9 @@ else
 fi
 
 echo -e ""
-echo -e "-----------------------------------------------"
-echo -e "Install php && related packages				 "
-echo -e "-----------------------------------------------"
+echo -e "--------------------------------------------------------------------------------"
+echo -e "Installing php && related packages				 "
+echo -e "--------------------------------------------------------------------------------"
 echo -e ""
 
 if ! grep -q "^deb .*ppa:ondrej/php" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
@@ -107,20 +113,19 @@ apt-get -y install curl php-cli php-mbstring git unzip php7.2 php7.2-curl php7.2
 cd /var/www
 git clone https://github.com/Chainfrog-dev/multidasher.git
 
-
 echo -e ""
-echo -e "-----------------------------------------------"
-echo -e "Add site to hosts								 "
-echo -e "-----------------------------------------------"
+echo -e "--------------------------------------------------------------------------------"
+echo -e "Adding site to hosts								 "
+echo -e "--------------------------------------------------------------------------------"
 echo -e ""
 
 echo -e '127.0.0.1	'$domain >> /etc/hosts
 echo -e ""
-echo -e "-----------------------------------------------"
-echo -e "Install certbot 								 "
-echo -e "-----------------------------------------------"
+echo -e "--------------------------------------------------------------------------------"
+echo -e "Installing certbot 								 "
+echo -e "--------------------------------------------------------------------------------"
 echo -e ""
-ufw allow OpenSSH
+ufw limit ssh
 ufw allow in 443/tcp comment "https: for certbot"
 ufw allow 'Nginx HTTP'
 ufw enable
@@ -129,12 +134,14 @@ ufw status
 add-apt-repository -y ppa:certbot/certbot
 apt-get -y update
 apt-get install -qy python-certbot-nginx
-sudo certbot --nginx -d $domain
+echo -e "REMINDER: Certbot will prompt you for an email. You must provide one."
+echo -e "REMINDER: When Certbot prompts you for DNS settings, choose [1], no redirect."
+sudo certbot --nginx -d $domain || { echo -e "\nCertbot failed to generate valid certificate."; echo -e "Perhaps your A record for $domain is not set up correctly."; echo -e "Exiting..." ; exit 1; }
 
 echo -e ""
-echo -e "-----------------------------------------------"
+echo -e "--------------------------------------------------------------------------------"
 echo -e "Configure settings php						 "
-echo -e "-----------------------------------------------"
+echo -e "--------------------------------------------------------------------------------"
 echo -e ""
 if [ ! -f /var/www/multidasher/drupal/web/sites/default/settings.php ]; then
 	echo -e '<?php
@@ -163,9 +170,9 @@ if [ ! -f /var/www/multidasher/drupal/web/sites/default/settings.php ]; then
 fi
 
 echo -e ""
-echo -e "-----------------------------------------------------------------"
+echo -e "--------------------------------------------------------------------------------"
 echo -e "Installing MultiChain                                            "
-echo -e "-----------------------------------------------------------------"
+echo -e "--------------------------------------------------------------------------------"
 echo -e ""
 
 # Check whether we need to install MultiChain
@@ -183,9 +190,9 @@ else
 fi
 
 echo -e ""
-echo -e "-----------------------------------------------"
+echo -e "--------------------------------------------------------------------------------"
 echo -e "Install MySQL database							 "
-echo -e "-----------------------------------------------"
+echo -e "--------------------------------------------------------------------------------"
 echo -e ""
 
 if type mysql >/dev/null 2>&1 ; then
@@ -206,9 +213,9 @@ else
 fi
 
 echo -e ""
-echo -e "-----------------------------------------------"
-echo -e "Install Composer     						 "
-echo -e "-----------------------------------------------"
+echo -e "--------------------------------------------------------------------------------"
+echo -e "Installing Composer     						 "
+echo -e "--------------------------------------------------------------------------------"
 echo -e ""
 
 if composer -v > /dev/null 2>&1 ; then
@@ -220,9 +227,9 @@ else
 fi
 
 echo -e ""
-echo -e "-----------------------------------------------"
-echo -e "Install Drush     						 "
-echo -e "-----------------------------------------------"
+echo -e "--------------------------------------------------------------------------------"
+echo -e "Installing Drush     						 "
+echo -e "--------------------------------------------------------------------------------"
 echo -e ""
 
 cd ~
@@ -242,8 +249,8 @@ chmod -R 777 /var/www/.multichain
 service nginx restart
 
 echo -e ""
-echo -e "-----------------------------------------------"
-echo -e "Done       						             "
-echo -e "-----------------------------------------------"
+echo -e "--------------------------------------------------------------------------------"
+echo -e "All done!       						             "
+echo -e "--------------------------------------------------------------------------------"
 echo -e ""
 echo -e 'Installation complete. You can now connect to your site on: '$domain

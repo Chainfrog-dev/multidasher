@@ -140,7 +140,7 @@ export class DataService {
     }
     console.log(data);
     return this.http.post(
-      this.host+'/multidasher/'+nid+'/add-recepient',
+      this.host+'/multidasher/add/'+nid+'/recepient',
       data,
       {headers : new HttpHeaders(), 
       responseType: 'json'}

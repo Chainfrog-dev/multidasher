@@ -81,9 +81,9 @@ export class CreateRecepientComponent implements OnInit {
 				'description': response['data'][key]['description'],
 				'name': response['data'][key]['name'],
 			}
-	        if (this.assets.filter(item=> item.name == asset.name).length == 0){
+      if (this.assets.filter(item=> item.name == asset.name).length == 0){
 				this.assets.push(asset);
-	        }
+      }
 		}
 
 	}

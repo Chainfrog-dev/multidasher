@@ -6,7 +6,7 @@
           </mat-form-field>
       </div>
       <div>
-          <div formArrayName="permissions" *ngFor="let category of addressForm.controls['permissions'].controls; let i = index">
+          <div formArrayName="permissions" *ngFor="let category of addressForm.controls['permissions']['controls']; let i = index">
             <div class="checkbox">
               <mat-checkbox type="checkbox" [formControlName]="i" color="primary"></mat-checkbox>
               <label>{{ permissions[i] }}</label>

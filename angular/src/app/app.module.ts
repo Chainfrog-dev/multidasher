@@ -6,7 +6,6 @@ import { MultidasherNavComponent } from './multidasher-nav/multidasher-nav.compo
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatGridListModule, MatCardModule, MatMenuModule, MatTableModule, MatPaginatorModule, MatSortModule, MatInputModule, MatSelectModule, MatRadioModule } from '@angular/material';
 import { MultidasherDashboardComponent } from './multidasher-dashboard/multidasher-dashboard.component';
-import { MultidasherFormComponent } from './multidasher-form/multidasher-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule }   from '@angular/router';
@@ -31,7 +30,6 @@ import { CreateRecepientComponent } from './create-recepient/create-recepient.co
     AppComponent,
     MultidasherNavComponent,
     MultidasherDashboardComponent,
-    MultidasherFormComponent,
     MultidasherTableComponent,
     CreateBlockchainComponent,
     MultidasherInfoComponent,
@@ -70,10 +68,6 @@ import { CreateRecepientComponent } from './create-recepient/create-recepient.co
       {
         path: '',
         component: MultidasherTableComponent
-      },
-      {
-        path: 'form',
-        component: MultidasherFormComponent
       },
       {
         path: 'blockchain/:blockchainId/view-info',

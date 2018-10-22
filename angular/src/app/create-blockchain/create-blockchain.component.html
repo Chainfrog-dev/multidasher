@@ -1,26 +1,23 @@
-<button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
-  {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
-</button>
 <mat-horizontal-stepper [linear]="isLinear" #stepper>
-  <mat-step [stepControl]="firstFormGroup">
-    <form [formGroup]="firstFormGroup">
-      <ng-template matStepLabel>Fill out your name</ng-template>
+  <mat-step [stepControl]="blockchainName">
+    <form [formGroup]="blockchainName">
+      <ng-template matStepLabel>Blockchain name</ng-template>
       <mat-form-field class="fullwidth">
         <input matInput placeholder="Name of blockchain" formControlName="blockchainName" required>
       </mat-form-field>
       <div>
-        <button (click)="createBlockchain(firstFormGroup.value.blockchainName)" mat-button matStepperNext>Next</button>
+        <button (click)="createBlockchain(blockchainName.value.blockchainName)" mat-button matStepperNext>Next</button>
       </div>
     </form>
   </mat-step>
-  <mat-step [stepControl]="secondFormGroup">
-    <form [formGroup]="secondFormGroup">
-      <ng-template matStepLabel>Fill out your address</ng-template>
+  <mat-step [stepControl]="blockchainParams">
+    <form [formGroup]="blockchainParams">
+      <ng-template matStepLabel>Edit params</ng-template>
       <mat-form-field class="fullwidth">
         <input matInput placeholder="Address" >
 		  <mat-label>Autosize textarea</mat-label>
 		  <textarea  
-		  		formControlName="secondCtrl" 
+		  		formControlName="blockchainParams" 
 		  		matInput
 		        cdkTextareaAutosize
 		        #autosize="cdkTextareaAutosize"
@@ -36,11 +33,11 @@
     </form>
   </mat-step>
   <mat-step>
-    <ng-template matStepLabel>Done</ng-template>
-    You are now done.
+    <ng-template matStepLabel>Launch</ng-template>
+    Launch the blockchain
     <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="submitBlockchain()">Submit</button>
+      <button mat-button matStepperPrevious>Cancel</button>
+      <button mat-button (click)="submitBlockchain()">Launch now</button>
     </div>
   </mat-step>
 </mat-horizontal-stepper>

@@ -8,9 +8,9 @@ import { DataService } from '../data-feeds.service';
   styleUrls: ['./create-blockchain.component.scss']
 })
 export class CreateBlockchainComponent implements OnInit {
-  isLinear = false;
-  firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
+  isLinear = true;
+  blockchainName: FormGroup;
+  blockchainParams: FormGroup;
 
   constructor(
   	private _formBuilder: FormBuilder,
@@ -18,28 +18,24 @@ export class CreateBlockchainComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.firstFormGroup = this._formBuilder.group({
+    this.blockchainName = this._formBuilder.group({
       blockchainName: ['', Validators.required]
     });
-    this.secondFormGroup = this._formBuilder.group({
-      secondCtrl: ['', Validators.required]
+    this.blockchainParams = this._formBuilder.group({
+      blockchainParams: ['', Validators.required]
     });
   }
 
   async createBlockchain(blockchainName: String){
   	const result = await this.dataService.createBlockchain(blockchainName).toPromise();
   	let params = result['data']['params'];
-  	this.secondFormGroup.controls['secondCtrl'].setValue(params);
-  	console.log(this.secondFormGroup);
+  	this.blockchainParams.controls['blockchainParams'].setValue(params);
   }
 
   async submitBlockchain(){
-  	console.log(this.firstFormGroup.value.blockchainName,this.secondFormGroup.value.secondCtrl);
-  	const result = await this.dataService.submitBlockchain(this.firstFormGroup.value.blockchainName, this.secondFormGroup.value.secondCtrl).toPromise();
-  	console.log(result);
+  	const result = await this.dataService.submitBlockchain(this.blockchainName.value.blockchainName, this.blockchainParams.value.blockchainParams).toPromise();
   	if(result['data']['status'] == 1){
-  		console.log('alertibng');
-  		alert(await this.dataService.updateBlockchainOptions().toPromise());
+  		alert('Blockchain launched, woohoo');
   	}
   }
 

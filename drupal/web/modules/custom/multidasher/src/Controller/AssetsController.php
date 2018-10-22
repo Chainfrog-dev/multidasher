@@ -68,8 +68,7 @@ class AssetsController extends ControllerBase {
     $parameters[1] = $asset_name;
     $parameters[2] = +$asset_quantity;
 
-    $request = new ManageRequestsController();
-    $response = $request->executeRequest($blockchain, $command, $parameters);
+    $response = $this->blockchainController->executeRequest($blockchain, $command, $parameters);
 
     if ($response['error']['message']) {
       $json_array['data']['message'] = $response['error']['message'];

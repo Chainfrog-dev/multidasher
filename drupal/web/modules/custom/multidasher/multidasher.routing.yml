@@ -70,6 +70,22 @@ multidasher_cron.update-address:
   requirements:
     _access: 'TRUE'
 
+multidasher_cron.create-blockchains:
+  path: '/multidasher/cron/update-blockchains'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\CronController::createDrupalBlockchains'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+
+multidasher_cron.bootstrap-blockchain:
+  path: '/multidasher/cron/bootstrap-blockchain/{blockchain}'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\CronController::bootstrapBlockchain'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+
 multidasher_recepients.add_recepient:
   path: '/multidasher/add/{node}/recepient'
   methods:  [POST]
@@ -83,6 +99,14 @@ multidasher_recepients.get_recepients:
   path: '/multidasher/export/{node}/recepients'
   defaults:
     _controller: '\Drupal\multidasher\Controller\RecepientController::exportRecepients'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+
+multidasher_stream.publish:
+  path: '/multidasher/stream/publish'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\StreamsController::publishStream'
     _title: 'JsonExport'
   requirements:
     _access: 'TRUE'

@@ -28,7 +28,6 @@ class CreateBlockchainController extends ControllerBase {
 
     $exec = $this->blockchainController->constructSystemCommand('create_multichain', $blockchain);
     $response = shell_exec($exec . " &");
-    drupal_set_message($result);
 
     if (!$response) {
       $json_array['data']['status'] = 0;
@@ -37,6 +36,7 @@ class CreateBlockchainController extends ControllerBase {
 
     if ($response) {
       $json_array['data']['status'] = 1;
+      $json_array['data']['result'] = $response;
       $json_array['data']['params'] = shell_exec('cat < /var/www/.multichain/' . $blockchain . '/params.dat');
       return new JsonResponse($json_array);
     }
@@ -81,6 +81,7 @@ class CreateBlockchainController extends ControllerBase {
     $node->status = 1;
     $node->enforceIsNew();
     $node->save();
+    $nid = $node->id();
 
     if (!$result) {
       $json_array['data']['status'] = 0;
@@ -88,6 +89,7 @@ class CreateBlockchainController extends ControllerBase {
     }
     if ($result) {
       $json_array['data']['status'] = 1;
+      $json_array['data']['nid'] = $nid;
       $json_array['data']['result'] = $result;
       return new JsonResponse($json_array);
     }

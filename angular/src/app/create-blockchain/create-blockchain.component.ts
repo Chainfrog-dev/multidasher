@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { DataService } from '../data-feeds.service';
+import { DataService } from '../data-feeds.service'; 
 
 @Component({
   selector: 'app-create-blockchain',
@@ -8,6 +8,7 @@ import { DataService } from '../data-feeds.service';
   styleUrls: ['./create-blockchain.component.scss']
 })
 export class CreateBlockchainComponent implements OnInit {
+  blockchainId:String;
   isLinear = true;
   blockchainName: FormGroup;
   blockchainParams: FormGroup;
@@ -19,7 +20,8 @@ export class CreateBlockchainComponent implements OnInit {
 
   ngOnInit() {
     this.blockchainName = this._formBuilder.group({
-      blockchainName: ['', Validators.required]
+      blockchainName: ['', Validators.required],
+      blockchainUrl: ['', Validators.required]
     });
     this.blockchainParams = this._formBuilder.group({
       blockchainParams: ['', Validators.required]
@@ -28,6 +30,7 @@ export class CreateBlockchainComponent implements OnInit {
 
   async createBlockchain(blockchainName: String){
   	const result = await this.dataService.createBlockchain(blockchainName).toPromise();
+    console.log(result);
   	let params = result['data']['params'];
   	this.blockchainParams.controls['blockchainParams'].setValue(params);
   }
@@ -36,6 +39,19 @@ export class CreateBlockchainComponent implements OnInit {
   	const result = await this.dataService.submitBlockchain(this.blockchainName.value.blockchainName, this.blockchainParams.value.blockchainParams).toPromise();
   	if(result['data']['status'] == 1){
   		alert('Blockchain launched, woohoo');
+      const message = {
+        'json' : this.blockchainName.value.blockchainUrl
+      }
+      const loadBlockchains = await this.dataService.updateBlockchains().toPromise(); 
+      const bootstrapBlockchain = await this.dataService.bootstrapBlockchain(this.blockchainName.value.blockchainName).toPromise(); 
+      const streamResult = await this.dataService.writeStream(this.blockchainName.value.blockchainName,'root','url',message).toPromise();
+      console.log(streamResult);
+      console.log(streamResult['data']['status']);
+      if(streamResult['data']['status'] == 0) {
+        const streamResultRetry = await this.dataService.writeStream(this.blockchainName.value.blockchainName,'root','url',message).toPromise();
+        console.log(streamResultRetry);
+      }
+      console.log(bootstrapBlockchain);
   	}
   }
 

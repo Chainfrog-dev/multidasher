@@ -18,6 +18,8 @@ export class DataService {
   ) {
   }
 
+
+
   getBlockchains() : Observable<promise> {
     return this.http.get(
       this.host+'/multidasher/export/export-blockchains',
@@ -82,9 +84,18 @@ export class DataService {
     );
   }
 
-  updateBlockchainOptions() : Observable<promise> {
+  updateBlockchains() : Observable<promise> {
     return this.http.post(
       this.host+'/multidasher/cron/update-blockchains',
+      '',
+      {headers : new HttpHeaders(), 
+      responseType: 'json'}
+    );
+  }
+
+  bootstrapBlockchain(blockchain : String) : Observable<promise> {
+    return this.http.post(
+      this.host+'/multidasher/cron/bootstrap-blockchain/'+blockchain,
       '',
       {headers : new HttpHeaders(), 
       responseType: 'json'}
@@ -138,7 +149,6 @@ export class DataService {
       'description' : description,
       'address' : address
     }
-    console.log(data);
     return this.http.post(
       this.host+'/multidasher/add/'+nid+'/recepient',
       data,
@@ -160,6 +170,23 @@ export class DataService {
       responseType: 'json'}
     );
   }
+
+  writeStream(blockchain: String, stream: String, key:String, message: any) : Observable<promise> {
+    const data = {
+      'stream' : stream,
+      'key' : key,
+      'message' : message,
+      'blockchain' : blockchain
+    }
+    console.log(data);
+    return this.http.post(
+      this.host+'/multidasher/stream/publish',
+      data,
+      {headers : new HttpHeaders(), 
+      responseType: 'json'}
+    );
+  }
+
 }
 
   // sessionKey$ : Observable<KeyPairStoreInterface>;

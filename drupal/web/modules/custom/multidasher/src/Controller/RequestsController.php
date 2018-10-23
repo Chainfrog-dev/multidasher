@@ -46,7 +46,8 @@ class RequestsController extends ControllerBase {
       break;
       case 'revoke':
         return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" revoke "' . $parameters[0] . '" ' . $parameters[1];
-
+      case 'publish':
+        return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" publish ' . $parameters[0] . ' "'.$parameters[1] . '" '.  $parameters[2];
       break;
       default:
         return NULL;

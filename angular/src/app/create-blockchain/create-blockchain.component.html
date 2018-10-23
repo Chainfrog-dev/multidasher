@@ -5,6 +5,9 @@
       <mat-form-field class="fullwidth">
         <input matInput placeholder="Name of blockchain" formControlName="blockchainName" required>
       </mat-form-field>
+      <mat-form-field class="fullwidth">
+        <input matInput placeholder="Url for requesting access" formControlName="blockchainUrl" required>
+      </mat-form-field>
       <div>
         <button (click)="createBlockchain(blockchainName.value.blockchainName)" mat-button matStepperNext>Next</button>
       </div>

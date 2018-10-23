@@ -258,10 +258,22 @@ composer install
 drush upwd admin $drupalpassword
 drush cr
 
-cp /var/www/multidasher/nginx/multidasher.cloud.nginx /etc/nginx/sites-enabled/multidasher
-sed -i -e 's/CHANGEME/'$domain'/g' /etc/nginx/sites-enabled/multidasher
+cp /var/www/multidasher/nginx/multidasher.local.nginx /etc/nginx/sites-available/multidasher
+sed -i -e 's/CHANGEME/'$domain'/g' /etc/nginx/sites-available/multidasher
+ln -s /etc/nginx/sites-available/multidasher /etc/nginx/sites-enabled/multidasher
 rm /etc/nginx/sites-enabled/default
 chmod -R 777 /var/www/.multichain
+
+read -p "Press Enter to continue"
+echo -e ""
+
+echo -e ""
+echo -e "--------------------------------------------------------------------------------"
+echo -e "Configuring NGINX     						 "
+echo -e "--------------------------------------------------------------------------------"
+echo -e ""
+
+
 
 service nginx restart
 

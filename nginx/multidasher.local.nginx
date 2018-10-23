@@ -1,5 +1,5 @@
 server {
-    server_name multidasher.local.com;
+    server_name CHANGEME;
     root /var/www/multidasher/drupal/web; ## <-- Your only path reference.
 
     location = /favicon.ico {

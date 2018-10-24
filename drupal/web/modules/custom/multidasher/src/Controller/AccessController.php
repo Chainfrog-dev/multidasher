@@ -103,12 +103,12 @@ class AccessController extends ControllerBase {
     }
 
     $blockchain = $params['blockchain'];
-    $stream = $params['stream'];
+    $parameters[0] = $params['stream'];
 
-    $exec = $this->blockchainController->constructSystemCommandParameters('list_stream_items', $blockchain, [$stream]);
+    $exec = $this->blockchainController->constructSystemCommandParameters('list_stream_items', $blockchain, $parameters);
     $response = shell_exec($exec);
 
-    $json_array['data'][] = $response;
+    $json_array['data']['result'] = json_decode($response);
     $json_array['exec'] = $exec;
     $json_array['status'] = 1;
     $json_array['params'] = $params;

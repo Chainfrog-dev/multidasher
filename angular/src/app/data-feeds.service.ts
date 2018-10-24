@@ -18,8 +18,6 @@ export class DataService {
   ) {
   }
 
-
-
   getBlockchains() : Observable<promise> {
     return this.http.get(
       this.host+'/multidasher/export/export-blockchains',
@@ -35,6 +33,21 @@ export class DataService {
       responseType: 'json'}
     );
   }
+
+  getBlockchainMaster(blockchain, stream) : Observable<promise> {
+    const data = {
+      'blockchain' : blockchain,
+      'stream' : stream
+    }
+
+    return this.http.post(
+      this.host+'/multidasher/access/retrieve-master/',
+      data,
+      {headers : new HttpHeaders(), 
+      responseType: 'json'}
+    );
+  }
+
 
   getAssetTransactions(nid, asset) : Observable<promise> {
     return this.http.get(
@@ -57,6 +70,21 @@ export class DataService {
     );
   }
 
+  initiateRemoteBlockchain(blockchain, ip, port) : Observable<promise> {
+    console.log(ip);
+    const data = {
+      'blockchain' : blockchain,
+      'chainAddress' : ip,
+      'port' : port
+    }
+
+    return this.http.post(
+      this.host+'/multidasher/access/initiate-remote',
+      data,
+      {headers : new HttpHeaders(), 
+      responseType: 'json'}
+    );
+  }
 
   getWallets(nid) : Observable<promise> {
     return this.http.get(

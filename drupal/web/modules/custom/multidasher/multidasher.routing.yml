@@ -14,6 +14,30 @@ multidasher.blockchain_status:
   requirements:
     _access: 'TRUE'
 
+multidasher_access.initiate-remote:
+  path: '/multidasher/access/initiate-remote'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\AccessController::initiateRemoteBlockchain'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+
+multidasher_access.retrieve-master:
+  path: '/multidasher/access/retrieve-master'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\AccessController::getBlockchainMaster'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+
+multidasher_access.request_access:
+  path: '/multidasher/access/request-access'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\AccessController::requestAccess'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+
 multidasher_assets.add_asset:
   path: '/multidasher/add/{node}/asset'
   defaults:

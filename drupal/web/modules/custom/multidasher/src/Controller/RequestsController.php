@@ -16,6 +16,7 @@ class RequestsController extends ControllerBase {
   public function constructSystemCommand(String $identifier, String $blockchain) {
     $commands = [
       'connect_multichain' => 'multichaind ' . $blockchain . ' -datadir="/var/www/.multichain" -daemon > /dev/null 2>&1 &',
+      'connect_external_multichain' => 'multichaind ' . $blockchain . ' -datadir="/var/www/.multichain" -daemon',
       'create_multichain' => 'multichain-util create ' . $blockchain . ' -datadir="/var/www/.multichain"',
       'get_new_address' => 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" getnewaddress',
       'get_balances' => 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" getmultibalances',
@@ -38,12 +39,16 @@ class RequestsController extends ControllerBase {
       break;
       case 'list_asset_transactions':
         return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" listassettransactions "' . $parameters[0] . '"';
-
       break;
+
+      case 'list_stream_items':
+        return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" liststreamitems "' . $parameters[0] . '"';
+      break;
+
       case 'grant':
         return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" grant "' . $parameters[0] . '" ' . $parameters[1];
-
       break;
+
       case 'revoke':
         return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" revoke "' . $parameters[0] . '" ' . $parameters[1];
       case 'publish':

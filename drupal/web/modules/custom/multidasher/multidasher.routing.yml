@@ -78,6 +78,14 @@ multidasher_cron.create-blockchains:
   requirements:
     _access: 'TRUE'
 
+multidasher_cron.delete-blockchains:
+  path: '/multidasher/cron/delete'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\CronController::deleteBlockchain'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+
 multidasher_cron.bootstrap-blockchain:
   path: '/multidasher/cron/bootstrap-blockchain/{blockchain}'
   defaults:

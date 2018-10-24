@@ -32,7 +32,7 @@ export interface Blockchain {
 
 export class MultidasherTableComponent implements OnInit {
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns: string[] = ['name', 'wallets','balance', 'status', 'refresh', 'info'];
+  displayedColumns: string[] = ['name', 'wallets','balance', 'status', 'refresh', 'info', 'delete'];
   dataSource = new MatTableDataSource();
   blockchainArray : Blockchain[] = [];
   active: boolean = false;
@@ -120,6 +120,14 @@ export class MultidasherTableComponent implements OnInit {
 
     let tableItem = this.blockchainArray.filter(item => item['id'].indexOf(blockchain.id) === 0)[0];
     tableItem = blockchain;
+  }
+
+  async deleteBlockchain(blockchain: Blockchain) {
+    const result = await this.dataService.deleteBlockchain(blockchain.id).toPromise();
+    console.log(result);
+    this.blockchainArray = this.blockchainArray.filter(item => item.id !== blockchain.id);
+    this.dataSource = new MatTableDataSource(this.blockchainArray);
+    console.log(this.dataSource);
   }
 
 }

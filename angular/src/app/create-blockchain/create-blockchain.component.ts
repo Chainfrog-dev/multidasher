@@ -45,13 +45,6 @@ export class CreateBlockchainComponent implements OnInit {
       const loadBlockchains = await this.dataService.updateBlockchains().toPromise(); 
       const bootstrapBlockchain = await this.dataService.bootstrapBlockchain(this.blockchainName.value.blockchainName).toPromise(); 
       const streamResult = await this.dataService.writeStream(this.blockchainName.value.blockchainName,'root','url',message).toPromise();
-      console.log(streamResult);
-      console.log(streamResult['data']['status']);
-      if(streamResult['data']['status'] == 0) {
-        const streamResultRetry = await this.dataService.writeStream(this.blockchainName.value.blockchainName,'root','url',message).toPromise();
-        console.log(streamResultRetry);
-      }
-      console.log(bootstrapBlockchain);
   	}
   }
 

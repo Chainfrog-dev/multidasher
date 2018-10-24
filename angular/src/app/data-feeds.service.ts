@@ -44,6 +44,20 @@ export class DataService {
     );
   }
 
+  deleteBlockchain(nid) : Observable<promise> {
+    const data = {
+      'nid' : nid,
+    }
+
+    return this.http.post(
+      this.host+'/multidasher/cron/delete',
+      data,
+      {headers : new HttpHeaders(), 
+      responseType: 'json'}
+    );
+  }
+
+
   getWallets(nid) : Observable<promise> {
     return this.http.get(
       this.host+'/multidasher/export/'+nid+'/wallets',

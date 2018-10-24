@@ -6,6 +6,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\node\Entity\Node;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Drupal\views\Views;
 
 /**
  * Defines BlockchainController class.
@@ -20,7 +21,7 @@ class CronController extends ControllerBase {
   }
 
   /**
-   * Helper function create Drupal nodeas if blockchain exists
+   * Helper function create Drupal nodeas if blockchain exists.
    */
   public function createDrupalBlockchains(Request $request) {
     $json_array = [
@@ -45,7 +46,89 @@ class CronController extends ControllerBase {
   }
 
   /**
-   * Helper function to launch multichain
+   * Delete blockchain.
+   */
+  public function deleteBlockchain(Request $request) {
+    $json_array = [
+      'data' => [],
+    ];
+
+    // Get your POST parameter.
+    $params = [];
+    $content = $request->getContent();
+    if (!empty($content)) {
+      $params = json_decode($content, TRUE);
+    }
+
+    $nid = $params['nid'];
+    $blockchain_node = Node::load($nid);
+    $blockchain = $blockchain_node->field_blockchain_id->getString();
+    $nid = $blockchain_node->id();
+
+    $exec = $this->blockchainController->constructSystemCommand('stop_multichain', $blockchain);
+    $result = shell_exec($exec);
+    $json_array['data']['result'] = $result;
+
+
+    // Delete assets.
+    $view = Views::getView('multidash_assets');
+    if (is_object($view)) {
+      $view->setArguments([$nid]);
+      $view->setDisplay('page_1');
+      $view->preExecute();
+      $view->execute();
+      $result = $view->result;
+      if ($result) {
+        foreach ($result as $key => $value) {
+          $asset = Node::load(($value->nid));
+          $asset->delete();
+        }
+      }
+    }
+
+    // Delete Wallets.
+    $view = Views::getView('multidasher_wallet');
+    if (is_object($view)) {
+      $view->setArguments([$nid]);
+      $view->setDisplay('page_1');
+      $view->preExecute();
+      $view->execute();
+      $result = $view->result;
+      if ($result) {
+        foreach ($result as $key => $value) {
+          $wallet = Node::load(($value->nid));
+          $wallet->delete();
+        }
+      }
+    }
+
+    // Delete recipients.
+    $view = Views::getView('recipients');
+    if (is_object($view)) {
+      $view->setArguments([$nid]);
+      $view->setDisplay('page_1');
+      $view->preExecute();
+      $view->execute();
+      $result = $view->result;
+      if ($result) {
+        foreach ($result as $key => $value) {
+          $recepient = Node::load(($value->nid));
+          $recepient->delete();
+        }
+      }
+    }
+
+    $blockchain_node->delete();
+    $dirPath = '/var/www/.multichain/' . $blockchain;
+    shell_exec('rm -rf '.$dirPath);
+    $json_array['data']['status'] = 1;
+    $json_array['data']['message'] = $result;
+    return new JsonResponse($json_array);
+  }
+
+
+  /**
+   * Helper function to launch multichain.
    */
   public function launchMultichain(String $blockchain) {
     $exec = $this->constructSystemCommand('create_multichain', $blockchain);
@@ -53,7 +136,7 @@ class CronController extends ControllerBase {
   }
 
   /**
-   * Helper function to start multichain deamon
+   * Helper function to start multichain deamon.
    */
   public function startMultichainDaemon(String $nodeId = '') {
     $node = $this->blockchainController->multidasherNodeLoad($nodeId);
@@ -64,7 +147,7 @@ class CronController extends ControllerBase {
   }
 
   /**
-   * Helper function to check multichain status
+   * Helper function to check multichain status.
    */
   public function checkMultichainStatus(String $blockchain) {
     $exec = $this->constructSystemCommand('list_addresses', $blockchain);
@@ -72,7 +155,7 @@ class CronController extends ControllerBase {
   }
 
   /**
-   * Helper function to update wallets
+   * Helper function to update wallets.
    */
   public function updateAddresses(String $nodeId = '') {
 
@@ -138,7 +221,7 @@ class CronController extends ControllerBase {
   }
 
   /**
-   * Helper function to update balances of addresses
+   * Helper function to update balances of addresses.
    */
   private function updateAddressBalances(String $blockchain, String $address, String $wallet_id) {
     $exec = $this->constructSystemCommandParameters('get_address_balances', $blockchain, [$address]);
@@ -161,7 +244,7 @@ class CronController extends ControllerBase {
   }
 
   /**
-   * Helper function to create Drupal nodes if peer exists
+   * Helper function to create Drupal nodes if peer exists.
    */
   public function getPeerInfo() {
     $node = $this->blockchainController->multidasherNodeLoad('');
@@ -202,7 +285,7 @@ class CronController extends ControllerBase {
   }
 
   /**
-   * Helper function to stop multichain running locally
+   * Helper function to stop multichain running locally.
    */
   public function stopMultichainDaemon(String $nodeId = '') {
     $node = $this->blockchainController->multidasherNodeLoad($nodeId);
@@ -215,7 +298,7 @@ class CronController extends ControllerBase {
   }
 
   /**
-   * Helper function to create Drupal nodes if blockchain exists
+   * Helper function to create Drupal nodes if blockchain exists.
    */
   private function createLoadNode($blockchain_id) {
     $nodes = \Drupal::entityTypeManager()

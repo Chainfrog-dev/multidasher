@@ -22,6 +22,14 @@ multidasher_access.initiate-remote:
   requirements:
     _access: 'TRUE'
 
+multidasher_access.retrieve-master-json:
+  path: '/multidasher/access/retrieve-master-json'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\AccessController::getMasterJson'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+
 multidasher_access.retrieve-master:
   path: '/multidasher/access/retrieve-master'
   defaults:
@@ -78,13 +86,13 @@ multidasher_create.create_blockchain:
   requirements:
     _access: 'TRUE'
 
-multidasher_cron.load_transactions:
-  path: '/multidasher/cron/update-blockchains'
-  defaults:
-    _controller: '\Drupal\multidasher\Controller\CronController::createDrupalBlockchains'
-    _title: 'JsonExport'
-  requirements:
-    _access: 'TRUE'
+# multidasher_cron.load_transactions:
+#   path: '/multidasher/cron/update-blockchains'
+#   defaults:
+#     _controller: '\Drupal\multidasher\Controller\CronController::createDrupalBlockchains'
+#     _title: 'JsonExport'
+#   requirements:
+#     _access: 'TRUE'
 
 multidasher_cron.update-address:
   path: '/multidasher/cron/{node}/update-address'

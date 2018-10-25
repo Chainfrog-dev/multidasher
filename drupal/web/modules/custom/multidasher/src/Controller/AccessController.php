@@ -6,7 +6,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\node\Entity\Node;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Drupal\views\Views;
+use Drupal\views\Views; 
 
 /**
  * Controller for export json.
@@ -37,14 +37,27 @@ class AccessController extends ControllerBase {
     $port = $params['port'];
     $blockchain_address = $blockchain .'@'.$chain_address.':'.$port;
 
-    $exec = $this->blockchainController->constructSystemCommand('connect_external_multichain', $blockchain_address);
-    $result = shell_exec($command);
+    $directory = '/var/www/.multichain/' . $blockchain;
 
-    $json_array['data']['message'] = $result;
-    $json_array['data']['exec'] = $exec;
+    if (is_dir($directory)) {
+      $exec = $this->blockchainController->constructSystemCommand('connect_multichain', $blockchain);
+      $result = shell_exec($command);
+    }
+
+    else{
+      $exec = $this->blockchainController->constructSystemCommand('connect_external_multichain', $blockchain_address);
+      $result = shell_exec($command);
+    }
+      
+    fclose($fh);
     $json_array['status'] = 1;
-    $json_array['blockchain_address'] = $blockchainAddress;
-
+    $json_array['blockchain_address'] = $blockchain_address;
+    $json_array['chain_address'] = $chain_address;
+    $json_array['port'] = $port;
+    $json_array['blockchain'] = $blockchain;
+    $json_array['data']['directory'] = $directory;
+    $json_array['data']['exec'] = $exec;
+    $json_array['data']['message'] = $result;
     return new JsonResponse($json_array);
 
   }
@@ -104,17 +117,51 @@ class AccessController extends ControllerBase {
 
     $blockchain = $params['blockchain'];
     $parameters[0] = $params['stream'];
+    $parameters[1] = 'sign-up';
+    $parameters[2] = 'true';
+    $parameters[3] = 1;
+    $parameters[4] = 0;
+    $parameters[5] = 'false';
 
-    $exec = $this->blockchainController->constructSystemCommandParameters('list_stream_items', $blockchain, $parameters);
+    $exec = $this->blockchainController->constructSystemCommandParameters('list_stream_key_items', $blockchain, $parameters);
     $response = shell_exec($exec);
 
     $json_array['data']['result'] = json_decode($response);
     $json_array['exec'] = $exec;
     $json_array['status'] = 1;
-    $json_array['params'] = $params;
+    $json_array['params'] = $parameters;
 
     return new JsonResponse($json_array);
   }
 
+  public function getMasterJson(Request $request) {
+    $json_array = [
+      'data' => [],
+    ];
+
+    $params = [];
+    $content = $request->getContent();
+
+    if (!empty($content)) {
+      $params = json_decode($content, TRUE);
+    }
+
+    $blockchain = $params['blockchain'];
+    $parameters[0] = $params['stream'];
+    $parameters[1] = $params['author'];
+    $parameters[2] = 'true';
+    $parameters[3] = 1;
+    $parameters[4] = -1;
+
+    $exec = $this->blockchainController->constructSystemCommandParameters('list_stream_publisher_items', $blockchain, $parameters);
+    $response = shell_exec($exec);
+
+    $json_array['data']['result'] = json_decode($response);
+    $json_array['exec'] = $exec;
+    $json_array['status'] = 1;
+    $json_array['params'] = $parameters;
+
+    return new JsonResponse($json_array);
+  }
 
 }

@@ -66,6 +66,21 @@ export class DataService {
       this.host+'/multidasher/cron/delete',
       data,
       {headers : new HttpHeaders(), 
+      responseType: 'json'} 
+    ); 
+  }
+
+  getMasterJson(blockchain, stream, author) : Observable<promise> {
+    const data = {
+      'blockchain' : blockchain,
+      'stream' : stream,
+      'author' : author
+    } 
+
+    return this.http.post(
+      this.host+'/multidasher/access/retrieve-master-json',
+      data,
+      {headers : new HttpHeaders(), 
       responseType: 'json'}
     );
   }
@@ -76,7 +91,7 @@ export class DataService {
       'blockchain' : blockchain,
       'chainAddress' : ip,
       'port' : port
-    }
+    } 
 
     return this.http.post(
       this.host+'/multidasher/access/initiate-remote',
@@ -123,6 +138,15 @@ export class DataService {
       this.host+'/multidasher/create/launch-blockchain/'+blockchain,
       {headers : new HttpHeaders(), 
       responseType: 'json'}
+    );
+  }
+
+  registerBlockchain(url : string, chainAddress: String, data: any) : Observable<promise> {
+    console.log(url); console.log(chainAddress); console.log(data);
+    return this.http.post(
+      url,
+      data,
+      {headers : new HttpHeaders()} 
     );
   }
 

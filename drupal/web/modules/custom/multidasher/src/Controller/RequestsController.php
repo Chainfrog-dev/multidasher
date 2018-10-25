@@ -15,7 +15,7 @@ class RequestsController extends ControllerBase {
    */
   public function constructSystemCommand(String $identifier, String $blockchain) {
     $commands = [
-      'connect_multichain' => 'multichaind ' . $blockchain . ' -datadir="/var/www/.multichain" -daemon > /dev/null 2>&1 &',
+      'connect_multichain' => 'multichaind ' . $blockchain . ' -datadir="/var/www/.multichain" -daemon',
       'connect_external_multichain' => 'multichaind ' . $blockchain . ' -datadir="/var/www/.multichain" -daemon',
       'create_multichain' => 'multichain-util create ' . $blockchain . ' -datadir="/var/www/.multichain"',
       'get_new_address' => 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" getnewaddress',
@@ -32,28 +32,46 @@ class RequestsController extends ControllerBase {
    * Construct complicated requests
    */
   public function constructSystemCommandParameters(String $identifier, String $blockchain, array $parameters) {
+
+    $constructed_parameters = ' ';
+    foreach ($parameters as $key => $value) {
+      $constructed_parameters .= $value.' ';
+    }
+
+    // Possible that this switch can be made generic, haven't done it yet in case we need to modify output via shell-exec
     switch ($identifier) {
       case 'get_address_balances':
-        return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" getaddressbalances "' . $parameters[0] . '"';
-
+        return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" getaddressbalances' . $constructed_parameters;
       break;
+
       case 'list_asset_transactions':
-        return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" listassettransactions "' . $parameters[0] . '"';
+        return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" listassettransactions' . $constructed_parameters;
       break;
 
       case 'list_stream_items':
-        return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" liststreamitems "' . $parameters[0] . '"';
+        return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" liststreamitems' . $constructed_parameters;
+      break;
+
+      case 'list_stream_key_items':
+        return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" liststreamkeyitems' . $constructed_parameters;
+      break;
+
+      case 'list_stream_publisher_items':
+        return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" liststreampublisheritems' . $constructed_parameters;
       break;
 
       case 'grant':
-        return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" grant "' . $parameters[0] . '" ' . $parameters[1];
+        return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" grant' . $constructed_parameters;
       break;
 
       case 'revoke':
-        return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" revoke "' . $parameters[0] . '" ' . $parameters[1];
-      case 'publish':
-        return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" publish ' . $parameters[0] . ' "'.$parameters[1] . '" '.  $parameters[2];
+        return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" revoke' . $constructed_parameters;
       break;
+
+      case 'publish':
+        return 'multichain-cli ' . $blockchain . ' -datadir="/var/www/.multichain" publish' . $constructed_parameters;
+      break;
+
       default:
         return NULL;
       break;

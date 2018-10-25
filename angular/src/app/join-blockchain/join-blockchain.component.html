@@ -1,4 +1,4 @@
-<mat-horizontal-stepper [linear]="isLinear" #stepper>
+<mat-horizontal-stepper [linear]="true" #stepper>
   <mat-step [stepControl]="blockchainName">
     <form [formGroup]="blockchainName">
       <ng-template matStepLabel>Blockchain name</ng-template>
@@ -8,7 +8,7 @@
       <mat-form-field class="fullwidth">
         <input matInput placeholder="Url for requesting access" formControlName="blockchainIp" required>
       </mat-form-field>
-    <mat-form-field class="fullwidth">
+	  <mat-form-field class="fullwidth">
         <input matInput placeholder="Url for requesting access" formControlName="blockchainPort" required>
       </mat-form-field>
 
@@ -17,29 +17,25 @@
       </div>
     </form>
   </mat-step>
-<!--   <mat-step [stepControl]="blockchainParams">
-    <form [formGroup]="blockchainParams">
-      <ng-template matStepLabel>Edit params</ng-template>
+  <mat-step [stepControl]="blockchainController">
+    <form [formGroup]="blockchainController">
+      <ng-template matStepLabel>Register with blockchain</ng-template>
       <mat-form-field class="fullwidth">
-        <input matInput placeholder="Address" >
-		  <mat-label>Autosize textarea</mat-label>
-		  <textarea  
-		  		formControlName="blockchainParams" 
-		  		matInput
-		        cdkTextareaAutosize
-		        #autosize="cdkTextareaAutosize"
-		        cdkAutosizeMinRows="20"
-		        >      
-	      </textarea>
-
+        <input matInput placeholder="Your email" formControlName="email" required>
+      </mat-form-field>
+	  <mat-form-field class="fullwidth">
+        <input matInput placeholder="Your first name" formControlName="firstName" required>
+      </mat-form-field>
+   	  <mat-form-field class="fullwidth">
+        <input matInput placeholder="Your last name" formControlName="lastName" required>
       </mat-form-field>
       <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
+    <button mat-button matStepperPrevious>Back</button>
+    <button mat-button (click)="registerBlockchain()" matStepperNext>Next</button>
       </div>
     </form>
   </mat-step>
- -->  
+  
  <mat-step>
     <ng-template matStepLabel>Launch</ng-template>
     Launch the blockchain

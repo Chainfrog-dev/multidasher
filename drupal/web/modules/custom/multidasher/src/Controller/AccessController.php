@@ -167,4 +167,35 @@ class AccessController extends ControllerBase {
     return new JsonResponse($json_array);
   }
 
+  public function getMasterAddress(Request $request) {
+    $json_array = [
+      'data' => [],
+    ];
+
+    $params = [];
+    $content = $request->getContent();
+
+    if (!empty($content)) {
+      $params = json_decode($content, TRUE);
+    }
+
+    $blockchain = $params['blockchain'];
+    $parameters[0] = $params['stream'];
+    $parameters[1] = $params['author'];
+    $parameters[2] = 'true';
+    $parameters[3] = 1;
+    $parameters[4] = -1;
+
+    $command = $this->blockchainController->constructSystemCommand('list_addresses', $blockchain);
+    $response = shell_exec($command);
+
+    $json_array['data']['result'] = json_decode($response);
+    $json_array['exec'] = $command;
+    $json_array['response'] = $response;
+    $json_array['status'] = 1;
+
+    return new JsonResponse($json_array);
+  }
+
+
 }

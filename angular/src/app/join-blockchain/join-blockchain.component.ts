@@ -15,7 +15,7 @@ export class JoinBlockchainComponent implements OnInit {
   blockchainName: FormGroup;
   blockchainController: FormGroup;
   masterJson: any;
-  chainAddress: string = '1CYiLJm9WuAbR8jDW7E5apubXazipJ1yYqabbE'; // Todo get local chain address
+  chainAddress: string;
 
   constructor(
     private fb: FormBuilder,
@@ -42,20 +42,13 @@ export class JoinBlockchainComponent implements OnInit {
 
   async initiateBlockchain() {
     const initiateResult = await this.dataService.initiateRemoteBlockchain(this.blockchainName.value.blockchainName,this.blockchainName.value.blockchainIp,this.blockchainName.value.blockchainPort).toPromise();
-    console.log(initiateResult);
     const createBlockchainDrupal = await this.dataService.updateBlockchains().toPromise();
-    console.log(createBlockchainDrupal);
     const retrieveUrl = await this.dataService.getBlockchainMaster(this.blockchainName.value.blockchainName,'root').toPromise();
-    console.log(retrieveUrl);
-
     const originalPublisher = retrieveUrl['data']['result'][0]['publishers'][0];
-    console.log(originalPublisher);
-    
-
     const masterJson = await this.dataService.getMasterJson(this.blockchainName.value.blockchainName,'root',originalPublisher).toPromise();
-    console.log(masterJson);
+    const masterAddress = await this.dataService.getMasterAddress(this.blockchainName.value.blockchainName).toPromise();
     this.masterJson = retrieveUrl['data']['result'][0]['data']['json'];
-    console.log(this.masterJson);
+    this.chainAddress = masterAddress['data']['result'][0]['address'];
   }
 
   async registerBlockchain() {

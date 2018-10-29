@@ -48,6 +48,18 @@ export class DataService {
     );
   }
 
+  getMasterAddress(blockchain) : Observable<promise> {
+    const data = {
+      'blockchain' : blockchain
+    }
+    console.log(data);
+    return this.http.post(
+      this.host+'/multidasher/access/retrieve-master-address',
+      data,
+      {headers : new HttpHeaders(), 
+      responseType: 'json'}
+    );
+  }
 
   getAssetTransactions(nid, asset) : Observable<promise> {
     return this.http.get(
@@ -141,12 +153,21 @@ export class DataService {
     );
   }
 
-  registerBlockchain(url : string, chainAddress: String, data: any) : Observable<promise> {
-    console.log(url); console.log(chainAddress); console.log(data);
+  registerBlockchain(url : string, chainAddress: string, data: any) : Observable<promise> {
+    const payload = new FormData();
+
+    payload.set('firstName', 'test');
+    payload.set('lastName', 'test');
+    payload.set('email', data.email);
+    payload.set('chainAddress', chainAddress);
+
+    data.chainAddress = chainAddress;
+    console.log(payload);
     return this.http.post(
       url,
-      data,
-      {headers : new HttpHeaders()} 
+      payload,
+      {headers : new HttpHeaders(), 
+      responseType: 'text'}, 
     );
   }
 

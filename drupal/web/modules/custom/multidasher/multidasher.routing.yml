@@ -30,6 +30,14 @@ multidasher_access.retrieve-master-json:
   requirements:
     _access: 'TRUE'
 
+multidasher_access.retrieve-master-address:
+  path: '/multidasher/access/retrieve-master-address'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\AccessController::getMasterAddress'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+
 multidasher_access.retrieve-master:
   path: '/multidasher/access/retrieve-master'
   defaults:

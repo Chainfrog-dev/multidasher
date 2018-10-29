@@ -28,7 +28,6 @@ export class MultidasherInfoComponent implements OnInit {
 
   async loadInfo(blockchainId){
     const response = await this.dataService.getBlockchainInfo(blockchainId).toPromise();
-    console.log(response);
     this.infoProperties = Object.keys(response['data']['info']);
     // A few manipulations where data is uniform enough to be iterated
     for (let key of this.infoProperties) { 

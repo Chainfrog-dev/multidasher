@@ -43,7 +43,13 @@ export class JoinBlockchainComponent implements OnInit {
   async initiateBlockchain() {
     const initiateResult = await this.dataService.initiateRemoteBlockchain(this.blockchainName.value.blockchainName,this.blockchainName.value.blockchainIp,this.blockchainName.value.blockchainPort).toPromise();
     const createBlockchainDrupal = await this.dataService.updateBlockchains().toPromise();
+    console.log(createBlockchainDrupal);
+    const blockchainNid = await this.dataService.getBlockchainNid(this.blockchainName.value.blockchainName).toPromise();
+    console.log(blockchainNid);
+    const nid = blockchainNid['data']['result'];
+    const createWalletDrual = await this.dataService.updateAddresses(nid).toPromise();
     const retrieveUrl = await this.dataService.getBlockchainMaster(this.blockchainName.value.blockchainName,'root').toPromise();
+    console.log(retrieveUrl);
     const originalPublisher = retrieveUrl['data']['result'][0]['publishers'][0];
     const masterJson = await this.dataService.getMasterJson(this.blockchainName.value.blockchainName,'root',originalPublisher).toPromise();
     const masterAddress = await this.dataService.getMasterAddress(this.blockchainName.value.blockchainName).toPromise();

@@ -102,6 +102,15 @@ multidasher_create.create_blockchain:
 #   requirements:
 #     _access: 'TRUE'
 
+multidasher_cron.blockchain-nid:
+  path: '/multidasher/cron/blockchain-nid'
+  defaults:
+    _controller: '\Drupal\multidasher\Controller\CronController::returnBlockchainNid'
+    _title: 'JsonExport'
+  requirements:
+    _access: 'TRUE'
+
+
 multidasher_cron.update-address:
   path: '/multidasher/cron/{node}/update-address'
   defaults:

@@ -46,6 +46,39 @@ class CronController extends ControllerBase {
   }
 
   /**
+   *
+   */
+  public function returnBlockchainNid(Request $request) {
+    $json_array = [
+      'data' => [],
+    ];
+
+    // Get your POST parameter.
+    $params = [];
+    $content = $request->getContent();
+    if (!empty($content)) {
+      $params = json_decode($content, TRUE);
+    }
+
+    $blockchain = $params['blockchain'];
+    $blockchains = \Drupal::entityTypeManager()
+      ->getStorage('node')
+      ->loadByProperties(['field_blockchain_id' => $blockchain]);
+    if ($blockchain_node = reset($blockchains)) {
+      $blockchain_nid = $blockchain_node->id();
+      $json_array['data']['result'] = $blockchain_nid;
+      $json_array['status'] = 1;
+      return new JsonResponse($json_array);
+    }
+    else {
+      $json_array['message'] = 'couldnt find blockchain in Drupal';
+      $json_array['status'] = 0;
+      return new JsonResponse($json_array);
+    }
+
+  }
+
+  /**
    * Delete blockchain.
    */
   public function deleteBlockchain(Request $request) {
@@ -68,7 +101,6 @@ class CronController extends ControllerBase {
     $exec = $this->blockchainController->constructSystemCommand('stop_multichain', $blockchain);
     $result = shell_exec($exec);
     $json_array['data']['result'] = $result;
-
 
     // Delete assets.
     $view = Views::getView('multidash_assets');
@@ -120,12 +152,11 @@ class CronController extends ControllerBase {
 
     $blockchain_node->delete();
     $dirPath = '/var/www/.multichain/' . $blockchain;
-    shell_exec('rm -rf '.$dirPath);
+    shell_exec('rm -rf ' . $dirPath);
     $json_array['data']['status'] = 1;
     $json_array['data']['message'] = $result;
     return new JsonResponse($json_array);
   }
-
 
   /**
    * Helper function to launch multichain.
@@ -181,6 +212,18 @@ class CronController extends ControllerBase {
             ->loadByProperties(['field_wallet_address' => $value['address']]);
           if ($node = reset($nodes)) {
             $wallet_id = $node->id();
+            $this->updateAddressBalances($blockchain, $value['address'], $wallet_id);
+          }else{
+            $wallet = Node::create(['type' => 'blockchain_wallet']);
+            $wallet->set('title', $value['address']);
+            $wallet->set('field_wallet_ismine', TRUE);
+            $address = preg_replace('/\s+/', '', $value['address']);
+            $wallet->set('field_wallet_address', $address);
+            $wallet->field_wallet_blockchain_ref = ['target_id' => $nid];
+            $wallet->status = 1;
+            $wallet->enforceIsNew();
+            $wallet->save();
+            $wallet_id = $wallet->id();
             $this->updateAddressBalances($blockchain, $value['address'], $wallet_id);
           }
         }

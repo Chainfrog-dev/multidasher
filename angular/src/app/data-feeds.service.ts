@@ -48,6 +48,19 @@ export class DataService {
     );
   }
 
+
+  getBlockchainNid(blockchain) : Observable<promise> {
+    const data = {
+      'blockchain' : blockchain
+    }
+    return this.http.post(
+      this.host+'/multidasher/cron/blockchain-nid',
+      data,
+      {headers : new HttpHeaders(), 
+      responseType: 'json'}
+    );
+  }
+
   getMasterAddress(blockchain) : Observable<promise> {
     const data = {
       'blockchain' : blockchain
@@ -162,7 +175,7 @@ export class DataService {
     payload.set('chainAddress', chainAddress);
 
     data.chainAddress = chainAddress;
-    console.log(payload);
+
     return this.http.post(
       url,
       payload,

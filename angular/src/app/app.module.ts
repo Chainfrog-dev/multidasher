@@ -25,6 +25,7 @@ import { MultidasherTransactionsComponent } from './multidasher-transactions/mul
 import { MultidasherRecepientComponent } from './multidasher-recepient/multidasher-recepient.component';
 import { CreateRecepientComponent } from './create-recepient/create-recepient.component';
 import { JoinBlockchainComponent } from './join-blockchain/join-blockchain.component';
+import { SendAssetComponent } from './send-asset/send-asset.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { JoinBlockchainComponent } from './join-blockchain/join-blockchain.compo
     MultidasherTransactionsComponent,
     MultidasherRecepientComponent,
     CreateRecepientComponent,
-    JoinBlockchainComponent
+    JoinBlockchainComponent,
+    SendAssetComponent
   ],
   imports: [
     BrowserModule,

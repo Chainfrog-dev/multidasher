@@ -167,7 +167,7 @@ class CronController extends ControllerBase {
     $blockchain = $node->field_blockchain_id->getString();
     $nid = $node->id();
 
-    $exec = $this->constructSystemCommand('list_addresses', $blockchain);
+    $exec = $this->blockchainController->constructSystemCommand('list_addresses', $blockchain);
     $result = json_decode(shell_exec($exec . " &"), TRUE);
     if (!$result) {
       $json_array['status'] = 0;
@@ -224,7 +224,7 @@ class CronController extends ControllerBase {
    * Helper function to update balances of addresses.
    */
   private function updateAddressBalances(String $blockchain, String $address, String $wallet_id) {
-    $exec = $this->constructSystemCommandParameters('get_address_balances', $blockchain, [$address]);
+    $exec = $this->blockchainController->constructSystemCommandParameters('get_address_balances', $blockchain, [$address]);
     $result = json_decode(shell_exec($exec . " &"), TRUE);
 
     foreach ($result as $key => $value) {

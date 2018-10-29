@@ -39,9 +39,9 @@ export class DataService {
       'blockchain' : blockchain,
       'stream' : stream
     }
-
+    console.log(data);
     return this.http.post(
-      this.host+'/multidasher/access/retrieve-master/',
+      this.host+'/multidasher/access/retrieve-master',
       data,
       {headers : new HttpHeaders(), 
       responseType: 'json'}

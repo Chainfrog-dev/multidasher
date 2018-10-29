@@ -40,12 +40,12 @@ class AccessController extends ControllerBase {
     $directory = '/var/www/.multichain/' . $blockchain;
 
     if (is_dir($directory)) {
-      $exec = $this->blockchainController->constructSystemCommand('connect_multichain', $blockchain);
+      $command = $this->blockchainController->constructSystemCommand('connect_multichain', $blockchain);
       $result = shell_exec($command);
     }
 
     else{
-      $exec = $this->blockchainController->constructSystemCommand('connect_external_multichain', $blockchain_address);
+      $command = $this->blockchainController->constructSystemCommand('connect_external_multichain', $blockchain_address);
       $result = shell_exec($command);
     }
       
@@ -56,7 +56,7 @@ class AccessController extends ControllerBase {
     $json_array['port'] = $port;
     $json_array['blockchain'] = $blockchain;
     $json_array['data']['directory'] = $directory;
-    $json_array['data']['exec'] = $exec;
+    $json_array['data']['exec'] = $command;
     $json_array['data']['message'] = $result;
     return new JsonResponse($json_array);
 
@@ -123,12 +123,15 @@ class AccessController extends ControllerBase {
     $parameters[4] = 0;
     $parameters[5] = 'false';
 
-    $exec = $this->blockchainController->constructSystemCommandParameters('list_stream_key_items', $blockchain, $parameters);
-    $response = shell_exec($exec);
+    // $response = $this->blockchainController->executeRequest($blockchain,'liststreamkeyitems', $parameters);
+    $command = $this->blockchainController->constructSystemCommandParameters('list_stream_key_items', $blockchain, $parameters);
+    $response = shell_exec($command);
 
     $json_array['data']['result'] = json_decode($response);
-    $json_array['exec'] = $exec;
+    $json_array['exec'] = $command;
     $json_array['status'] = 1;
+    $json_array['response'] = $response;
+
     $json_array['params'] = $parameters;
 
     return new JsonResponse($json_array);
@@ -153,11 +156,11 @@ class AccessController extends ControllerBase {
     $parameters[3] = 1;
     $parameters[4] = -1;
 
-    $exec = $this->blockchainController->constructSystemCommandParameters('list_stream_publisher_items', $blockchain, $parameters);
-    $response = shell_exec($exec);
+    $response = $this->blockchainController->executeRequest($blockchain,'liststreampublisheritems', $parameters);
 
     $json_array['data']['result'] = json_decode($response);
-    $json_array['exec'] = $exec;
+    // $json_array['exec'] = $exec;
+    $json_array['response'] = $response;
     $json_array['status'] = 1;
     $json_array['params'] = $parameters;
 

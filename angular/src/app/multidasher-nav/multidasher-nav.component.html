@@ -15,7 +15,7 @@
       <a mat-list-item routerLink="/">Home</a>
       <div class="linebreak"></div>
       <div *ngIf="activeBlockchain == null">
-        <h3>Select your Blockchain</h3>
+        <h3>Select your blockchain</h3>
         <div *ngFor="let blockchain of blockchainArray"><a mat-list-item routerLink="blockchain/{{blockchain.id}}/view-info">{{blockchain.name}}</a></div>
       </div>
       <div *ngIf="activeBlockchain !== null">

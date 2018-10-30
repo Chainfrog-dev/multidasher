@@ -42,7 +42,7 @@ export class MultidasherNavComponent implements OnInit {
 		this.loadBlockchains();
 	}
 
-	async loadBlockchains(activeBlockchain) {
+	async loadBlockchains() {
     const result = await this.dataService.getBlockchains().toPromise();
 	    for(let value of result['data']){
 	      let blockchain : Blockchain = {

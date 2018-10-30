@@ -21,7 +21,7 @@ class RecepientController extends ControllerBase {
   }
 
   /**
-   * Export recepients
+   * Export recipients
    */
   public function exportRecepients(String $nodeId = '') {
     $json_array = [
@@ -42,17 +42,17 @@ class RecepientController extends ControllerBase {
       $result = $view->result;
       if ($result) {
         foreach ($result as $key => $value) {
-          $recepient = Node::load(($value->nid));
-          foreach ($recepient->field_recipient_asset->getValue(['target_id']) as $key => $value) {
+          $recipient = Node::load(($value->nid));
+          foreach ($recipient->field_recipient_asset->getValue(['target_id']) as $key => $value) {
             $asset = node::load($value['target_id']);
             $asset_name = $asset->get('title')->value;
           }
 
-          $json_array['data'][$recepient->get('title')->value] = [
-            'name' => $recepient->get('title')->value,
-            'description' => $recepient->get('body')->value,
+          $json_array['data'][$recipient->get('title')->value] = [
+            'name' => $recipient->get('title')->value,
+            'description' => $recipient->get('body')->value,
             'asset' => $asset_name,
-            'address' => $recepient->get('field_recipient_wallet_address')->value,
+            'address' => $recipient->get('field_recipient_wallet_address')->value,
           ];
         }
       }
@@ -88,22 +88,22 @@ class RecepientController extends ControllerBase {
     $json_array['data']['address'] = $address;
     $json_array['data']['blockchain_nid'] = $blockchain_nid;
 
-    $recepient = Node::create(['type' => 'recipient']);
+    $recipient = Node::create(['type' => 'recipient']);
 
-    $recepient->field_recipient_blockchain_ref = ['target_id' => $blockchain_nid];
-    $recepient->set('body', $description);
-    $recepient->set('title', $title);
-    $recepient->set('field_recipient_wallet_address', $address);
+    $recipient->field_recipient_blockchain_ref = ['target_id' => $blockchain_nid];
+    $recipient->set('body', $description);
+    $recipient->set('title', $title);
+    $recipient->set('field_recipient_wallet_address', $address);
     $assets = \Drupal::entityTypeManager()
       ->getStorage('node')
       ->loadByProperties(['field_asset_name' => $asset_name]);
     if ($asset = reset($assets)) {
       $asset_id = $asset->id();
-      $recepient->field_recipient_asset = ['target_id' => $asset_id];
+      $recipient->field_recipient_asset = ['target_id' => $asset_id];
     }
-    $recepient->enforceIsNew();
-    $recepient->save();
-    $json_array['data']['message'] = 'created new recepient';
+    $recipient->enforceIsNew();
+    $recipient->save();
+    $json_array['data']['message'] = 'created new recipient';
     $json_array['status'] = 1;
     return new JsonResponse($json_array);
   }

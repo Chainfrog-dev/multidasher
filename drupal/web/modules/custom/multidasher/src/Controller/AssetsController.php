@@ -43,7 +43,7 @@ class AssetsController extends ControllerBase {
     $asset_name = $params['title'];
     $asset_quantity = $params['asset_quantity'];
     $asset_open = $params['open'];
-    $recepient = $params['recepient'];
+    $recipient = $params['recipient'];
     $description = $params['description'];
 
     $asset = Node::create(['type' => 'blockchain_asset']);
@@ -55,7 +55,7 @@ class AssetsController extends ControllerBase {
     $asset->set('field_asset_quantity', $asset_quantity);
     $wallets = \Drupal::entityTypeManager()
       ->getStorage('node')
-      ->loadByProperties(['field_wallet_address' => $recepient]);
+      ->loadByProperties(['field_wallet_address' => $recipient]);
     if ($wallet = reset($wallets)) {
       $wallet_id = $wallet->id();
       $asset->field_asset_issue_address = ['target_id' => $wallet_id];
@@ -64,7 +64,7 @@ class AssetsController extends ControllerBase {
     $asset->save();
 
     $command = 'issue';
-    $parameters[0] = $recepient;
+    $parameters[0] = $recipient;
     $parameters[1] = $asset_name;
     $parameters[2] = +$asset_quantity;
 

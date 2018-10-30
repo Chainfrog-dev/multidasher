@@ -11,7 +11,7 @@ use Drupal\views\Views;
 /**
  * Controller for export json.
  */
-class RecepientController extends ControllerBase {
+class RecipientController extends ControllerBase {
 
   /**
    * {@inheritdoc}

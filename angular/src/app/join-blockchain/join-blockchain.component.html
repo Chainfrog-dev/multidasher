@@ -1,15 +1,17 @@
+  GNU nano 2.9.3                                                                          join-blockchain.component.html                                                                           Modified  
+
 <mat-horizontal-stepper [linear]="true" #stepper>
   <mat-step [stepControl]="blockchainName">
     <form [formGroup]="blockchainName">
       <ng-template matStepLabel>Blockchain name</ng-template>
       <mat-form-field class="fullwidth">
-        <input matInput placeholder="Name of blockchain" formControlName="blockchainName" required>
+        <input matInput placeholder="Blockchain name" formControlName="blockchainName" required>
       </mat-form-field>
       <mat-form-field class="fullwidth">
-        <input matInput placeholder="Url for requesting access" formControlName="blockchainIp" required>
+        <input matInput placeholder="Blockchain URL" formControlName="blockchainIp" required>
       </mat-form-field>
-	  <mat-form-field class="fullwidth">
-        <input matInput placeholder="Url for requesting access" formControlName="blockchainPort" required>
+          <mat-form-field class="fullwidth">
+        <input matInput placeholder="Blockchain port number" formControlName="blockchainPort" required>
       </mat-form-field>
 
       <div>
@@ -19,14 +21,14 @@
   </mat-step>
   <mat-step [stepControl]="blockchainController">
     <form [formGroup]="blockchainController">
-      <ng-template matStepLabel>Register with blockchain</ng-template>
+      <ng-template matStepLabel>Register on blockchain</ng-template>
       <mat-form-field class="fullwidth">
         <input matInput placeholder="Your email" formControlName="email" required>
       </mat-form-field>
-	  <mat-form-field class="fullwidth">
+          <mat-form-field class="fullwidth">
         <input matInput placeholder="Your first name" formControlName="firstName" required>
       </mat-form-field>
-   	  <mat-form-field class="fullwidth">
+          <mat-form-field class="fullwidth">
         <input matInput placeholder="Your last name" formControlName="lastName" required>
       </mat-form-field>
       <div>
@@ -35,13 +37,14 @@
       </div>
     </form>
   </mat-step>
-  
+
  <mat-step>
-    <ng-template matStepLabel>Launch</ng-template>
-    Launch the blockchain
+    <ng-template matStepLabel>Connect</ng-template>
+    Connect to blockchain
     <div>
       <button mat-button matStepperPrevious>Cancel</button>
-      <button mat-button (click)="submitBlockchain()">Launch now</button>
+      <button mat-button (click)="submitBlockchain()">Connect now</button>
     </div>
   </mat-step>
 </mat-horizontal-stepper>
+

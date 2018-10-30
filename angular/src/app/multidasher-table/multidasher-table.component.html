@@ -5,13 +5,13 @@
 
         <!-- Name Column -->
         <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Blockchain name</th>
           <td mat-cell *matCellDef="let row">{{row.name}}</td>
         </ng-container>
 
         <!-- Name Column -->
         <ng-container matColumnDef="wallets">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>List of Wallets</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>List of addresses</th>
           <td mat-cell *matCellDef="let row">
             <mat-list>
               <mat-list-item *ngFor="let wallet of row.wallets"><a routerLink="/">{{wallet.address}}</a>
@@ -22,7 +22,7 @@
 
         <!-- Name Column -->
         <ng-container matColumnDef="balance">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Account Balance</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Account balance</th>
           <td mat-cell *matCellDef="let row">
             <mat-list>
               <mat-list-item *ngFor="let balance of row.balance">{{balance.name}} {{balance.balance}}</mat-list-item>
@@ -32,7 +32,7 @@
 
         <!-- Name Column -->
         <ng-container matColumnDef="status">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Blockchain Status</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Blockchain status</th>
           <td mat-cell *matCellDef="let row">
             <mat-icon *ngIf="!row.status" aria-label="Side nav toggle icon">error</mat-icon>
             <mat-icon *ngIf="row.status" aria-label="Side nav toggle icon">check</mat-icon>
@@ -107,7 +107,7 @@
       <mat-card fxFlex="50%" class="dashboard-card">
         <mat-card-header>
           <mat-card-title>
-            Join a new blockchain
+            Join an existing blockchain
             <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
               <mat-icon>more_vert</mat-icon>
             </button>

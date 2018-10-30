@@ -1,39 +1,28 @@
 <form [formGroup]="assetForm">
 
-  <div>
     <mat-form-field class="fullwidth">
-      <input matInput placeholder="Asset Name" formControlName="title">
+      <input matInput placeholder="Asset name" formControlName="title" maxlength="32" required>
       <mat-hint>Add your asset name here</mat-hint>
     </mat-form-field>
-  </div>
 
-  <div>
     <mat-form-field class="fullwidth">
-      <input matInput placeholder="Quantity" formControlName="assetQuantity" number>
-      <mat-hint>How many units of new asset do you wish to issue</mat-hint>
+      <input matInput placeholder="Quantity" formControlName="assetQuantity" number required>
+      <mat-hint>Number of units of the asset to issue</mat-hint>
     </mat-form-field>
-  </div>
 
-  <div>
-    <mat-checkbox type="checkbox" formControlName="assetOpen" color="primary"></mat-checkbox>
-    <mat-hint>&nbsp;Select this if you want your asset to be open</mat-hint>
+    <mat-checkbox type="checkbox" formControlName="assetOpen" color="primary">Allow more units to be issued later</mat-checkbox>
 
-  </div>
-
-  <div>
-    <mat-form-field>
-      <mat-select placeholder="recipient" formControlName="recipient">
+    <mat-form-field class="fullwidth">
+      <mat-select placeholder="Receiving address" formControlName="recipient" required>
         <mat-option *ngFor="let wallet of wallets" [value]="wallet.address">{{wallet.name}} | {{ wallet.address}}</mat-option>
       </mat-select>
     </mat-form-field>
-  </div>
 
-  <div>
     <mat-form-field class="fullwidth">
-      <input matInput placeholder="Wallet Name" formControlName="description">
-      <mat-hint>Asset description</mat-hint>
+      <input matInput placeholder="Asset description" formControlName="description">
+      <mat-hint>Optional text describing the purpose of the asset</mat-hint>
     </mat-form-field>
-  </div>
+ 
+    <button [disabled]="assetForm.controls['title'].invalid" (click)="submitForm()" mat-raised-button color="primary">Create Address</button>
 
-  <button [disabled]="assetForm.controls['title'].invalid" (click)="submitForm()" mat-raised-button color="primary">Create Address</button>
 </form>

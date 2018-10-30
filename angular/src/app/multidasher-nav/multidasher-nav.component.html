@@ -17,6 +17,7 @@
       <div *ngIf="activeBlockchain == null">
         <h3>Select your blockchain</h3>
         <div *ngFor="let blockchain of blockchainArray"><a mat-list-item routerLink="blockchain/{{blockchain.id}}/view-info">{{blockchain.name}}</a></div>
+        <div *ngIf='blockchainArray.length === 0'>No blockchains joined yet</div>
       </div>
       <div *ngIf="activeBlockchain !== null">
         <h3>Manage {{activeBlockchainName}}</h3>

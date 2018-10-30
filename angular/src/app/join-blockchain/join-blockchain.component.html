@@ -5,7 +5,7 @@
     <form [formGroup]="blockchainName">
       <ng-template matStepLabel>Blockchain name</ng-template>
       <mat-form-field class="fullwidth">
-        <input matInput placeholder="Blockchain name" formControlName="blockchainName" required>
+        <input matInput placeholder="Blockchain name" formControlName="blockchainName" maxlength="32" required>
       </mat-form-field>
       <mat-form-field class="fullwidth">
         <input matInput placeholder="Blockchain URL" formControlName="blockchainIp" required>

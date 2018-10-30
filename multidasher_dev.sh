@@ -267,6 +267,26 @@ chmod -R 777 /var/www/.multichain
 read -p "Press Enter to continue"
 echo -e ""
 
+
+echo ""
+echo "-----------------------------------------------------------------"
+echo "Installing node.js stuff...                                      "
+echo "-----------------------------------------------------------------"
+echo ""
+curl -sL https://deb.nodesource.com/setup_10.x | bash -
+apt-get -qy install nodejs
+
+if test -x /usr/bin/node ; then
+	echo "/usr/bin/node already exists"
+else
+	echo "Linking /usr/bin/nodejs to /usr/bin/node"
+	ln -s /usr/bin/nodejs /usr/bin/node
+fi
+apt-get -qy install libtool pkg-config build-essential autoconf automake
+cd /var/www/multidasher/angular
+npm install -g @angular/cli
+npm install
+
 echo -e ""
 echo -e "--------------------------------------------------------------------------------"
 echo -e "Configuring NGINX     						 "
@@ -283,4 +303,4 @@ echo -e "-----------------------------------------------------------------------
 echo -e "All done!       						             "
 echo -e "--------------------------------------------------------------------------------"
 echo -e ""
-echo -e 'Installation complete. You can now connect to your site on: '$domain
+echo -e 'Installation complete. Please got to "./angular" and run "ng serve" to start using multidasher'

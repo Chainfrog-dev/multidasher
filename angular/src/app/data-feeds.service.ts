@@ -136,7 +136,7 @@ export class DataService {
 
   getRecepients(nid) : Observable<promise> {
     return this.http.get(
-      this.host+'/multidasher/export/'+nid+'/recepients',
+      this.host+'/multidasher/export/'+nid+'/recipients',
       {headers : new HttpHeaders(), 
       responseType: 'json'}
     );
@@ -224,13 +224,13 @@ export class DataService {
     );
   }
 
-  addAsset(nid: String, title: String, assetQuantity: Number, assetOpen: Boolean, recepient: String, description: String) : Observable<promise> {
+  addAsset(nid: String, title: String, assetQuantity: Number, assetOpen: Boolean, recipient: String, description: String) : Observable<promise> {
     const data = {
       'title' : title,
       'asset_name' : title,
       'asset_quantity' : assetQuantity,
       'asset_open' : assetOpen,
-      'recepient' : recepient,
+      'recipient' : recipient,
       'description' : description
     }
     console.log(assetQuantity);
@@ -250,7 +250,7 @@ export class DataService {
       'address' : address
     }
     return this.http.post(
-      this.host+'/multidasher/add/'+nid+'/recepient',
+      this.host+'/multidasher/add/'+nid+'/recipient',
       data,
       {headers : new HttpHeaders(), 
       responseType: 'json'}

@@ -11,9 +11,9 @@
 		<mat-card class="example-card">
 		  <mat-card-content>
 			<mat-list>
-			  <div *ngFor="let recepient of recepients">
+			  <div *ngFor="let recipient of recipients">
 			  	<mat-list-item>  
-			  	    <h4 mat-line>{{recepient.name}} | {{ recepient.address }}
+			  	    <h4 mat-line>{{recipient.name}} | {{ recipient.address }}
 			  	    	<span class="pull-right">
 				  	    	<mat-icon aria-label="Side nav toggle icon">send</mat-icon>
 				  	    </span>
@@ -36,11 +36,11 @@
 		      <mat-card fxFlex="360px" class="dashboard-card">
 		        <mat-card-header>
 		          <mat-card-title>
-		            <h2>Create a new recepient</h2>
+		            <h2>Create a new recipient</h2>
 		          </mat-card-title>
 		        </mat-card-header>
 		        <mat-card-content class="dashboard-card-content">
-		        	<app-create-recepient></app-create-recepient>
+		        	<app-create-recipient></app-create-recipient>
 		        </mat-card-content>
 		      </mat-card>
 	     </div>

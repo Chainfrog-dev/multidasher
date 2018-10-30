@@ -144,8 +144,8 @@ class CronController extends ControllerBase {
       $result = $view->result;
       if ($result) {
         foreach ($result as $key => $value) {
-          $recepient = Node::load(($value->nid));
-          $recepient->delete();
+          $recipient = Node::load(($value->nid));
+          $recipient->delete();
         }
       }
     }

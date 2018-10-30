@@ -22,16 +22,16 @@ export interface Wallet {
 
 
 @Component({
-  selector: 'app-create-recepient',
-  templateUrl: './create-recepient.component.html',
-  styleUrls: ['./create-recepient.component.scss']
+  selector: 'app-create-recipient',
+  templateUrl: './create-recipient.component.html',
+  styleUrls: ['./create-recipient.component.scss']
 })
 export class CreateRecepientComponent implements OnInit {
   blockchainId : String;
   wallets: Wallet[] = [];
 	assets: Asset[] = [];
 
-  recepientForm = this.fb.group({
+  recipientForm = this.fb.group({
     'title': [null, Validators.required],
     'description': [null, Validators.required],
     'wallet': [null, Validators.required],
@@ -51,10 +51,10 @@ export class CreateRecepientComponent implements OnInit {
   }
 
   async submitForm() {
-    const result = await this.dataService.addRecepient(this.blockchainId,this.recepientForm.value.title, this.recepientForm.value.description, this.recepientForm.value.wallet, this.recepientForm.value.assetName).toPromise();
+    const result = await this.dataService.addRecepient(this.blockchainId,this.recipientForm.value.title, this.recipientForm.value.description, this.recipientForm.value.wallet, this.recipientForm.value.assetName).toPromise();
     console.log(result);
     if(result['status'] == 1){
-      alert('congrats, recepient added');
+      alert('congrats, recipient added');
     }
   }
 

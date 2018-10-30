@@ -28,7 +28,7 @@ export class CreateAssetComponent implements OnInit {
     title: [null, Validators.required],
     assetQuantity: [null, Validators.required],
     assetOpen: [null, Validators.required],
-    recepient: [null, Validators.required],
+    recipient: [null, Validators.required],
     description: [null, Validators.required]
   });
 
@@ -44,7 +44,7 @@ export class CreateAssetComponent implements OnInit {
   }
 
   async submitForm() {
-    const result = await this.dataService.addAsset(this.blockchainId,this.assetForm.value.title,this.assetForm.value.assetQuantity,this.assetForm.value.assetOpen,this.assetForm.value.recepient, this.assetForm.value.description).toPromise();
+    const result = await this.dataService.addAsset(this.blockchainId,this.assetForm.value.title,this.assetForm.value.assetQuantity,this.assetForm.value.assetOpen,this.assetForm.value.recipient, this.assetForm.value.description).toPromise();
     console.log(result);
     if(result['status'] == 1){
       alert('congrats, '+result['data']['message']['result']);

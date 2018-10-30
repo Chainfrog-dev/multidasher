@@ -1,8 +1,8 @@
-<form [formGroup]="recepientForm" novalidate>
+<form [formGroup]="recipientForm" novalidate>
       <div>
           <mat-form-field class="fullwidth">
             <input matInput placeholder="Recepient" formControlName="title">
-            <mat-hint>Name of the recepient</mat-hint>
+            <mat-hint>Name of the recipient</mat-hint>
           </mat-form-field>
       </div>
             <div>
@@ -13,14 +13,14 @@
       </div>
   <div>
     <mat-form-field>
-      <mat-select placeholder="recepient" formControlName="wallet">
+      <mat-select placeholder="recipient" formControlName="wallet">
         <mat-option *ngFor="let wallet of wallets" [value]="wallet.address">{{wallet.name}} | {{ wallet.address}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
       <div>
 	    <mat-form-field>
-	      <mat-select placeholder="recepient" formControlName="assetName">
+	      <mat-select placeholder="recipient" formControlName="assetName">
 	        <mat-option *ngFor="let asset of assets" [value]="asset.name">{{asset.name}}</mat-option>
 	      </mat-select>
 	    </mat-form-field>

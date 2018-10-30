@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MultidasherRecepientComponent } from './multidasher-recepient.component';
+import { MultidasherRecepientComponent } from './multidasher-recipient.component';
 
 describe('MultidasherRecepientComponent', () => {
   let component: MultidasherRecepientComponent;

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateRecepientComponent } from './create-recepient.component';
+import { CreateRecepientComponent } from './create-recipient.component';
 
 describe('CreateRecepientComponent', () => {
   let component: CreateRecepientComponent;

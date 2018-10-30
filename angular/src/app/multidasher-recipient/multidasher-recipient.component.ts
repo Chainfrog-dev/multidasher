@@ -10,13 +10,13 @@ export interface Recepient {
 }
 
 @Component({
-  selector: 'app-multidasher-recepient',
-  templateUrl: './multidasher-recepient.component.html',
-  styleUrls: ['./multidasher-recepient.component.scss']
+  selector: 'app-multidasher-recipient',
+  templateUrl: './multidasher-recipient.component.html',
+  styleUrls: ['./multidasher-recipient.component.scss']
 })
 export class MultidasherRecepientComponent implements OnInit {
 	blockchainId:String;
-	recepients: Recepient[] = [];
+	recipients: Recepient[] = [];
 
 	constructor(
 		private route: ActivatedRoute,
@@ -32,13 +32,13 @@ export class MultidasherRecepientComponent implements OnInit {
 		const response = await this.dataService.getRecepients(nid).toPromise();
 		console.log(response);
 		for(let key in response['data']){
-			let recepient : Recepient = {
+			let recipient : Recepient = {
 				description: response['data'][key]['description'],
 				name: response['data'][key]['name'],
 				asset: response['data'][key]['asset'],
 				address: response['data'][key]['address']
 			}
-			this.recepients.push(recepient);
+			this.recipients.push(recipient);
 		}
 
 	}

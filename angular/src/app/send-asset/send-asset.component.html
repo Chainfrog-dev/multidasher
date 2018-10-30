@@ -22,7 +22,7 @@
 
   <div>
     <mat-form-field>
-      <mat-select placeholder="recepient" formControlName="recepient">
+      <mat-select placeholder="recipient" formControlName="recipient">
         <mat-option *ngFor="let wallet of wallets" [value]="wallet.address">{{wallet.name}} | {{ wallet.address}}</mat-option>
       </mat-select>
     </mat-form-field>

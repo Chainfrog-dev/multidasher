@@ -22,8 +22,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MultidasherAssetsComponent } from './multidasher-assets/multidasher-assets.component';
 import { CreateAssetComponent } from './create-asset/create-asset.component';
 import { MultidasherTransactionsComponent } from './multidasher-transactions/multidasher-transactions.component';
-import { MultidasherRecepientComponent } from './multidasher-recepient/multidasher-recepient.component';
-import { CreateRecepientComponent } from './create-recepient/create-recepient.component';
+import { MultidasherRecepientComponent } from './multidasher-recipient/multidasher-recipient.component';
+import { CreateRecepientComponent } from './create-recipient/create-recipient.component';
 import { JoinBlockchainComponent } from './join-blockchain/join-blockchain.component';
 import { SendAssetComponent } from './send-asset/send-asset.component';
 
@@ -86,7 +86,7 @@ import { SendAssetComponent } from './send-asset/send-asset.component';
         component: MultidasherAssetsComponent
       },
       {
-        path: 'blockchain/:blockchainId/recepients',
+        path: 'blockchain/:blockchainId/recipients',
         component: MultidasherRecepientComponent
       },
       {

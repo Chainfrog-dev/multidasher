@@ -1,0 +1,28 @@
+/*Import global styles*/
+@import '../../core.scss';
+
+/*Styles for Registration page go here*/
+
+form.user {
+	width: 100%;
+}
+
+@media only screen and (min-width: 840px) {
+	section.main {
+		background: rgba(255,255,255, 0.9);
+		padding: 30px;
+	}
+
+	.toggle-container {
+	    margin: -55px 0px 0px 0px;
+	    float: right;
+	}
+}
+
+@media only screen and (max-width: 840px) {
+	.toggle-container {
+	    position: absolute;
+	    margin: -55px 37px 0px 0px;
+	    right: 0;
+	}
+}

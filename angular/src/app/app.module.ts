@@ -74,7 +74,7 @@ import { UserLoginComponent } from './user-login/user-login.component';
     RouterModule.forRoot([ 
       {
         path: '',
-        component: MatTableModule
+        component: MultidasherTableComponent
       },
       {
         path: 'blockchain/:blockchainId/view-info',

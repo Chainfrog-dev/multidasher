@@ -2,8 +2,8 @@
 #git clone https://github.com/Chainfrog-dev/multidasher.git
 
 ## Commands
-# AWS: scp -i /home/USER/.ssh/blockchain.pem /var/www/multidasher/multidasher_server.sh ubuntu@YOURIP:/home/ubuntu
-# AWS: scp -i /home/USER/.ssh/blockchain.pem /var/www/multidasher/multidasher_server_local_user.sh ubuntu@YOURIP:/home/ubuntu
+# AWS: scp -i /home/USER/.ssh/blockchain.pem /var/www/multidasher/multidasher_server.sh ubuntu@52.48.114.165:/home/ubuntu
+# AWS: scp -i /home/USER/.ssh/blockchain.pem /var/www/multidasher/multidasher_server_local_user.sh ubuntu@52.48.114.165:/home/ubuntu
 # DO: scp /var/www/multidasher/multidasher_server.sh root@YOURIP:/home/root
 # DO: scp /var/www/multidasher/multidasher_server_local_user.sh root@YOURIP:/home/root
 
@@ -271,7 +271,7 @@ apt-get -qy install libtool pkg-config build-essential autoconf automake
 npm install -g @angular/cli
 rm /var/www/multidasher/angular/src/environments/environment.prod.ts
 echo -e 'export const environment = {
-  production: true,
+  production: false,
   host: "'$domain'"
 };
 ' >> /var/www/multidasher/angular/src/environments/environment.prod.ts

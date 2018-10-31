@@ -46,9 +46,7 @@ To enable secure HTTPS connectivity (strongly recommended) you will need to set 
         
 3. Read the instructions that are shown at the beginning of running the install script, and follow them carefully.
 
-4. Visit your domain and get started.
-
-5. Follow the guidelines to start interacting with MultiChain blockchains. You may find
+4. Follow the guidelines to start interacting with MultiChain blockchains. You may find
    the following resources handy:
     * [The MultiDasher wiki](https://github.com/Chainfrog-dev/multidasher/wiki)
 

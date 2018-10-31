@@ -17,18 +17,20 @@ if [[ $EUID -ne 0 ]]; then
 		exit 1
 	fi
 
-	cd ~
-	chmod +x drush.phar
-	mv drush.phar /usr/local/bin/drush
+	echo -e ""
+	echo -e "--------------------------------------------------------------------------------"
+	echo -e "Installing composer and node modules				     						 "
+	echo -e "--------------------------------------------------------------------------------"
+	echo -e ""
+
 	cd /var/www/multidasher/drupal
 	composer install
-	drush upwd admin $drupalpassword
-	drush cr
-	 
+	./vendor/drush/drush/drush upwd admin $drupalpassword
+	./vendor/drush/drush/drush cr
+
 	cd /var/www/multidasher/angular
-	npm install -g @angular/cli
 	npm install
-	npm build --aot --prod
+	ng build --aot --prod
 
 	else
 	echo -e "This script can't be run as root." 1>&2

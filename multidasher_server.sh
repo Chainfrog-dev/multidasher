@@ -23,15 +23,22 @@ echo -e "-----------------------------------------------------------------------
 echo -e "IMPORTANT: You must make sure that your cloud instance allows incoming HTTP AND "
 echo -e "           HTTPS (80/443) traffic. This is a default in some cloud providers, "
 echo -e "           but not in others (for example AWS)."
-echo -e "IMPORTANT: You must assign a domain name, e.g. md.YOURSITE.com. Edit the DNS "
+echo -e "IMPORTANT: You must assign a domain name, e.g. YOURSITE.com.      Edit the DNS "
+echo -e "           settings A record to point to the IP address of your cloud instance."
+echo -e "IMPORTANT: You must assign a subdomain, e.g. api.YOURSITE.com.    Edit the DNS "
 echo -e "           settings A record to point to the IP address of your cloud instance."
 echo -e "IMPORTANT: Certbot will prompt you for an email. You must provide one."
 echo -e "IMPORTANT: When Certbot prompts you for DNS settings, choose [1], no redirect."
 echo -e "--------------------------------------------------------------------------------"
 echo -e ""
 
-read -p $'Enter the domain name redirected to this IP address (e.g. md.multidasher.org), \x0aor [enter] to not setup a domain and exit. \x0a=> ' domain
+read -p $'Enter the domain name redirected to this IP address for the backend (e.g. api.multidasher.org), \x0aor [enter] to not setup a domain and exit. \x0a=> ' domain
 if [ -z $domain ] ; then
+	echo -e "Non-domain installations not supported. Exiting..."
+	exit 1
+fi
+read -p $'Enter the domain name redirected to this IP address for the frontend (e.g. frontend.multidasher.org), \x0aor [enter] to not setup a domain and exit. \x0a=> ' domain
+if [ -z $domain2 ] ; then
 	echo -e "Non-domain installations not supported. Exiting..."
 	exit 1
 fi
@@ -120,6 +127,8 @@ echo -e "-----------------------------------------------------------------------
 echo -e ""
 
 echo -e '127.0.0.1	'$domain >> /etc/hosts
+echo -e '127.0.0.1	'$domain2 >> /etc/hosts
+
 echo -e ""
 echo -e "--------------------------------------------------------------------------------"
 echo -e "Installing certbot 								 "
@@ -136,7 +145,7 @@ apt-get -y update
 apt-get install -qy python-certbot-nginx
 echo -e "REMINDER: Certbot will prompt you for an email. You must provide one."
 echo -e "REMINDER: When Certbot prompts you for DNS settings, choose [1], no redirect."
-sudo certbot --nginx -d $domain || { echo -e "\nCertbot failed to generate valid certificate."; echo -e "Perhaps your A record for $domain is not set up correctly."; echo -e "Exiting..." ; exit 1; }
+sudo certbot --nginx -d $domain -d $domain2 || { echo -e "\nCertbot failed to generate valid certificate."; echo -e "Perhaps your A record for $domain is not set up correctly."; echo -e "Exiting..." ; exit 1; }
 
 echo -e ""
 echo -e "--------------------------------------------------------------------------------"
@@ -228,23 +237,16 @@ fi
 
 echo -e ""
 echo -e "--------------------------------------------------------------------------------"
-echo -e "Installing Drush     						 "
+echo -e "Installing nginx site     						 "
 echo -e "--------------------------------------------------------------------------------"
 echo -e ""
-
-cd ~
-wget -O drush.phar https://github.com/drush-ops/drush-launcher/releases/download/0.6.0/drush.phar
-chmod +x drush.phar
-mv drush.phar /usr/local/bin/drush
-cd /var/www/multidasher/drupal
-composer install
-drush upwd admin $drupalpassword
-drush cr
-
-cp /var/www/multidasher/nginx/multidasher.cloud.nginx /etc/nginx/sites-enabled/multidasher
-sed -i -e 's/CHANGEME/'$domain'/g' /etc/nginx/sites-enabled/multidasher
+cp /var/www/multidasher/nginx/multidasher.cloud.nginx /etc/nginx/sites-enabled/multidasher-api
+sed -i -e 's/CHANGEME/'$domain'/g' /etc/nginx/sites-enabled/multidasher-api
+cp /var/www/multidasher/nginx/multidasher.frontend.nginx /etc/nginx/sites-enabled/multidasher-frontend
+sed -i -e 's/CHANGEME/'$domain2'/g' /etc/nginx/sites-enabled/multidasher-frontend
 rm /etc/nginx/sites-enabled/default
 chmod -R 777 /var/www/.multichain
+chmod -R 777 /var/www/multidasher
 
 echo ""
 echo "-----------------------------------------------------------------"
@@ -261,19 +263,17 @@ else
 	ln -s /usr/bin/nodejs /usr/bin/node
 fi
 apt-get -qy install libtool pkg-config build-essential autoconf automake
-cd /var/www/multidasher/angular
 npm install -g @angular/cli
-npm install
-
+chown -R $USER:$(id -gn $USER) /home/ubuntu/.config
+ng config -g cli.warnings.versionMismatch falspe
 rm /var/www/multidasher/angular/src/environments/environment.prod.ts
 echo -e 'export const environment = {
   production: true,
-  host: '$domain'
+  host: "'$domain2'"
 };
 ' >> /var/www/multidasher/angular/src/environments/environment.prod.ts
 chmod 644 /var/www/multidasher/angular/src/environments/environment.prod.ts
-npm build --aot --prod
-
+	
 service nginx restart
 
 echo -e ""
@@ -281,4 +281,4 @@ echo -e "-----------------------------------------------------------------------
 echo -e "All done!       						             "
 echo -e "--------------------------------------------------------------------------------"
 echo -e ""
-echo -e 'Installation complete. You can now connect to your site on: '$domain
+echo -e 'Installation complete. You can now connect to your site on: '$domain2

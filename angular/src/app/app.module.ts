@@ -27,7 +27,6 @@ import { MultidasherRecipientComponent } from './multidasher-recipient/multidash
 import { CreateRecipientComponent } from './create-recipient/create-recipient.component';
 import { JoinBlockchainComponent } from './join-blockchain/join-blockchain.component';
 import { SendAssetComponent } from './send-asset/send-asset.component';
-import { CookieService } from 'ngx-cookie-service';
 import { UserLoginComponent } from './user-login/user-login.component';
 
 @NgModule({
@@ -75,7 +74,7 @@ import { UserLoginComponent } from './user-login/user-login.component';
     RouterModule.forRoot([ 
       {
         path: '',
-        component: UserLoginComponent
+        component: MatTableModule
       },
       {
         path: 'blockchain/:blockchainId/view-info',
@@ -100,7 +99,7 @@ import { UserLoginComponent } from './user-login/user-login.component';
     ]),
 
   ],
-  providers: [DataService, AuthService, CookieService],
+  providers: [DataService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

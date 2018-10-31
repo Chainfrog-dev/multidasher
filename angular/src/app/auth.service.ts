@@ -4,7 +4,6 @@ import { Injectable }    from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
-import { CookieService } from 'ngx-cookie-service';  
 
 class promise {};
 
@@ -23,11 +22,8 @@ export class AuthService {
   authentification: Authentification;
 
   constructor(
-    private http: HttpClient,
-    private cookieService: CookieService
-  ) {
-    cookieService.set('test', 'Hello World' );
-  }
+    private http: HttpClient
+  ) {}
 
   loginDrupal(username, password) : Observable<promise> {
 

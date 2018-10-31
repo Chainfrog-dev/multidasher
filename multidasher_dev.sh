@@ -14,7 +14,7 @@ fi
 
 # Make sure we are running as root
 if [[ $EUID -ne 0 ]]; then
-	echo -e "This script must be run as root." 1>&2
+	echo -e "This script must be run asz root." 1>&2
 	exit 1
 fi
 
@@ -118,6 +118,7 @@ echo -e "-----------------------------------------------------------------------
 echo -e ""
 cd /var/www
 git clone https://github.com/Chainfrog-dev/multidasher.git
+chmod -R 777 /var/www/multidasher
 
 
 read -p "Press Enter to continue"
@@ -293,7 +294,6 @@ echo -e "Configuring NGINX     						 "
 echo -e "--------------------------------------------------------------------------------"
 echo -e ""
 service nginx restart
-
 
 read -p "Press Enter to continue"
 echo -e ""

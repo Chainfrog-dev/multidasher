@@ -11,6 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule }   from '@angular/router';
 import { MultidasherTableComponent } from './multidasher-table/multidasher-table.component';
 import { DataService } from './data-feeds.service';
+import { AuthService } from './auth.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -26,6 +27,8 @@ import { MultidasherRecipientComponent } from './multidasher-recipient/multidash
 import { CreateRecipientComponent } from './create-recipient/create-recipient.component';
 import { JoinBlockchainComponent } from './join-blockchain/join-blockchain.component';
 import { SendAssetComponent } from './send-asset/send-asset.component';
+import { CookieService } from 'ngx-cookie-service';
+import { UserLoginComponent } from './user-login/user-login.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +46,8 @@ import { SendAssetComponent } from './send-asset/send-asset.component';
     MultidasherRecipientComponent,
     CreateRecipientComponent,
     JoinBlockchainComponent,
-    SendAssetComponent
+    SendAssetComponent,
+    UserLoginComponent
   ],
   imports: [
     BrowserModule,
@@ -71,7 +75,7 @@ import { SendAssetComponent } from './send-asset/send-asset.component';
     RouterModule.forRoot([ 
       {
         path: '',
-        component: MultidasherTableComponent
+        component: UserLoginComponent
       },
       {
         path: 'blockchain/:blockchainId/view-info',
@@ -96,7 +100,7 @@ import { SendAssetComponent } from './send-asset/send-asset.component';
     ]),
 
   ],
-  providers: [DataService],
+  providers: [DataService, AuthService, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

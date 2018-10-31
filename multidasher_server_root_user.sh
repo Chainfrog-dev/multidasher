@@ -234,17 +234,6 @@ echo -e ""
 
 cd ~
 wget -O drush.phar https://github.com/drush-ops/drush-launcher/releases/download/0.6.0/drush.phar
-chmod +x drush.phar
-mv drush.phar /usr/local/bin/drush
-cd /var/www/multidasher/drupal
-composer install
-drush upwd admin $drupalpassword
-drush cr
-
-cp /var/www/multidasher/nginx/multidasher.cloud.nginx /etc/nginx/sites-enabled/multidasher
-sed -i -e 's/CHANGEME/'$domain'/g' /etc/nginx/sites-enabled/multidasher
-rm /etc/nginx/sites-enabled/default
-chmod -R 777 /var/www/.multichain
 
 echo ""
 echo "-----------------------------------------------------------------"
@@ -262,9 +251,6 @@ else
 fi
 apt-get -qy install libtool pkg-config build-essential autoconf automake
 cd /var/www/multidasher/angular
-npm install -g @angular/cli
-npm install
-
 rm /var/www/multidasher/angular/src/environments/environment.prod.ts
 echo -e 'export const environment = {
   production: true,
@@ -272,8 +258,11 @@ echo -e 'export const environment = {
 };
 ' >> /var/www/multidasher/angular/src/environments/environment.prod.ts
 chmod 644 /var/www/multidasher/angular/src/environments/environment.prod.ts
-npm build --aot --prod
 
+cp /var/www/multidasher/nginx/multidasher.cloud.nginx /etc/nginx/sites-enabled/multidasher
+sed -i -e 's/CHANGEME/'$domain'/g' /etc/nginx/sites-enabled/multidasher
+rm /etc/nginx/sites-enabled/default
+chmod -R 777 /var/www/.multichain
 service nginx restart
 
 echo -e ""
@@ -281,4 +270,4 @@ echo -e "-----------------------------------------------------------------------
 echo -e "All done!       						             "
 echo -e "--------------------------------------------------------------------------------"
 echo -e ""
-echo -e 'Installation complete. You can now connect to your site on: '$domain
+echo -e 'Installation complete. Now you should run ./multidasher_server_local_user.sh'

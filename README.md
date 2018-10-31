@@ -46,7 +46,7 @@ To enable secure HTTPS connectivity (strongly recommended) you will need to set 
         
 3. Read the instructions that are shown at the beginning of running the install script, and follow them carefully.
 
-4. Go to `http://localhost:80` and you'll be asked to create an administrator account.
+4. Visit your domain and get started.
 
 5. Follow the guidelines to start interacting with MultiChain blockchains. You may find
    the following resources handy:

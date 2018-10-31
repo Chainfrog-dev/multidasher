@@ -1,19 +1,6 @@
 server {
   listen 80;
   listen [::]:80;
-  server_name www.CHANGEME;
-
-  access_log /var/log/multidasher/nginx.access.log;
-  error_log  /var/log/multidasher/nginx.error.log;
-
-  location / {
-      rewrite ^ https://CHANGEME$request_uri? permanent;
-   }
-}
-
-server {
-  listen 80;
-  listen [::]:80;
   server_name CHANGEME;
 
   access_log /var/log/multidasher/nginx.access.log;
@@ -27,9 +14,6 @@ server {
 server {
     server_name CHANGEME;
     root /var/www/multidasher/drupal/web; ## <-- Your only path reference.
-
-    listen 443 ssl http2 default_server;
-    listen [::]:443 ssl http2 default_server;
 
     ssl_certificate /etc/letsencrypt/live/CHANGEME/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/CHANGEME/privkey.pem;
@@ -60,34 +44,9 @@ server {
         return 403;
     }
 
-    # Block access to scripts in site files directory
-    location ~ ^/sites/[^/]+/files/.*\.php$ y{
-        deny all;
-    }
-
-    # Allow "Well-Known URIs" as per RFC 5785
-    location ~* ^/.well-known/ {
-        allow all;
-    }
-
-    # Block access to "hidden" files and directories whose names begin with a
-    # period. This includes directories used by version control systems such
-    # as Subversion or Git to store control files.
-    location ~ (^|/)\. {
-        return 403;
-    }
-
     location / {
         # try_files $uri @rewrite; # For Drupal <= 6
         try_files $uri /index.php?$query_string; # For Drupal >= 7
-    }
-
-    location /app {
-      root  /var/www/multidasher/angular/app/;
-      index index.html index.htm;
-      try_files $uri $uri/ /index.html$is_args$args;
-      keepalive_timeout 5;
-      charset utf-8;
     }
 
     location @rewrite {
@@ -134,15 +93,4 @@ server {
         log_not_found off;
     }
 
-}
-
-
-server {
-  listen 443 ssl http2;
-  listen [::]:443 ssl http2;
-  server_name www.CHANGEME;
-
-  location / {
-    return 301 https://CHANGEME$request_uri;
-  }
 }

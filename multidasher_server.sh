@@ -2,9 +2,12 @@
 #git clone https://github.com/Chainfrog-dev/multidasher.git
 
 ## Commands
-# AWS: scp -i /home/USER/.ssh/KEY.pem /var/www/multidasher/multidasher_server.sh ubuntu@YOURIP:/home/ubuntu
+# AWS: scp -i /home/USER/.ssh/blockchain.pem /var/www/multidasher/multidasher_server.sh ubuntu@YOURIP:/home/ubuntu
+# AWS: scp -i /home/USER/.ssh/blockchain.pem /var/www/multidasher/multidasher_server_local_user.sh ubuntu@YOURIP:/home/ubuntu
 # DO: scp /var/www/multidasher/multidasher_server.sh root@YOURIP:/home/root
-# AWS ssh -i /home/USER/.ssh/KEY.pem ubuntu@YOURIP
+# DO: scp /var/www/multidasher/multidasher_server_local_user.sh root@YOURIP:/home/root
+
+# AWS ssh -i /home/USER/.ssh/blockchain.pem ubuntu@YOURIP
 # DO: ssh root@YOURIP
 
 if [ -z $BASH_VERSION ] ; then
@@ -23,21 +26,21 @@ echo -e "-----------------------------------------------------------------------
 echo -e "IMPORTANT: You must make sure that your cloud instance allows incoming HTTP AND "
 echo -e "           HTTPS (80/443) traffic. This is a default in some cloud providers, "
 echo -e "           but not in others (for example AWS)."
-echo -e "IMPORTANT: You must assign a domain name, e.g. YOURSITE.com.      Edit the DNS "
-echo -e "           settings A record to point to the IP address of your cloud instance."
-echo -e "IMPORTANT: You must assign a subdomain, e.g. api.YOURSITE.com.    Edit the DNS "
-echo -e "           settings A record to point to the IP address of your cloud instance."
+echo -e "IMPORTANT: You must assign a domain name (or subdomain) for the frontend, e.g. YOURSITE.com. or frontend.YOURSITE.com"
+echo -e "           Edit the DNS settings to point to the IP address of your cloud instance."
+echo -e "IMPORTANT: You must assign a domain name (or subdomain), e.g. api.YOURSITE.com. for the backend."
+echo -e "    Edit the DNS settings A record to point to the IP address of your cloud instance."
 echo -e "IMPORTANT: Certbot will prompt you for an email. You must provide one."
 echo -e "IMPORTANT: When Certbot prompts you for DNS settings, choose [1], no redirect."
 echo -e "--------------------------------------------------------------------------------"
 echo -e ""
 
-read -p $'Enter the domain name redirected to this IP address for the backend (e.g. api.multidasher.org), \x0aor [enter] to not setup a domain and exit. \x0a=> ' domain
+read -p $'Enter the domain name yredirected to this IP address for the backend (e.g. api.multidasher.org), \x0aor [enter] to not setup a domain and exit. \x0a=> ' domain
 if [ -z $domain ] ; then
 	echo -e "Non-domain installations not supported. Exiting..."
 	exit 1
 fi
-read -p $'Enter the domain name redirected to this IP address for the frontend (e.g. frontend.multidasher.org), \x0aor [enter] to not setup a domain and exit. \x0a=> ' domain
+read -p $'Enter the domain name redirected to this IP address for the frontend (e.g. frontend.multidasher.org), \x0aor [enter] to not setup a domain and exit. \x0a=> ' domain2
 if [ -z $domain2 ] ; then
 	echo -e "Non-domain installations not supported. Exiting..."
 	exit 1
@@ -119,6 +122,7 @@ fi
 apt-get -y install curl php-cli php-mbstring git unzip php7.2 php7.2-curl php7.2-gd php7.2-mbstring php7.2-xml php7.2-json php7.2-mysql php7.2-opcache php7.2-fpm
 cd /var/www
 git clone https://github.com/Chainfrog-dev/multidasher.git
+chmod -r -777 /var/www/multidasher
 
 echo -e ""
 echo -e "--------------------------------------------------------------------------------"
@@ -145,7 +149,8 @@ apt-get -y update
 apt-get install -qy python-certbot-nginx
 echo -e "REMINDER: Certbot will prompt you for an email. You must provide one."
 echo -e "REMINDER: When Certbot prompts you for DNS settings, choose [1], no redirect."
-sudo certbot --nginx -d $domain -d $domain2 || { echo -e "\nCertbot failed to generate valid certificate."; echo -e "Perhaps your A record for $domain is not set up correctly."; echo -e "Exiting..." ; exit 1; }
+sudo certbot --nginx -d $domain || { echo -e "\nCertbot failed to generate valid certificate."; echo -e "Perhaps your A record for $domain is not set up correctly."; echo -e "Exiting..." ; exit 1; }
+sudo certbot --nginx -d $domain2 || { echo -e "\nCertbot failed to generate valid certificate."; echo -e "Perhaps your A record for $domain is not set up correctly."; echo -e "Exiting..." ; exit 1; }
 
 echo -e ""
 echo -e "--------------------------------------------------------------------------------"
@@ -240,13 +245,13 @@ echo -e "-----------------------------------------------------------------------
 echo -e "Installing nginx site     						 "
 echo -e "--------------------------------------------------------------------------------"
 echo -e ""
+chmod -R 777 /var/www/.multichain
+chmod -R 777 /var/www/multidasher
 cp /var/www/multidasher/nginx/multidasher.cloud.nginx /etc/nginx/sites-enabled/multidasher-api
 sed -i -e 's/CHANGEME/'$domain'/g' /etc/nginx/sites-enabled/multidasher-api
 cp /var/www/multidasher/nginx/multidasher.frontend.nginx /etc/nginx/sites-enabled/multidasher-frontend
 sed -i -e 's/CHANGEME/'$domain2'/g' /etc/nginx/sites-enabled/multidasher-frontend
 rm /etc/nginx/sites-enabled/default
-chmod -R 777 /var/www/.multichain
-chmod -R 777 /var/www/multidasher
 
 echo ""
 echo "-----------------------------------------------------------------"
@@ -264,12 +269,10 @@ else
 fi
 apt-get -qy install libtool pkg-config build-essential autoconf automake
 npm install -g @angular/cli
-chown -R $USER:$(id -gn $USER) /home/ubuntu/.config
-ng config -g cli.warnings.versionMismatch falspe
 rm /var/www/multidasher/angular/src/environments/environment.prod.ts
 echo -e 'export const environment = {
   production: true,
-  host: "'$domain2'"
+  host: "'$domain'"
 };
 ' >> /var/www/multidasher/angular/src/environments/environment.prod.ts
 chmod 644 /var/www/multidasher/angular/src/environments/environment.prod.ts
@@ -281,4 +284,4 @@ echo -e "-----------------------------------------------------------------------
 echo -e "All done!       						             "
 echo -e "--------------------------------------------------------------------------------"
 echo -e ""
-echo -e 'Installation complete. You can now connect to your site on: '$domain2
+echo -e 'Installation complete. you must now run ./multidasher_server_local_user.sh'

@@ -31,6 +31,7 @@ if [[ $EUID -ne 0 ]]; then
 	cd /var/www/multidasher/angular
 	npm install
 	ng build --aot --prod
+	echo -e 'Installation complete. you may now load your site on the url you chose for the frontend'
 
 	else
 	echo -e "This script can't be run as root." 1>&2

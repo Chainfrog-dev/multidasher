@@ -18,6 +18,7 @@ export interface Blockchain {
 })
 export class MultidasherNavComponent implements OnInit {
 	activeBlockchain: String;
+    activeBlockchainName: String;
 	isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(map(result => result.matches));
 	blockchainArray: Blockchain[] = [];
 	constructor(
@@ -50,6 +51,11 @@ export class MultidasherNavComponent implements OnInit {
 	          'status' : '',
 	        }
 	      this.blockchainArray.push(blockchain);
+          if(this.activeBlockchain != null){
+              if(blockchain.id == this.activeBlockchain){
+                  this.activeBlockchainName = blockchain.name;
+              }
+          }
 		}
 	}
 }

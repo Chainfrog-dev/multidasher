@@ -8,22 +8,23 @@
     [opened]="!(isHandset$ | async)">
     <mat-toolbar class="inner-menu">
       <span class="menu-logo">
-          <a routerLink="/"><img src="../assets/images/multidasher.png" alt="Petmeddata logo"></a>
+          <a routerLink="/"><img src="../assets/images/multidasher.png" alt="MultiDasher logo"></a>
       </span>
     </mat-toolbar>
     <mat-nav-list>
       <a mat-list-item routerLink="/">Home</a>
       <div class="linebreak"></div>
       <div *ngIf="activeBlockchain == null">
-        <h3>Select your Blockchain</h3>
+        <h3>Select your blockchain</h3>
         <div *ngFor="let blockchain of blockchainArray"><a mat-list-item routerLink="blockchain/{{blockchain.id}}/view-info">{{blockchain.name}}</a></div>
+        <div *ngIf='blockchainArray.length === 0'>No blockchains joined yet</div>
       </div>
       <div *ngIf="activeBlockchain !== null">
-        <h3>Manage your Blockchain</h3>
+        <h3>Manage {{activeBlockchainName}}</h3>
         <a mat-list-item routerLink="blockchain/{{activeBlockchain}}/view-info">Information</a>
         <a mat-list-item routerLink="blockchain/{{activeBlockchain}}/assets">Assets</a>
-        <a mat-list-item routerLink="blockchain/{{activeBlockchain}}/wallets">Wallets</a>
-        <a mat-list-item routerLink="blockchain/{{activeBlockchain}}/recipients">Recepients</a>
+        <a mat-list-item routerLink="blockchain/{{activeBlockchain}}/wallets">Addresses</a>
+        <a mat-list-item routerLink="blockchain/{{activeBlockchain}}/recipients">Recipients</a>
       </div>
     </mat-nav-list>
   </mat-sidenav>

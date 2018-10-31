@@ -26,7 +26,7 @@ export interface Wallet {
   templateUrl: './create-recipient.component.html',
   styleUrls: ['./create-recipient.component.scss']
 })
-export class CreateRecepientComponent implements OnInit {
+export class CreateRecipientComponent implements OnInit {
   blockchainId : String;
   wallets: Wallet[] = [];
 	assets: Asset[] = [];
@@ -51,7 +51,7 @@ export class CreateRecepientComponent implements OnInit {
   }
 
   async submitForm() {
-    const result = await this.dataService.addRecepient(this.blockchainId,this.recipientForm.value.title, this.recipientForm.value.description, this.recipientForm.value.wallet, this.recipientForm.value.assetName).toPromise();
+    const result = await this.dataService.addRecipient(this.blockchainId,this.recipientForm.value.title, this.recipientForm.value.description, this.recipientForm.value.wallet, this.recipientForm.value.assetName).toPromise();
     console.log(result);
     if(result['status'] == 1){
       alert('congrats, recipient added');

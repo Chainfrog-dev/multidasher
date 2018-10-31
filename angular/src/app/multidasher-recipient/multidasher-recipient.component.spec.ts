@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MultidasherRecepientComponent } from './multidasher-recipient.component';
+import { MultidasherRecipientComponent } from './multidasher-recipient.component';
 
-describe('MultidasherRecepientComponent', () => {
-  let component: MultidasherRecepientComponent;
-  let fixture: ComponentFixture<MultidasherRecepientComponent>;
+describe('MultidasherRecipientComponent', () => {
+  let component: MultidasherRecipientComponent;
+  let fixture: ComponentFixture<MultidasherRecipientComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MultidasherRecepientComponent ]
+      declarations: [ MultidasherRecipientComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MultidasherRecepientComponent);
+    fixture = TestBed.createComponent(MultidasherRecipientComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

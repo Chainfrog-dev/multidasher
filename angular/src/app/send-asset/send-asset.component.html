@@ -15,14 +15,8 @@
   </div>
 
   <div>
-    <mat-checkbox type="checkbox" formControlName="assetOpen" color="primary"></mat-checkbox>
-    <mat-hint>Select this if you want your asset to be open</mat-hint>
-
-  </div>
-
-  <div>
-    <mat-form-field>
-      <mat-select placeholder="recipient" formControlName="recipient">
+    <mat-form-field class="fullwidth">
+      <mat-select placeholder="Recipient name | address" formControlName="recipient">
         <mat-option *ngFor="let wallet of wallets" [value]="wallet.address">{{wallet.name}} | {{ wallet.address}}</mat-option>
       </mat-select>
     </mat-form-field>

@@ -134,7 +134,7 @@ export class DataService {
     );
   }
 
-  getRecepients(nid) : Observable<promise> {
+  getRecipients(nid) : Observable<promise> {
     return this.http.get(
       this.host+'/multidasher/export/'+nid+'/recipients',
       {headers : new HttpHeaders(), 
@@ -242,7 +242,7 @@ export class DataService {
     );
   }
 
-  addRecepient(nid: String, title: String, description: String, address: String, assetName: String) : Observable<promise> {
+  addRecipient(nid: String, title: String, description: String, address: String, assetName: String) : Observable<promise> {
     const data = {
       'title' : title,
       'asset_name' : assetName,

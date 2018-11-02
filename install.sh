@@ -29,9 +29,8 @@ while true; do
 done
 
 if [ $INSTALL = "SERVER" ] ; then
-  su $(login) -c 'if [[ $EUID -eq 0 ]]; then echo -e "You cannot install MultiDasher server as the root user for security reasons. Exiting..." && exit 1; fi'
+  su $(login) -c 'if [[ $EUID -eq 0 ]]; then echo -e "YOU CANNOT RUN THIS SCRIPT AS THE ROOT USER! EXIT WITH CTRL-C NOW!" 1>&2; fi'
 fi
-
 
 echo -e "--------------------------------------------------------------------------------"
 echo -e " Installation type: $INSTALL"
@@ -114,7 +113,7 @@ if [ -z $DPASSVAR ] ; then
 fi
 
 # Messages for setting up domains for server install
-if [ INSTALL = "SERVER" ] ; then
+if [ $INSTALL = "SERVER" ] ; then
   echo -e ""
   echo -e "--------------------------------------------------------------------------------"
   echo -e "Fixing locale (cloud instances often do not have this set)"
@@ -161,7 +160,7 @@ if ! grep -q "^deb .*ppa:ondrej/php" /etc/apt/sources.list /etc/apt/sources.list
 fi
 apt-get -y install curl php-cli php-mbstring git unzip php7.2 php7.2-curl php7.2-gd php7.2-mbstring php7.2-xml php7.2-json php7.2-mysql php7.2-opcache php7.2-fpm
 
-if [ INSTALL = "DEVELOPMENT" ] ; then
+if [ $INSTALL = "DEVELOPMENT" ] ; then
  echo -e ""
  echo -e "--------------------------------------------------------------------------------"
  echo -e "Copying MultiDasher files into /var/www. Your development work should take place"
@@ -171,7 +170,7 @@ if [ INSTALL = "DEVELOPMENT" ] ; then
  echo -e ""
 fi
 
-if [ INSTALL = "SERVER" ] ; then
+if [ $INSTALL = "SERVER" ] ; then
  echo -e ""
  echo -e "--------------------------------------------------------------------------------"
  echo -e "Copying MultiDasher files into /var/www. After this install you can delete the "
@@ -191,11 +190,11 @@ echo -e "-----------------------------------------------------------------------
 echo -e ""
 
 echo -e '127.0.0.1	'$DOMAIN >> /etc/hosts
-if [ INSTALL = "SERVER" ] ; then
+if [ $INSTALL = "SERVER" ] ; then
   echo -e '127.0.0.1	'$DOMAIN2 >> /etc/hosts
 fi
 
-if [ INSTALL = "SERVER" ] ; then
+if [ $INSTALL = "SERVER" ] ; then
   echo -e ""
   echo -e "--------------------------------------------------------------------------------"
   echo -e "Installing certbot 								 "
@@ -309,7 +308,7 @@ else
 	php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 fi
 
-if [ INSTALL = "SERVER" ] ; then
+if [ $INSTALL = "SERVER" ] ; then
   echo -e ""
   echo -e "--------------------------------------------------------------------------------"
   echo -e "Installing NGINX redirects     						 "
@@ -363,26 +362,26 @@ if [ INSTALL = "SERVER" ] ; then
   echo -e "--------------------------------------------------------------------------------"
   echo -e ""
 
-	su $(login) -c 'cd /var/www/multidasher/drupal'
-	su $(login) -c 'composer install'
-	su $(login) -c './vendor/drush/drush/drush upwd admin $DPASSVAR'
-	su $(login) -c './vendor/drush/drush/drush cr'
+  su $(login) -c 'cd /var/www/multidasher/drupal'
+  su $(login) -c 'composer install'
+  su $(login) -c './vendor/drush/drush/drush upwd admin $DPASSVAR'
+  su $(login) -c './vendor/drush/drush/drush cr'
 
-	echo -e ""
-	echo -e "--------------------------------------------------------------------------------"
-	echo -e "Building website. If this fails, your site server is probably underpowered. "
-	echo -e "--------------------------------------------------------------------------------"
-	echo -e ""
+  echo -e ""
+  echo -e "--------------------------------------------------------------------------------"
+  echo -e "Building website. If this fails, your site server is probably underpowered. "
+  echo -e "--------------------------------------------------------------------------------"
+  echo -e ""
 
-	su $(login) -c 'cd /var/www/multidasher/angular'
-	su $(login) -c 'npm install'
-	su $(login) -c 'ng build --prod'
-	echo -e "Installation complete. You can now see your site at $DOMAIN2."
+  su $(login) -c 'cd /var/www/multidasher/angular'
+  su $(login) -c 'npm install'
+  su $(login) -c 'ng build --prod'
+  echo -e "Installation complete. You can now see your site at $DOMAIN2."
 
 fi
 
 # Development node install script
-if [ INSTALL = "DEVELOPMENT" ] ; then
+if [ $INSTALL = "DEVELOPMENT" ] ; then
 
   echo -e ""
   echo -e "--------------------------------------------------------------------------------"
@@ -429,6 +428,7 @@ r  m /etc/nginx/sites-enabled/default
   npm install -g @angular/cli
   npm install
 
+
   service nginx restart
 
   echo -e ""
@@ -436,6 +436,6 @@ r  m /etc/nginx/sites-enabled/default
   echo -e "All done!       						             "
   echo -e "--------------------------------------------------------------------------------"
   echo -e ""
-  echo -e 'Installation complete. Go to /var/www/multidasher/angular and run ng serve to'
+  echo -e 'Installation complete. Go to /var/www/multidasher/angular and run "ng serve" to'
   echo -e 'start the development server. Then visit $DOMAIN:4200 to see the site.'
 fi

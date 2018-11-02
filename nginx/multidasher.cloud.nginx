@@ -61,7 +61,7 @@ server {
     }
 
     # Block access to scripts in site files directory
-    location ~ ^/sites/[^/]+/files/.*\.php$ y{
+    location ~ ^/sites/[^/]+/files/.*\.php$ {
         deny all;
     }
 

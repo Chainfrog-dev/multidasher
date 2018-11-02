@@ -42,9 +42,9 @@ To enable secure HTTPS connectivity (strongly recommended) you will need to set 
         
 2. Run the prerequisites checker and installer. This will install MultiChain and other libraries required for MultiDasher if they are not already present on your system
 
-        $ sudo ./multidasher_server.sh
+        $ sudo ./install.sh
         
-3. Read the instructions that are shown at the beginning of running the install script, and follow them carefully.
+3. Read the instructions that are shown at the beginning of running the install script, and follow them carefully. In particular, make sure you select [d] if you are installing a development copy on your local machine, or [S] if you are installing a copy on a cloud server.
 
 4. Follow the guidelines to start interacting with MultiChain blockchains. You may find
    the following resources handy:

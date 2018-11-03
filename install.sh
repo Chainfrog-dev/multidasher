@@ -58,8 +58,8 @@ if [ $INSTALL = "SERVER" ] ; then
   	echo -e "Non-domain installations not supported. Exiting..."
 	exit 1
   fi
-  read -p $'Enter the domain name redirected to this IP address for the frontend \x0aor(e.g. frontend.multidasher.org), or [enter] to not setup a domain and exit. \x0a=> ' DOMAIN2
-  if [ -z $DOMAIN2 ] ; then
+  read -p $'Enter the domain name redirected to this IP address for the frontend \x0aor(e.g. frontend.multidasher.org), or [enter] to not setup a domain and exit. \x0a=> ' FRONTDOMAIN
+  if [ -z $FRONTDOMAIN ] ; then
 	echo -e "Non-domain installations not supported. Exiting..."
 	exit 1
   fi
@@ -187,7 +187,7 @@ echo -e ""
 
 echo -e '127.0.0.1	'$DOMAIN >> /etc/hosts
 if [ $INSTALL = "SERVER" ] ; then
-  echo -e '127.0.0.1	'$DOMAIN2 >> /etc/hosts
+  echo -e '127.0.0.1	'$FRONTDOMAIN >> /etc/hosts
 fi
 
 if [ $INSTALL = "SERVER" ] ; then
@@ -208,7 +208,7 @@ if [ $INSTALL = "SERVER" ] ; then
   echo -e "REMINDER: Certbot will prompt you for an email. You must provide one."
   echo -e "REMINDER: When Certbot prompts you for DNS settings, choose [1], no redirect."
   sudo certbot --nginx -d $DOMAIN || { echo -e "\nCertbot failed to generate valid certificate."; echo -e "Perhaps your A record for $DOMAIN is not set up correctly."; echo -e "Exiting..." ; exit 1; }
-  sudo certbot --nginx -d $DOMAIN2 || { echo -e "\nCertbot failed to generate valid certificate."; echo -e "Perhaps your A record for $DOMAIN2 is not set up correctly."; echo -e "Exiting..." ; exit 1; }
+  sudo certbot --nginx -d $FRONTDOMAIN || { echo -e "\nCertbot failed to generate valid certificate."; echo -e "Perhaps your A record for $FRONTDOMAIN is not set up correctly."; echo -e "Exiting..." ; exit 1; }
 fi
 
 
@@ -315,7 +315,7 @@ if [ $INSTALL = "SERVER" ] ; then
   cp /var/www/multidasher/nginx/multidasher.cloud.nginx /etc/nginx/sites-enabled/multidasher-api
   sed -i -e 's/CHANGEME/'$DOMAIN'/g' /etc/nginx/sites-enabled/multidasher-api
   cp /var/www/multidasher/nginx/multidasher.frontend.nginx /etc/nginx/sites-enabled/multidasher-frontend
-  sed -i -e 's/CHANGEME/'$DOMAIN2'/g' /etc/nginx/sites-enabled/multidasher-frontend
+  sed -i -e 's/CHANGEME/'$FRONTDOMAIN'/g' /etc/nginx/sites-enabled/multidasher-frontend
   rm /etc/nginx/sites-enabled/default
 
   echo ""
@@ -367,7 +367,7 @@ if [ $INSTALL = "SERVER" ] ; then
   echo -e ""
 
   su $(logname) -c 'cd /var/www/multidasher/angular; npm install; ng build --prod'
-  echo -e "Installation complete. You can now see your site at $DOMAIN."
+  echo -e "Installation complete. You can now see your site at $FRONTDOMAIN."
 
 fi
 

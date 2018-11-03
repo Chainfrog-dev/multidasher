@@ -67,9 +67,14 @@ fi
 
 # Messages for setting up domains for development install
 if [ $INSTALL = "DEVELOPMENT" ] ; then
-  read -p $'Enter a made-up domain name for the install, like md.local.com\x0aMultiDasher installer will write this to your /etc/hosts file. \x0a=> ' DOMAIN
+  read -p $'Enter a made-up domain name for the backend of the install, like dru.local.com\x0aMultiDasher installer will write this to your /etc/hosts file. \x0a=> ' DOMAIN
   if [ -z $DOMAIN ] ; then
   	echo -e "Non-domain installations not supported. Exiting..."
+	exit 1
+  fi
+  read -p $'Enter a made-up domain for the frontend of the install, like ang.local.com\x0aMultiDasher installer will also write this to your /etc/hosts file. \x0a=> ' FRONTDOMAIN
+  if [ -z $FRONTDOMAIN ] ; then
+	echo -e "Non-domain installations not supported. Exiting..."
 	exit 1
   fi
 fi
@@ -266,6 +271,7 @@ else
 	mkdir .multichain
 	cd ~
 fi
+chmod -R 777 /var/www/.multichain
 
 echo -e ""
 echo -e "--------------------------------------------------------------------------------"
@@ -314,11 +320,10 @@ if [ $INSTALL = "SERVER" ] ; then
   echo -e "Installing NGINX redirects     						 "
   echo -e "--------------------------------------------------------------------------------"
   echo -e ""
-  chmod -R 777 /var/www/.multichain
-  chmod -R 777 /var/www/multidasher
-  cp /var/www/multidasher/nginx/multidasher.cloud.nginx /etc/nginx/sites-enabled/multidasher-api
-  sed -i -e 's/CHANGEME/'$DOMAIN'/g' /etc/nginx/sites-enabled/multidasher-api
-  cp /var/www/multidasher/nginx/multidasher.frontend.nginx /etc/nginx/sites-enabled/multidasher-frontend
+
+  cp /var/www/multidasher/nginx/multidasher.server.dru.nginx /etc/nginx/sites-enabled/multidasher-backend
+  sed -i -e 's/CHANGEME/'$DOMAIN'/g' /etc/nginx/sites-enabled/multidasher-backend
+  cp /var/www/multidasher/nginx/multidasher.server.ang.nginx /etc/nginx/sites-enabled/multidasher-frontend
   sed -i -e 's/CHANGEME/'$FRONTDOMAIN'/g' /etc/nginx/sites-enabled/multidasher-frontend
   rm /etc/nginx/sites-enabled/default
 
@@ -338,9 +343,9 @@ if [ $INSTALL = "SERVER" ] ; then
   fi
   apt-get -qy install libtool pkg-config build-essential autoconf automake
 
-   npm install -g @angular/cli
-   rm /var/www/multidasher/angular/src/environments/environment.prod.ts
-   echo -e 'export const environment = {
+  npm install -g @angular/cli
+  rm /var/www/multidasher/angular/src/environments/environment.prod.ts
+  echo -e 'export const environment = {
     production: false,
     host: "'$DOMAIN'"
   };
@@ -397,11 +402,12 @@ if [ $INSTALL = "DEVELOPMENT" ] ; then
   echo -e "Configuring NGINX     						 "
   echo -e "--------------------------------------------------------------------------------"
   echo -e ""
-  cp /var/www/multidasher/nginx/multidasher.local.nginx /etc/nginx/sites-available/multidasher
-  sed -i -e 's/CHANGEME/'$domain'/g' /etc/nginx/sites-available/multidasher
-  ln -s /etc/nginx/sites-available/multidasher /etc/nginx/sites-enabled/multidasher
-r  m /etc/nginx/sites-enabled/default
-  chmod -R 777 /var/www/.multichain
+
+  cp /var/www/multidasher/nginx/multidasher.local.dru.nginx /etc/nginx/sites-enabled/multidasher-backend
+  sed -i -e 's/CHANGEME/'$DOMAIN'/g' /etc/nginx/sites-enabled/multidasher-backend
+  cp /var/www/multidasher/nginx/multidasher.local.ang.nginx /etc/nginx/sites-enabled/multidasher-frontend
+  sed -i -e 's/CHANGEME/'$FRONTDOMAIN'/g' /etc/nginx/sites-enabled/multidasher-frontend
+  rm /etc/nginx/sites-enabled/default
 
   echo ""
   echo "-----------------------------------------------------------------"
@@ -432,5 +438,7 @@ r  m /etc/nginx/sites-enabled/default
   echo -e "--------------------------------------------------------------------------------"
   echo -e ""
   echo -e 'Installation complete. Go to /var/www/multidasher/angular and run "ng serve" to'
-  echo -e 'start the development server. Then visit $DOMAIN:4200 to see the site.'
+  echo -e "start the development server. Then visit $FRONTDOMAIN to see the site."
+  echo -e "isit $DOMAIN to see the Drupal backend."
+
 fi

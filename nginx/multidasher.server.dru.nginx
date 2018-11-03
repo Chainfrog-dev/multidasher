@@ -1,15 +1,3 @@
-server {
-  listen 80;
-  listen [::]:80;
-  server_name www.CHANGEME;
-
-  access_log /var/log/multidasher/nginx.access.log;
-  error_log  /var/log/multidasher/nginx.error.log;
-
-  location / {
-      rewrite ^ https://CHANGEME$request_uri? permanent;
-   }
-}
 
 server {
   listen 80;

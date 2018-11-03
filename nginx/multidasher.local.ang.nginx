@@ -1,0 +1,47 @@
+
+server {
+  server_name CHANGEME;
+
+  listen 80;
+  listen [::]:80;
+
+  access_log /var/log/multidasher/nginx.access.log;
+  error_log  /var/log/multidasher/nginx.error.log;
+
+  index  index.html index.htm;
+  try_files $uri /index.html;
+
+location ^~ /sockjs-node/ {
+
+    proxy_pass http://CHANGEME:4200;
+
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host $host;
+
+    proxy_http_version 1.1;
+    proxy_cache_bypass $http_upgrade;
+}
+
+  location ~*  \.(jpg|jpeg|png|gif|ico|css|js)$ {
+    expires 1y;
+    add_header Cache-Control public;
+    add_header ETag "";
+    break;
+  }
+
+  location ~ ^/(scripts.*js|styles|images) {
+    gzip_static on;
+    expires 1y;
+    add_header Cache-Control public;
+    add_header ETag "";
+    break;
+  }
+
+  location /ngsw-worker.js {
+      add_header Cache-Control "no-cache";
+      expires off;
+      access_log off;
+  }
+
+}

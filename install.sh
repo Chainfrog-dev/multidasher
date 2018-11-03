@@ -358,7 +358,7 @@ if [ $INSTALL = "SERVER" ] ; then
   echo -e "--------------------------------------------------------------------------------"
   echo -e ""
 
-  su $(login) -c 'cd /var/www/multidasher/drupal; composer install; ./vendor/drush/drush/drush upwd admin $1; ./vendor/drush/drush/drush cr' -- myshell $DPASSVAR
+  su $(logname) -c 'cd /var/www/multidasher/drupal; composer install; ./vendor/drush/drush/drush upwd admin $1; ./vendor/drush/drush/drush cr' -- myshell $DPASSVAR
 
   echo -e ""
   echo -e "--------------------------------------------------------------------------------"
@@ -366,7 +366,7 @@ if [ $INSTALL = "SERVER" ] ; then
   echo -e "--------------------------------------------------------------------------------"
   echo -e ""
 
-  su $(login) -c 'cd /var/www/multidasher/angular; npm install; ng build --prod'
+  su $(logname) -c 'cd /var/www/multidasher/angular; npm install; ng build --prod'
   echo -e "Installation complete. You can now see your site at $DOMAIN."
 
 fi

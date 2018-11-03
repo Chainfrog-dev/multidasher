@@ -28,10 +28,6 @@ while true; do
   fi
 done
 
-if [ $INSTALL = "SERVER" ] ; then
-  su $(login) -c 'if [[ $EUID -eq 0 ]]; then echo -e "YOU CANNOT RUN THIS SCRIPT AS THE ROOT USER! EXIT WITH CTRL-C NOW!" 1>&2; fi'
-fi
-
 echo -e "--------------------------------------------------------------------------------"
 echo -e " Installation type: $INSTALL"
 echo -e "--------------------------------------------------------------------------------"
@@ -362,7 +358,7 @@ if [ $INSTALL = "SERVER" ] ; then
   echo -e "--------------------------------------------------------------------------------"
   echo -e ""
 
-  su $(login) -c 'cd /var/www/multidasher/drupal; composer install; ./vendor/drush/drush/drush upwd admin $DPASSVAR; ./vendor/drush/drush/drush cr'
+  su $(login) -c 'cd /var/www/multidasher/drupal; composer install; ./vendor/drush/drush/drush upwd admin $1; ./vendor/drush/drush/drush cr' -- $DPASSVAR
 
   echo -e ""
   echo -e "--------------------------------------------------------------------------------"

@@ -305,6 +305,10 @@ else
 fi
 
 if [ $INSTALL = "SERVER" ] ; then
+  
+  # correcting ownership of .composer folder
+  chown -R $(logname):$(logname) .composer
+
   echo -e ""
   echo -e "--------------------------------------------------------------------------------"
   echo -e "Installing NGINX redirects     						 "

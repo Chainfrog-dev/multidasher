@@ -371,7 +371,7 @@ if [ $INSTALL = "SERVER" ] ; then
   echo -e ""
 
   su $(login) -c 'cd /var/www/multidasher/angular; npm install; ng build --prod'
-  echo -e "Installation complete. You can now see your site at $DOMAIN2."
+  echo -e "Installation complete. You can now see your site at $DOMAIN."
 
 fi
 

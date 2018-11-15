@@ -437,7 +437,7 @@ if [ $INSTALL = "DEVELOPMENT" ] ; then
   echo -e "All done!       						             "
   echo -e "--------------------------------------------------------------------------------"
   echo -e ""
-  echo -e 'Installation complete. Go to /var/www/multidasher/angular and run "ng serve" to'
+  echo -e 'Installation complete. Go to /var/www/multidasher/angular and run "ng serve --disable-host-check" to'
   echo -e "start the development server. Then visit $FRONTDOMAIN to see the site."
   echo -e "isit $DOMAIN to see the Drupal backend."
 

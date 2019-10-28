@@ -18,7 +18,7 @@ MultiDasher is developed, tested and designed to be run on Ubuntu 18.04.
 
 ## Getting Started
 
-If you want to have a look at how MultiDasher functions, [Wiki](https://github.com/Chainfrog-dev/multidasher/wiki) has a lot of resources, and is worth browsing through.
+If you want to have a look at how MultiDasher functions, [Wiki](https://github.com/Chainfrog-dev/multidasher/wiki) has a lot of resources, and is worth browsing through. The docs folder has a couple of white papers that explain the concept.
 
 ### Installation
 

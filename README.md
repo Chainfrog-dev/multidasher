@@ -2,7 +2,7 @@
 
 ## What is MultiDasher?
 
-[MultiDasher](http://www.multidasher.org/) is an open source admin dashboard for [MultiChain](http://www.multichain.com/) blockchains, based on [Drupal 8](http://www.drupal.org/). And much, much more...
+MultiDasher is an open source admin dashboard for [MultiChain](http://www.multichain.com/) blockchains, based on [Drupal 8](http://www.drupal.org/). And much, much more...
 
 ## Architecture
 
@@ -18,9 +18,7 @@ MultiDasher is developed, tested and designed to be run on Ubuntu 18.04.
 
 ## Getting Started
 
-If you want to have a look at how MultiDasher functions, please visit [the MultiDasher website](https://multidasher.org/) and click on Demo.
-
-The [Wiki](https://github.com/Chainfrog-dev/multidasher/wiki) has a lot of resources too, and is worth browsing through.
+If you want to have a look at how MultiDasher functions, [Wiki](https://github.com/Chainfrog-dev/multidasher/wiki) has a lot of resources, and is worth browsing through.
 
 ### Installation
 
